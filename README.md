@@ -2,6 +2,8 @@
 
 실전 의료 데이터 기반 머신러닝 및 임상 데이터 분석 학습 과정
 
+배포 사이트: https://leejoohyunn.github.io/medical-ai-workbook/
+
 ## 개요
 
 본 워크북은 의료 인공지능 학습을 위한 체계적인 커리큘럼을 제공합니다. PhysioNet, UCI ML Repository, Kaggle, NIH 등에서 제공하는 실제 임상 데이터를 활용하여 기초부터 고급 응용까지 단계적으로 학습할 수 있도록 설계되었습니다.
