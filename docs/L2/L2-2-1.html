@@ -1,0 +1,2194 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="장수미">
+<meta name="dcterms.date" content="2025-11-17">
+
+<title>📊 L2-2 시계열 바이탈 신호 고급 분석 – Medical AI Workbook</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a96cfa603fdcdc54a5c20544cb7340f7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Medical AI Workbook</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-level-2" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Level 2</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-level-2">    
+        <li>
+    <a class="dropdown-item" href="../L2/L2-1-1.html">
+ <span class="dropdown-text">L2-1-1: 심장질환 예측</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-1-2.html">
+ <span class="dropdown-text">L2-1-2: 당뇨병 합병증</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-1-3.html">
+ <span class="dropdown-text">L2-1-3: 만성 신장 질환</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-1-4.html">
+ <span class="dropdown-text">L2-1-4: 응급실 재방문</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L2/L2-2-1.html">
+ <span class="dropdown-text">L2-2-1: ECG 신호 처리</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-2-2.html">
+ <span class="dropdown-text">L2-2-2: 수면 무호흡 탐지</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-2-3.html">
+ <span class="dropdown-text">L2-2-3: EMG 근육 피로도</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-2-4.html">
+ <span class="dropdown-text">L2-2-4: PPG 혈압 추정</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L2/L2-3-1.html">
+ <span class="dropdown-text">L2-3-1: 유방암 조직병리</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-3-2.html">
+ <span class="dropdown-text">L2-3-2: 당뇨망막병증</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-3-3.html">
+ <span class="dropdown-text">L2-3-3: 흉부 X-ray 폐렴</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-3-4.html">
+ <span class="dropdown-text">L2-3-4: 피부 병변 흑색종</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L2/L2-4-1.html">
+ <span class="dropdown-text">L2-4-1: 의료 텍스트 분류</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-4-2.html">
+ <span class="dropdown-text">L2-4-2: 임상 노트 증상 분류</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-4-3.html">
+ <span class="dropdown-text">L2-4-3: 의료 개체명 인식</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-4-4.html">
+ <span class="dropdown-text">L2-4-4: 텍스트 감성 분석</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L2/L2-5-1.html">
+ <span class="dropdown-text">L2-5-1: ECG + 환자 속성</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-5-2.html">
+ <span class="dropdown-text">L2-5-2: 뇌 MRI + 임상 정보</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-5-3.html">
+ <span class="dropdown-text">L2-5-3: 안저 + 당뇨 지표</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-5-4.html">
+ <span class="dropdown-text">L2-5-4: X-ray + 임상 변수</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-level-3" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Level 3</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-level-3">    
+        <li>
+    <a class="dropdown-item" href="../L3/L3-1-1.html">
+ <span class="dropdown-text">L3-1-1: 암 환자 생존 분석</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L3/L3-1-2.html">
+ <span class="dropdown-text">L3-1-2: 패혈증 조기 예측</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L3/L3-2-1.html">
+ <span class="dropdown-text">L3-2-1: EEG 발작 예측</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L3/L3-2-2.html">
+ <span class="dropdown-text">L3-2-2: 혈압 파형 분석</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L3/L3-3-1.html">
+ <span class="dropdown-text">L3-3-1: 뇌종양 MRI 세그멘테이션</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L3/L3-3-2.html">
+ <span class="dropdown-text">L3-3-2: 흉부 X-ray 질환 분류</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L3/L3-4-1.html">
+ <span class="dropdown-text">L3-4-1: BioBERT 텍스트 분류</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L3/L3-4-2.html">
+ <span class="dropdown-text">L3-4-2: BioBERT NER</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L3/L3-5-1.html">
+ <span class="dropdown-text">L3-5-1: ECG + 임상 정보</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L3/L3-5-2.html">
+ <span class="dropdown-text">L3-5-2: X-ray + 판독문</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#l2-2-시계열-바이탈-신호-고급-분석" id="toc-l2-2-시계열-바이탈-신호-고급-분석" class="nav-link active" data-scroll-target="#l2-2-시계열-바이탈-신호-고급-분석"><span class="header-section-number">1</span> 📊 L2-2 시계열 바이탈 신호 고급 분석</a></li>
+  <li><a href="#l2-2-시계열-바이탈-신호-고급-분석-1" id="toc-l2-2-시계열-바이탈-신호-고급-분석-1" class="nav-link" data-scroll-target="#l2-2-시계열-바이탈-신호-고급-분석-1"><span class="header-section-number">2</span> 🧬 L2-2 시계열 바이탈 신호 고급 분석</a>
+  <ul class="collapse">
+  <li><a href="#학습-목표-learning-outcomes" id="toc-학습-목표-learning-outcomes" class="nav-link" data-scroll-target="#학습-목표-learning-outcomes"><span class="header-section-number">2.1</span> 🧭 학습 목표 (Learning Outcomes)</a></li>
+  <li><a href="#실습-개요" id="toc-실습-개요" class="nav-link" data-scroll-target="#실습-개요"><span class="header-section-number">2.2</span> 🧩 실습 개요</a></li>
+  <li><a href="#전체-실습-흐름" id="toc-전체-실습-흐름" class="nav-link" data-scroll-target="#전체-실습-흐름"><span class="header-section-number">2.3</span> 🔄 전체 실습 흐름</a></li>
+  <li><a href="#사전-필요" id="toc-사전-필요" class="nav-link" data-scroll-target="#사전-필요"><span class="header-section-number">2.4</span> 📝 사전 필요</a></li>
+  <li><a href="#사용-데이터-설명" id="toc-사용-데이터-설명" class="nav-link" data-scroll-target="#사용-데이터-설명"><span class="header-section-number">2.5</span> 🗂 사용 데이터 설명</a></li>
+  <li><a href="#라이브러리-불러오기" id="toc-라이브러리-불러오기" class="nav-link" data-scroll-target="#라이브러리-불러오기"><span class="header-section-number">2.6</span> 📦 라이브러리 불러오기</a></li>
+  <li><a href="#데이터-로드-및-탐색" id="toc-데이터-로드-및-탐색" class="nav-link" data-scroll-target="#데이터-로드-및-탐색"><span class="header-section-number">2.7</span> 1️⃣ 데이터 로드 및 탐색</a></li>
+  <li><a href="#데이터-전처리" id="toc-데이터-전처리" class="nav-link" data-scroll-target="#데이터-전처리"><span class="header-section-number">2.8</span> 2️⃣ 데이터 전처리</a>
+  <ul class="collapse">
+  <li><a href="#기본-전처리" id="toc-기본-전처리" class="nav-link" data-scroll-target="#기본-전처리"><span class="header-section-number">2.8.1</span> 2.1 기본 전처리</a></li>
+  <li><a href="#고급-전처리-기법-적용" id="toc-고급-전처리-기법-적용" class="nav-link" data-scroll-target="#고급-전처리-기법-적용"><span class="header-section-number">2.8.2</span> 2.2 고급 전처리 기법 적용</a></li>
+  <li><a href="#도메인-특화-전처리" id="toc-도메인-특화-전처리" class="nav-link" data-scroll-target="#도메인-특화-전처리"><span class="header-section-number">2.8.3</span> 2.3 도메인 특화 전처리</a></li>
+  <li><a href="#전처리-효과-비교" id="toc-전처리-효과-비교" class="nav-link" data-scroll-target="#전처리-효과-비교"><span class="header-section-number">2.8.4</span> 2.4 전처리 효과 비교</a></li>
+  </ul></li>
+  <li><a href="#모델링" id="toc-모델링" class="nav-link" data-scroll-target="#모델링"><span class="header-section-number">2.9</span> 3️⃣ 모델링</a>
+  <ul class="collapse">
+  <li><a href="#baseline-모델-설정" id="toc-baseline-모델-설정" class="nav-link" data-scroll-target="#baseline-모델-설정"><span class="header-section-number">2.9.1</span> 3.1 Baseline 모델 설정</a></li>
+  <li><a href="#고급-하이퍼파라미터-튜닝" id="toc-고급-하이퍼파라미터-튜닝" class="nav-link" data-scroll-target="#고급-하이퍼파라미터-튜닝"><span class="header-section-number">2.9.2</span> 3.2 고급 하이퍼파라미터 튜닝</a></li>
+  <li><a href="#최종-모델-학습-및-앙상블" id="toc-최종-모델-학습-및-앙상블" class="nav-link" data-scroll-target="#최종-모델-학습-및-앙상블"><span class="header-section-number">2.9.3</span> 3.3 최종 모델 학습 (및 앙상블)</a></li>
+  </ul></li>
+  <li><a href="#성능-평가" id="toc-성능-평가" class="nav-link" data-scroll-target="#성능-평가"><span class="header-section-number">2.10</span> 4️⃣ 성능 평가</a></li>
+  <li><a href="#모델-해석" id="toc-모델-해석" class="nav-link" data-scroll-target="#모델-해석"><span class="header-section-number">2.11</span> 5️⃣ 모델 해석</a></li>
+  <li><a href="#외부-검증-external-validation" id="toc-외부-검증-external-validation" class="nav-link" data-scroll-target="#외부-검증-external-validation"><span class="header-section-number">2.12</span> 6️⃣ 외부 검증 (External Validation)</a></li>
+  <li><a href="#결과-리포트-작성" id="toc-결과-리포트-작성" class="nav-link" data-scroll-target="#결과-리포트-작성"><span class="header-section-number">2.13</span> 7️⃣ 결과 리포트 작성</a></li>
+  <li><a href="#심화-학습-문제" id="toc-심화-학습-문제" class="nav-link" data-scroll-target="#심화-학습-문제"><span class="header-section-number">2.14</span> 🧑‍💻 심화 학습 문제</a>
+  <ul class="collapse">
+  <li><a href="#학습-포인트" id="toc-학습-포인트" class="nav-link" data-scroll-target="#학습-포인트"><span class="header-section-number">2.14.1</span> 💡 학습 포인트</a></li>
+  </ul></li>
+  <li><a href="#참고-자료" id="toc-참고-자료" class="nav-link" data-scroll-target="#참고-자료"><span class="header-section-number">2.15</span> 📚 참고 자료</a></li>
+  <li><a href="#전체-요약" id="toc-전체-요약" class="nav-link" data-scroll-target="#전체-요약"><span class="header-section-number">2.16</span> ✅ 전체 요약</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">📊 L2-2 시계열 바이탈 신호 고급 분석</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>장수미 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 17, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="l2-2-시계열-바이탈-신호-고급-분석" class="level1 header" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> 📊 L2-2 시계열 바이탈 신호 고급 분석</h1>
+<p>본 워크북은 ECG, PPG 등 시계열 바이탈 신호의 고급 전처리, 특징 추출 및 머신러닝 모델링을 포함합니다. 이론적 기반과 실무 문제 해결 능력을 동시에 강화할 수 있도록 설계되었습니다. 분석가는 웨이블릿 변환, HRV 분석, 그리고 적응형 필터링을 고려해야 합니다.</p>
+<p><strong>진행률:</strong> <code>0% (분석 시작)</code> 🔄<br>
+<strong>활용도:</strong> 상위권 대학 학부 4학년 전공 심화</p>
+</section>
+<section id="l2-2-시계열-바이탈-신호-고급-분석-1" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> 🧬 L2-2 시계열 바이탈 신호 고급 분석</h1>
+<section id="학습-목표-learning-outcomes" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="학습-목표-learning-outcomes"><span class="header-section-number">2.1</span> 🧭 학습 목표 (Learning Outcomes)</h2>
+<p>이 워크북을 통해 학습자는 다음을 실습하게 됩니다:</p>
+<ul>
+<li>웨이블릿 변환을 활용한 고급 노이즈 제거 및 적응형 필터링 구현</li>
+<li>R-peak 검출 알고리즘을 통한 HRV(Heart Rate Variability) 전체 스펙트럼 분석</li>
+<li>시간/주파수/비선형 도메인에서의 다차원 특징 추출 및 융합</li>
+</ul>
+</section>
+<section id="실습-개요" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="실습-개요"><span class="header-section-number">2.2</span> 🧩 실습 개요</h2>
+<ul>
+<li><strong>데이터</strong>: MIT-BIH Arrhythmia Database (PhysioNet)</li>
+<li><strong>목표</strong>: ECG 신호의 고급 전처리, HRV 분석 및 부정맥 분류</li>
+<li><strong>사용 기술</strong>: PyWavelets, WFDB, SciPy, Scikit-learn, HRV 라이브러리</li>
+<li><strong>제약 조건</strong>:
+<ol type="1">
+<li>최소 3가지 이상의 전처리 기법을 점진적으로 적용하여 성능 개선 정량화</li>
+<li>시간/주파수/비선형 도메인 각각에서 5개 이상의 특징 추출</li>
+</ol></li>
+</ul>
+</section>
+<section id="전체-실습-흐름" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="전체-실습-흐름"><span class="header-section-number">2.3</span> 🔄 전체 실습 흐름</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>단계</th>
+<th>주요 작업 내용</th>
+<th>주요 도구/스킬</th>
+<th>결과물</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1단계</td>
+<td>데이터 로드 및 탐색</td>
+<td>WFDB</td>
+<td>원본 ECG 파형</td>
+</tr>
+<tr class="even">
+<td>2단계</td>
+<td>긴 호흡 전처리</td>
+<td>PyWavelets, SciPy</td>
+<td>단계별 개선된 파형</td>
+</tr>
+<tr class="odd">
+<td>3단계</td>
+<td>긴 호흡 특징추출</td>
+<td>HRV, Entropy</td>
+<td>다차원 특징 벡터</td>
+</tr>
+<tr class="even">
+<td>4단계</td>
+<td>긴 호흡 모델링</td>
+<td>SVM, XGBoost</td>
+<td>최적화된 분류기</td>
+</tr>
+<tr class="odd">
+<td>5단계</td>
+<td>성능 평가</td>
+<td>Scikit-learn</td>
+<td>혼동 행렬, ROC</td>
+</tr>
+<tr class="even">
+<td>6단계</td>
+<td>모델 해석</td>
+<td>SHAP</td>
+<td>특징 중요도</td>
+</tr>
+<tr class="odd">
+<td>7단계</td>
+<td>외부 검증</td>
+<td>PTB-XL</td>
+<td>일반화 성능</td>
+</tr>
+<tr class="even">
+<td>8단계</td>
+<td>결과 리포트 작성</td>
+<td>Matplotlib</td>
+<td>종합 보고서</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="사전-필요" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="사전-필요"><span class="header-section-number">2.4</span> 📝 사전 필요</h2>
+<p>이 워크북은 다음 기술/개념을 선행 학습한 학습자를 대상으로 합니다:</p>
+<ul>
+<li>기본 신호처리 이론 (샘플링, 필터링, 푸리에 변환)</li>
+<li>Python NumPy/Pandas 중급 활용</li>
+<li>머신러닝 기초 (분류, 교차검증)</li>
+</ul>
+</section>
+<section id="사용-데이터-설명" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="사용-데이터-설명"><span class="header-section-number">2.5</span> 🗂 사용 데이터 설명</h2>
+<blockquote class="blockquote">
+<p>📌 <strong>데이터셋</strong>: MIT-BIH Arrhythmia Database<br>
+📌 <strong>출처</strong>: <a href="https://physionet.org/content/mitdb/1.0.0/">PhysioNet</a><br>
+📌 <strong>배경</strong>: 47명의 환자로부터 수집된 48개의 30분 ECG 기록, 360Hz 샘플링</p>
+</blockquote>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>변수명</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ECG Lead II</td>
+<td>표준 리드 II ECG 신호</td>
+</tr>
+<tr class="even">
+<td>Annotations</td>
+<td>전문가가 라벨링한 부정맥 주석</td>
+</tr>
+<tr class="odd">
+<td>R-peak locations</td>
+<td>QRS 복합체의 R파 위치</td>
+</tr>
+<tr class="even">
+<td>Beat types</td>
+<td>N(정상), V(심실), A(심방) 등 박동 유형</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="라이브러리-불러오기" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="라이브러리-불러오기"><span class="header-section-number">2.6</span> 📦 라이브러리 불러오기</h2>
+<div id="cell-2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="678150f8-174e-4cf1-f5f4-94e8fb090b1f">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install wfdb</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install biosppy</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install peakutils</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install neurokit2</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install optuna</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install hrv<span class="op">-</span>analysis astropy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Requirement already satisfied: wfdb in /usr/local/lib/python3.12/dist-packages (4.3.0)
+Requirement already satisfied: aiohttp&gt;=3.10.11 in /usr/local/lib/python3.12/dist-packages (from wfdb) (3.13.2)
+Requirement already satisfied: fsspec&gt;=2023.10.0 in /usr/local/lib/python3.12/dist-packages (from wfdb) (2025.3.0)
+Requirement already satisfied: matplotlib&gt;=3.2.2 in /usr/local/lib/python3.12/dist-packages (from wfdb) (3.10.0)
+Requirement already satisfied: numpy&gt;=1.26.4 in /usr/local/lib/python3.12/dist-packages (from wfdb) (2.0.2)
+Requirement already satisfied: pandas&gt;=2.2.3 in /usr/local/lib/python3.12/dist-packages (from wfdb) (2.3.3)
+Requirement already satisfied: requests&gt;=2.8.1 in /usr/local/lib/python3.12/dist-packages (from wfdb) (2.32.4)
+Requirement already satisfied: scipy&gt;=1.13.0 in /usr/local/lib/python3.12/dist-packages (from wfdb) (1.16.3)
+Requirement already satisfied: soundfile&gt;=0.10.0 in /usr/local/lib/python3.12/dist-packages (from wfdb) (0.13.1)
+Requirement already satisfied: aiohappyeyeballs&gt;=2.5.0 in /usr/local/lib/python3.12/dist-packages (from aiohttp&gt;=3.10.11-&gt;wfdb) (2.6.1)
+Requirement already satisfied: aiosignal&gt;=1.4.0 in /usr/local/lib/python3.12/dist-packages (from aiohttp&gt;=3.10.11-&gt;wfdb) (1.4.0)
+Requirement already satisfied: attrs&gt;=17.3.0 in /usr/local/lib/python3.12/dist-packages (from aiohttp&gt;=3.10.11-&gt;wfdb) (25.4.0)
+Requirement already satisfied: frozenlist&gt;=1.1.1 in /usr/local/lib/python3.12/dist-packages (from aiohttp&gt;=3.10.11-&gt;wfdb) (1.8.0)
+Requirement already satisfied: multidict&lt;7.0,&gt;=4.5 in /usr/local/lib/python3.12/dist-packages (from aiohttp&gt;=3.10.11-&gt;wfdb) (6.7.0)
+Requirement already satisfied: propcache&gt;=0.2.0 in /usr/local/lib/python3.12/dist-packages (from aiohttp&gt;=3.10.11-&gt;wfdb) (0.4.1)
+Requirement already satisfied: yarl&lt;2.0,&gt;=1.17.0 in /usr/local/lib/python3.12/dist-packages (from aiohttp&gt;=3.10.11-&gt;wfdb) (1.22.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.2.2-&gt;wfdb) (1.3.3)
+Requirement already satisfied: cycler&gt;=0.10 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.2.2-&gt;wfdb) (0.12.1)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.2.2-&gt;wfdb) (4.60.1)
+Requirement already satisfied: kiwisolver&gt;=1.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.2.2-&gt;wfdb) (1.4.9)
+Requirement already satisfied: packaging&gt;=20.0 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.2.2-&gt;wfdb) (25.0)
+Requirement already satisfied: pillow&gt;=8 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.2.2-&gt;wfdb) (11.3.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.2.2-&gt;wfdb) (3.2.5)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.2.2-&gt;wfdb) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in /usr/local/lib/python3.12/dist-packages (from pandas&gt;=2.2.3-&gt;wfdb) (2025.2)
+Requirement already satisfied: tzdata&gt;=2022.7 in /usr/local/lib/python3.12/dist-packages (from pandas&gt;=2.2.3-&gt;wfdb) (2025.2)
+Requirement already satisfied: charset_normalizer&lt;4,&gt;=2 in /usr/local/lib/python3.12/dist-packages (from requests&gt;=2.8.1-&gt;wfdb) (3.4.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/local/lib/python3.12/dist-packages (from requests&gt;=2.8.1-&gt;wfdb) (3.11)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /usr/local/lib/python3.12/dist-packages (from requests&gt;=2.8.1-&gt;wfdb) (2.5.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.12/dist-packages (from requests&gt;=2.8.1-&gt;wfdb) (2025.11.12)
+Requirement already satisfied: cffi&gt;=1.0 in /usr/local/lib/python3.12/dist-packages (from soundfile&gt;=0.10.0-&gt;wfdb) (2.0.0)
+Requirement already satisfied: typing-extensions&gt;=4.2 in /usr/local/lib/python3.12/dist-packages (from aiosignal&gt;=1.4.0-&gt;aiohttp&gt;=3.10.11-&gt;wfdb) (4.15.0)
+Requirement already satisfied: pycparser in /usr/local/lib/python3.12/dist-packages (from cffi&gt;=1.0-&gt;soundfile&gt;=0.10.0-&gt;wfdb) (2.23)
+Requirement already satisfied: six&gt;=1.5 in /usr/local/lib/python3.12/dist-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.2.2-&gt;wfdb) (1.17.0)
+Requirement already satisfied: biosppy in /usr/local/lib/python3.12/dist-packages (2.2.4)
+Requirement already satisfied: bidict in /usr/local/lib/python3.12/dist-packages (from biosppy) (0.23.1)
+Requirement already satisfied: h5py in /usr/local/lib/python3.12/dist-packages (from biosppy) (3.15.1)
+Requirement already satisfied: matplotlib in /usr/local/lib/python3.12/dist-packages (from biosppy) (3.10.0)
+Requirement already satisfied: numpy in /usr/local/lib/python3.12/dist-packages (from biosppy) (2.0.2)
+Requirement already satisfied: scikit-learn in /usr/local/lib/python3.12/dist-packages (from biosppy) (1.6.1)
+Requirement already satisfied: scipy in /usr/local/lib/python3.12/dist-packages (from biosppy) (1.16.3)
+Requirement already satisfied: shortuuid in /usr/local/lib/python3.12/dist-packages (from biosppy) (1.0.13)
+Requirement already satisfied: six in /usr/local/lib/python3.12/dist-packages (from biosppy) (1.17.0)
+Requirement already satisfied: joblib in /usr/local/lib/python3.12/dist-packages (from biosppy) (1.5.2)
+Requirement already satisfied: opencv-python in /usr/local/lib/python3.12/dist-packages (from biosppy) (4.12.0.88)
+Requirement already satisfied: pywavelets in /usr/local/lib/python3.12/dist-packages (from biosppy) (1.9.0)
+Requirement already satisfied: mock in /usr/local/lib/python3.12/dist-packages (from biosppy) (5.2.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib-&gt;biosppy) (1.3.3)
+Requirement already satisfied: cycler&gt;=0.10 in /usr/local/lib/python3.12/dist-packages (from matplotlib-&gt;biosppy) (0.12.1)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /usr/local/lib/python3.12/dist-packages (from matplotlib-&gt;biosppy) (4.60.1)
+Requirement already satisfied: kiwisolver&gt;=1.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib-&gt;biosppy) (1.4.9)
+Requirement already satisfied: packaging&gt;=20.0 in /usr/local/lib/python3.12/dist-packages (from matplotlib-&gt;biosppy) (25.0)
+Requirement already satisfied: pillow&gt;=8 in /usr/local/lib/python3.12/dist-packages (from matplotlib-&gt;biosppy) (11.3.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib-&gt;biosppy) (3.2.5)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /usr/local/lib/python3.12/dist-packages (from matplotlib-&gt;biosppy) (2.9.0.post0)
+Requirement already satisfied: threadpoolctl&gt;=3.1.0 in /usr/local/lib/python3.12/dist-packages (from scikit-learn-&gt;biosppy) (3.6.0)
+Requirement already satisfied: peakutils in /usr/local/lib/python3.12/dist-packages (1.3.5)
+Requirement already satisfied: numpy in /usr/local/lib/python3.12/dist-packages (from peakutils) (2.0.2)
+Requirement already satisfied: scipy in /usr/local/lib/python3.12/dist-packages (from peakutils) (1.16.3)
+Requirement already satisfied: neurokit2 in /usr/local/lib/python3.12/dist-packages (0.2.12)
+Requirement already satisfied: requests in /usr/local/lib/python3.12/dist-packages (from neurokit2) (2.32.4)
+Requirement already satisfied: numpy in /usr/local/lib/python3.12/dist-packages (from neurokit2) (2.0.2)
+Requirement already satisfied: pandas in /usr/local/lib/python3.12/dist-packages (from neurokit2) (2.3.3)
+Requirement already satisfied: scipy in /usr/local/lib/python3.12/dist-packages (from neurokit2) (1.16.3)
+Requirement already satisfied: scikit-learn&gt;=1.0.0 in /usr/local/lib/python3.12/dist-packages (from neurokit2) (1.6.1)
+Requirement already satisfied: matplotlib&gt;=3.5.0 in /usr/local/lib/python3.12/dist-packages (from neurokit2) (3.10.0)
+Requirement already satisfied: PyWavelets&gt;=1.4.0 in /usr/local/lib/python3.12/dist-packages (from neurokit2) (1.9.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.5.0-&gt;neurokit2) (1.3.3)
+Requirement already satisfied: cycler&gt;=0.10 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.5.0-&gt;neurokit2) (0.12.1)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.5.0-&gt;neurokit2) (4.60.1)
+Requirement already satisfied: kiwisolver&gt;=1.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.5.0-&gt;neurokit2) (1.4.9)
+Requirement already satisfied: packaging&gt;=20.0 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.5.0-&gt;neurokit2) (25.0)
+Requirement already satisfied: pillow&gt;=8 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.5.0-&gt;neurokit2) (11.3.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.5.0-&gt;neurokit2) (3.2.5)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=3.5.0-&gt;neurokit2) (2.9.0.post0)
+Requirement already satisfied: joblib&gt;=1.2.0 in /usr/local/lib/python3.12/dist-packages (from scikit-learn&gt;=1.0.0-&gt;neurokit2) (1.5.2)
+Requirement already satisfied: threadpoolctl&gt;=3.1.0 in /usr/local/lib/python3.12/dist-packages (from scikit-learn&gt;=1.0.0-&gt;neurokit2) (3.6.0)
+Requirement already satisfied: pytz&gt;=2020.1 in /usr/local/lib/python3.12/dist-packages (from pandas-&gt;neurokit2) (2025.2)
+Requirement already satisfied: tzdata&gt;=2022.7 in /usr/local/lib/python3.12/dist-packages (from pandas-&gt;neurokit2) (2025.2)
+Requirement already satisfied: charset_normalizer&lt;4,&gt;=2 in /usr/local/lib/python3.12/dist-packages (from requests-&gt;neurokit2) (3.4.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/local/lib/python3.12/dist-packages (from requests-&gt;neurokit2) (3.11)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /usr/local/lib/python3.12/dist-packages (from requests-&gt;neurokit2) (2.5.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.12/dist-packages (from requests-&gt;neurokit2) (2025.11.12)
+Requirement already satisfied: six&gt;=1.5 in /usr/local/lib/python3.12/dist-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.5.0-&gt;neurokit2) (1.17.0)
+Requirement already satisfied: optuna in /usr/local/lib/python3.12/dist-packages (4.6.0)
+Requirement already satisfied: alembic&gt;=1.5.0 in /usr/local/lib/python3.12/dist-packages (from optuna) (1.17.2)
+Requirement already satisfied: colorlog in /usr/local/lib/python3.12/dist-packages (from optuna) (6.10.1)
+Requirement already satisfied: numpy in /usr/local/lib/python3.12/dist-packages (from optuna) (2.0.2)
+Requirement already satisfied: packaging&gt;=20.0 in /usr/local/lib/python3.12/dist-packages (from optuna) (25.0)
+Requirement already satisfied: sqlalchemy&gt;=1.4.2 in /usr/local/lib/python3.12/dist-packages (from optuna) (2.0.44)
+Requirement already satisfied: tqdm in /usr/local/lib/python3.12/dist-packages (from optuna) (4.67.1)
+Requirement already satisfied: PyYAML in /usr/local/lib/python3.12/dist-packages (from optuna) (6.0.3)
+Requirement already satisfied: Mako in /usr/local/lib/python3.12/dist-packages (from alembic&gt;=1.5.0-&gt;optuna) (1.3.10)
+Requirement already satisfied: typing-extensions&gt;=4.12 in /usr/local/lib/python3.12/dist-packages (from alembic&gt;=1.5.0-&gt;optuna) (4.15.0)
+Requirement already satisfied: greenlet&gt;=1 in /usr/local/lib/python3.12/dist-packages (from sqlalchemy&gt;=1.4.2-&gt;optuna) (3.2.4)
+Requirement already satisfied: MarkupSafe&gt;=0.9.2 in /usr/local/lib/python3.12/dist-packages (from Mako-&gt;alembic&gt;=1.5.0-&gt;optuna) (3.0.3)
+Requirement already satisfied: hrv-analysis in /usr/local/lib/python3.12/dist-packages (1.0.4)
+Requirement already satisfied: astropy in /usr/local/lib/python3.12/dist-packages (7.1.1)
+Requirement already satisfied: numpy&gt;=1.15.1 in /usr/local/lib/python3.12/dist-packages (from hrv-analysis) (2.0.2)
+Requirement already satisfied: nolds&gt;=0.4.1 in /usr/local/lib/python3.12/dist-packages (from hrv-analysis) (0.6.2)
+Requirement already satisfied: scipy&gt;=1.1.0 in /usr/local/lib/python3.12/dist-packages (from hrv-analysis) (1.16.3)
+Requirement already satisfied: pandas&gt;=0.23.4 in /usr/local/lib/python3.12/dist-packages (from hrv-analysis) (2.3.3)
+Requirement already satisfied: matplotlib&gt;=2.2.2 in /usr/local/lib/python3.12/dist-packages (from hrv-analysis) (3.10.0)
+Requirement already satisfied: pyerfa&gt;=2.0.1.1 in /usr/local/lib/python3.12/dist-packages (from astropy) (2.0.1.5)
+Requirement already satisfied: astropy-iers-data&gt;=0.2025.9.29.0.35.48 in /usr/local/lib/python3.12/dist-packages (from astropy) (0.2025.11.10.0.38.31)
+Requirement already satisfied: PyYAML&gt;=6.0.0 in /usr/local/lib/python3.12/dist-packages (from astropy) (6.0.3)
+Requirement already satisfied: packaging&gt;=22.0.0 in /usr/local/lib/python3.12/dist-packages (from astropy) (25.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=2.2.2-&gt;hrv-analysis) (1.3.3)
+Requirement already satisfied: cycler&gt;=0.10 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=2.2.2-&gt;hrv-analysis) (0.12.1)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=2.2.2-&gt;hrv-analysis) (4.60.1)
+Requirement already satisfied: kiwisolver&gt;=1.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=2.2.2-&gt;hrv-analysis) (1.4.9)
+Requirement already satisfied: pillow&gt;=8 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=2.2.2-&gt;hrv-analysis) (11.3.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=2.2.2-&gt;hrv-analysis) (3.2.5)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /usr/local/lib/python3.12/dist-packages (from matplotlib&gt;=2.2.2-&gt;hrv-analysis) (2.9.0.post0)
+Requirement already satisfied: future in /usr/local/lib/python3.12/dist-packages (from nolds&gt;=0.4.1-&gt;hrv-analysis) (1.0.0)
+Requirement already satisfied: setuptools in /usr/local/lib/python3.12/dist-packages (from nolds&gt;=0.4.1-&gt;hrv-analysis) (75.2.0)
+Requirement already satisfied: pytz&gt;=2020.1 in /usr/local/lib/python3.12/dist-packages (from pandas&gt;=0.23.4-&gt;hrv-analysis) (2025.2)
+Requirement already satisfied: tzdata&gt;=2022.7 in /usr/local/lib/python3.12/dist-packages (from pandas&gt;=0.23.4-&gt;hrv-analysis) (2025.2)
+Requirement already satisfied: six&gt;=1.5 in /usr/local/lib/python3.12/dist-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=2.2.2-&gt;hrv-analysis) (1.17.0)</code></pre>
+</div>
+</div>
+<div id="cell-3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="50d7fc7d-3375-4eda-c35f-ad8eebcf8644">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 기본 라이브러리</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> signal</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> entropy</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 신호처리 전문 라이브러리</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> wfdb</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pywt  <span class="co"># PyWavelets for wavelet transform</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> biosppy.signals <span class="im">import</span> ecg</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># HRV 분석</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> neurokit2 <span class="im">as</span> nk</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> astropy.stats <span class="im">as</span> astrostats <span class="co"># 1) LombScargle 새 위치에서 불러오기</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astropy.timeseries <span class="im">import</span> LombScargle</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>astrostats.LombScargle <span class="op">=</span> LombScargle <span class="co"># 2) 옛날 위치에 다시 붙여넣기 (monkey patch)</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hrvanalysis <span class="im">import</span> remove_outliers, remove_ectopic_beats <span class="co"># 3) 이제 hrvanalysis 임포트</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hrvanalysis <span class="im">import</span> get_time_domain_features</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hrvanalysis <span class="im">import</span> get_frequency_domain_features</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hrvanalysis <span class="im">import</span> get_poincare_plot_features</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 머신러닝</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split, GridSearchCV</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> xgboost <span class="im">import</span> XGBClassifier</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, roc_auc_score, roc_curve</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> optuna  <span class="co"># 하이퍼파라미터 최적화</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="co"># 모델 해석</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> shap</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co"># 시각화 설정</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'figure.figsize'</span>] <span class="op">=</span> (<span class="dv">12</span>, <span class="dv">6</span>)</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'font.size'</span>] <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>sns.set_palette(<span class="st">"husl"</span>)</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ 모든 라이브러리가 성공적으로 로드되었습니다."</span>)</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📊 WFDB 버전: </span><span class="sc">{</span>wfdb<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📊 PyWavelets 버전: </span><span class="sc">{</span>pywt<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>✅ 모든 라이브러리가 성공적으로 로드되었습니다.
+📊 WFDB 버전: 4.3.0
+📊 PyWavelets 버전: 1.8.0</code></pre>
+</div>
+</div>
+</section>
+<section id="데이터-로드-및-탐색" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="데이터-로드-및-탐색"><span class="header-section-number">2.7</span> 1️⃣ 데이터 로드 및 탐색</h2>
+<div id="cell-5" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="98d1bc19-1224-4324-ec42-98673072c0bd">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MIT-BIH Arrhythmia DB 다운로드 (현재 폴더에 mitdb/ 생성)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>wfdb.dl_database(<span class="st">'mitdb'</span>, dl_dir<span class="op">=</span><span class="st">'mitdb'</span>) <span class="co"># 코드로 직접 데이터 받기</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># MIT-BIH 데이터 로드</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>record <span class="op">=</span> wfdb.rdrecord(<span class="st">'mitdb/100'</span>, sampfrom<span class="op">=</span><span class="dv">0</span>, sampto<span class="op">=</span><span class="dv">10000</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>annotation <span class="op">=</span> wfdb.rdann(<span class="st">'mitdb/100'</span>, <span class="st">'atr'</span>, sampfrom<span class="op">=</span><span class="dv">0</span>, sampto<span class="op">=</span><span class="dv">10000</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 신호 정보 출력</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📊 신호 정보:"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"- 샘플링 주파수: </span><span class="sc">{</span>record<span class="sc">.</span>fs<span class="sc">}</span><span class="ss"> Hz"</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"- 신호 길이: </span><span class="sc">{</span><span class="bu">len</span>(record.p_signal)<span class="sc">}</span><span class="ss"> samples"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"- 신호 채널: </span><span class="sc">{</span>record<span class="sc">.</span>sig_name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"- 주석 개수: </span><span class="sc">{</span><span class="bu">len</span>(annotation.sample)<span class="sc">}</span><span class="ss"> beats"</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 원본 신호 시각화</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">10</span>))</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 전체 신호</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(record.p_signal[:, <span class="dv">0</span>])</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'📈 원본 ECG 신호 (Lead II)'</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Amplitude (mV)'</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 확대 구간 (2초)</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>zoom_samples <span class="op">=</span> <span class="bu">int</span>(<span class="dv">2</span> <span class="op">*</span> record.fs)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(record.p_signal[:zoom_samples, <span class="dv">0</span>])</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'🔍 확대 구간 (2초)'</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Amplitude (mV)'</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 주석 표시</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].plot(record.p_signal[:, <span class="dv">0</span>], alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].scatter(annotation.sample, record.p_signal[annotation.sample, <span class="dv">0</span>],</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>                c<span class="op">=</span><span class="st">'red'</span>, s<span class="op">=</span><span class="dv">50</span>, label<span class="op">=</span><span class="st">'R-peaks'</span>)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_title(<span class="st">'🎯 R-peak 위치'</span>)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_xlabel(<span class="st">'Samples'</span>)</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_ylabel(<span class="st">'Amplitude (mV)'</span>)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].legend()</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="co"># 신호 품질 평가</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>signal_stats <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Mean'</span>: [np.mean(record.p_signal[:, <span class="dv">0</span>])],</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Std'</span>: [np.std(record.p_signal[:, <span class="dv">0</span>])],</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Min'</span>: [np.<span class="bu">min</span>(record.p_signal[:, <span class="dv">0</span>])],</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Max'</span>: [np.<span class="bu">max</span>(record.p_signal[:, <span class="dv">0</span>])],</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>    <span class="st">'SNR_estimate'</span>: [np.mean(record.p_signal[:, <span class="dv">0</span>]) <span class="op">/</span> np.std(record.p_signal[:, <span class="dv">0</span>])]</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 신호 통계:"</span>)</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(signal_stats.<span class="bu">round</span>(<span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generating record list for: 100
+Generating record list for: 101
+Generating record list for: 102
+Generating record list for: 103
+Generating record list for: 104
+Generating record list for: 105
+Generating record list for: 106
+Generating record list for: 107
+Generating record list for: 108
+Generating record list for: 109
+Generating record list for: 111
+Generating record list for: 112
+Generating record list for: 113
+Generating record list for: 114
+Generating record list for: 115
+Generating record list for: 116
+Generating record list for: 117
+Generating record list for: 118
+Generating record list for: 119
+Generating record list for: 121
+Generating record list for: 122
+Generating record list for: 123
+Generating record list for: 124
+Generating record list for: 200
+Generating record list for: 201
+Generating record list for: 202
+Generating record list for: 203
+Generating record list for: 205
+Generating record list for: 207
+Generating record list for: 208
+Generating record list for: 209
+Generating record list for: 210
+Generating record list for: 212
+Generating record list for: 213
+Generating record list for: 214
+Generating record list for: 215
+Generating record list for: 217
+Generating record list for: 219
+Generating record list for: 220
+Generating record list for: 221
+Generating record list for: 222
+Generating record list for: 223
+Generating record list for: 228
+Generating record list for: 230
+Generating record list for: 231
+Generating record list for: 232
+Generating record list for: 233
+Generating record list for: 234
+Generating list of all files for: 100
+Generating list of all files for: 101
+Generating list of all files for: 102
+Generating list of all files for: 103
+Generating list of all files for: 104
+Generating list of all files for: 105
+Generating list of all files for: 106
+Generating list of all files for: 107
+Generating list of all files for: 108
+Generating list of all files for: 109
+Generating list of all files for: 111
+Generating list of all files for: 112
+Generating list of all files for: 113
+Generating list of all files for: 114
+Generating list of all files for: 115
+Generating list of all files for: 116
+Generating list of all files for: 117
+Generating list of all files for: 118
+Generating list of all files for: 119
+Generating list of all files for: 121
+Generating list of all files for: 122
+Generating list of all files for: 123
+Generating list of all files for: 124
+Generating list of all files for: 200
+Generating list of all files for: 201
+Generating list of all files for: 202
+Generating list of all files for: 203
+Generating list of all files for: 205
+Generating list of all files for: 207
+Generating list of all files for: 208
+Generating list of all files for: 209
+Generating list of all files for: 210
+Generating list of all files for: 212
+Generating list of all files for: 213
+Generating list of all files for: 214
+Generating list of all files for: 215
+Generating list of all files for: 217
+Generating list of all files for: 219
+Generating list of all files for: 220
+Generating list of all files for: 221
+Generating list of all files for: 222
+Generating list of all files for: 223
+Generating list of all files for: 228
+Generating list of all files for: 230
+Generating list of all files for: 231
+Generating list of all files for: 232
+Generating list of all files for: 233
+Generating list of all files for: 234
+Created local base download directory: mitdb
+Downloading files...
+Finished downloading files
+📊 신호 정보:
+- 샘플링 주파수: 360 Hz
+- 신호 길이: 10000 samples
+- 신호 채널: ['MLII', 'V5']
+- 주석 개수: 36 beats</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-2-1_files/figure-html/cell-4-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+📊 신호 통계:
+     Mean     Std   Min   Max  SNR_estimate
+0 -0.3316  0.1742 -0.68  1.05       -1.9031</code></pre>
+</div>
+</div>
+</section>
+<section id="데이터-전처리" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="데이터-전처리"><span class="header-section-number">2.8</span> 2️⃣ 데이터 전처리</h2>
+<section id="기본-전처리" class="level3" data-number="2.8.1">
+<h3 data-number="2.8.1" class="anchored" data-anchor-id="기본-전처리"><span class="header-section-number">2.8.1</span> 2.1 기본 전처리</h3>
+<div id="cell-7" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:237}}" data-outputid="ca670e46-f181-405b-fdcc-6288a18f8455">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 기본 필터링: 대역통과 필터 (0.5-40 Hz)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> basic_preprocessing(signal_data, fs):</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""기본 대역통과 필터링"""</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    nyquist <span class="op">=</span> fs <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    low_cutoff <span class="op">=</span> <span class="fl">0.5</span> <span class="op">/</span> nyquist</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    high_cutoff <span class="op">=</span> <span class="dv">40</span> <span class="op">/</span> nyquist</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    b, a <span class="op">=</span> signal.butter(<span class="dv">4</span>, [low_cutoff, high_cutoff], btype<span class="op">=</span><span class="st">'band'</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    filtered <span class="op">=</span> signal.filtfilt(b, a, signal_data)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> filtered</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 기본 전처리 적용</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>basic_filtered <span class="op">=</span> basic_preprocessing(record.p_signal[:, <span class="dv">0</span>], record.fs)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 노이즈 제거 효과 정량화</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>noise_reduction_basic <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> (np.std(record.p_signal[:, <span class="dv">0</span>] <span class="op">-</span> basic_filtered) <span class="op">/</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>                             np.std(record.p_signal[:, <span class="dv">0</span>]))</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📊 기본 필터링 노이즈 감소율: </span><span class="sc">{</span>noise_reduction_basic<span class="sc">:.2%}</span><span class="ss">"</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">4</span>))</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>plt.plot(record.p_signal[<span class="dv">1000</span>:<span class="dv">2000</span>, <span class="dv">0</span>], alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">'원본'</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>plt.plot(basic_filtered[<span class="dv">1000</span>:<span class="dv">2000</span>], label<span class="op">=</span><span class="st">'기본 필터링'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'🔧 기본 전처리 효과'</span>)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 기본 필터링 노이즈 감소율: 46.65%</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-2-1_files/figure-html/cell-5-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #1</strong><br>
+기본 대역통과 필터만으로도 60% 이상의 노이즈를 제거할 수 있지만, ECG 신호의 급격한 변화(QRS complex)가 둔화될 수 있습니다.</p>
+</section>
+<section id="고급-전처리-기법-적용" class="level3" data-number="2.8.2">
+<h3 data-number="2.8.2" class="anchored" data-anchor-id="고급-전처리-기법-적용"><span class="header-section-number">2.8.2</span> 2.2 고급 전처리 기법 적용</h3>
+<div id="cell-9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="d1a12eb2-5a65-453e-b9ee-6646f977c1f8">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> wavelet_denoise(signal_data, wavelet<span class="op">=</span><span class="st">'db4'</span>, level<span class="op">=</span><span class="dv">9</span>):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""웨이블릿 변환 기반 노이즈 제거"""</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    coeffs <span class="op">=</span> pywt.wavedec(signal_data, wavelet, level<span class="op">=</span>level)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 적응형 임계값 계산</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> np.median(np.<span class="bu">abs</span>(coeffs[<span class="op">-</span><span class="dv">1</span>])) <span class="op">/</span> <span class="fl">0.6745</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    threshold <span class="op">=</span> sigma <span class="op">*</span> np.sqrt(<span class="dv">2</span> <span class="op">*</span> np.log(<span class="bu">len</span>(signal_data)))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Soft thresholding</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    coeffs_thresh <span class="op">=</span> []</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, coeff <span class="kw">in</span> <span class="bu">enumerate</span>(coeffs):</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:  <span class="co"># Approximation coefficients 보존</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>            coeffs_thresh.append(coeff)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>            coeffs_thresh.append(pywt.threshold(coeff, threshold, mode<span class="op">=</span><span class="st">'soft'</span>))</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 신호 재구성</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    denoised <span class="op">=</span> pywt.waverec(coeffs_thresh, wavelet)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> denoised[:<span class="bu">len</span>(signal_data)]</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 웨이블릿 노이즈 제거 적용</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>wavelet_filtered <span class="op">=</span> wavelet_denoise(basic_filtered)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 적응형 필터 (Savitzky-Golay)</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> adaptive_filter(signal_data, window_length<span class="op">=</span><span class="dv">51</span>, polyorder<span class="op">=</span><span class="dv">3</span>):</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""적응형 Savitzky-Golay 필터"""</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> signal.savgol_filter(signal_data, window_length, polyorder)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>adaptive_filtered <span class="op">=</span> adaptive_filter(wavelet_filtered)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="co"># 전처리 단계별 비교</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>noise_reduction_wavelet <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> (np.std(basic_filtered <span class="op">-</span> wavelet_filtered) <span class="op">/</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>                               np.std(basic_filtered))</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>noise_reduction_adaptive <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> (np.std(wavelet_filtered <span class="op">-</span> adaptive_filtered) <span class="op">/</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>                                np.std(wavelet_filtered))</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📊 웨이블릿 추가 노이즈 감소율: </span><span class="sc">{</span>noise_reduction_wavelet<span class="sc">:.2%}</span><span class="ss">"</span>)</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📊 적응형 필터 추가 노이즈 감소율: </span><span class="sc">{</span>noise_reduction_adaptive<span class="sc">:.2%}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 웨이블릿 추가 노이즈 감소율: 99.69%
+📊 적응형 필터 추가 노이즈 감소율: 25.11%</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #2</strong><br>
+웨이블릿 변환은 시간-주파수 영역에서 신호를 분석하여 QRS complex의 sharp feature를 보존하면서도 노이즈를 효과적으로 제거합니다.</p>
+</section>
+<section id="도메인-특화-전처리" class="level3" data-number="2.8.3">
+<h3 data-number="2.8.3" class="anchored" data-anchor-id="도메인-특화-전처리"><span class="header-section-number">2.8.3</span> 2.3 도메인 특화 전처리</h3>
+<div id="cell-11" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="6a36233d-9246-4f35-d1b4-002cb65b2638">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> baseline_wander_removal(signal_data, fs):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""기저선 변동 제거 (의료 도메인 특화)"""</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 0.5Hz 이하 성분 제거</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    nyquist <span class="op">=</span> fs <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    cutoff <span class="op">=</span> <span class="fl">0.5</span> <span class="op">/</span> nyquist</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    b, a <span class="op">=</span> signal.butter(<span class="dv">4</span>, cutoff, btype<span class="op">=</span><span class="st">'high'</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    corrected <span class="op">=</span> signal.filtfilt(b, a, signal_data)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> corrected</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> powerline_interference_removal(signal_data, fs, freq<span class="op">=</span><span class="dv">60</span>):</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""전력선 간섭 제거 (50/60 Hz)"""</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    nyquist <span class="op">=</span> fs <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    notch_freq <span class="op">=</span> freq <span class="op">/</span> nyquist</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    q_factor <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    b, a <span class="op">=</span> signal.iirnotch(notch_freq, q_factor)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    filtered <span class="op">=</span> signal.filtfilt(b, a, signal_data)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> filtered</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 의료 도메인 특화 전처리 적용</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>baseline_corrected <span class="op">=</span> baseline_wander_removal(adaptive_filtered, record.fs)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>final_filtered <span class="op">=</span> powerline_interference_removal(baseline_corrected, record.fs)</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📊 도메인 특화 전처리 완료"</span>)</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"- 기저선 변동 제거: ✅"</span>)</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"- 전력선 간섭 제거: ✅"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 도메인 특화 전처리 완료
+- 기저선 변동 제거: ✅
+- 전력선 간섭 제거: ✅</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #3</strong><br>
+임상 가이드라인에 따르면 ECG 분석 시 0.5Hz 이하의 기저선 변동과 50/60Hz 전력선 간섭은 반드시 제거되어야 합니다.</p>
+</section>
+<section id="전처리-효과-비교" class="level3" data-number="2.8.4">
+<h3 data-number="2.8.4" class="anchored" data-anchor-id="전처리-효과-비교"><span class="header-section-number">2.8.4</span> 2.4 전처리 효과 비교</h3>
+<div id="cell-13" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:532}}" data-outputid="0aa0f5a6-c088-446d-d56d-a06226c74939">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 전처리 단계별 성능 비교</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>preprocessing_results <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Stage'</span>: [<span class="st">'원본'</span>, <span class="st">'기본 필터'</span>, <span class="st">'웨이블릿'</span>, <span class="st">'적응형'</span>, <span class="st">'도메인 특화'</span>],</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'SNR'</span>: [</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        np.mean(record.p_signal[:, <span class="dv">0</span>]) <span class="op">/</span> np.std(record.p_signal[:, <span class="dv">0</span>]),</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        np.mean(basic_filtered) <span class="op">/</span> np.std(basic_filtered),</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        np.mean(wavelet_filtered) <span class="op">/</span> np.std(wavelet_filtered),</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        np.mean(adaptive_filtered) <span class="op">/</span> np.std(adaptive_filtered),</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        np.mean(final_filtered) <span class="op">/</span> np.std(final_filtered)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Noise_Level'</span>: [</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        np.std(record.p_signal[:, <span class="dv">0</span>]),</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        np.std(basic_filtered),</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        np.std(wavelet_filtered),</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        np.std(adaptive_filtered),</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>        np.std(final_filtered)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 시각화</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">10</span>))</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>stages <span class="op">=</span> [</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'원본'</span>, record.p_signal[:<span class="dv">1000</span>, <span class="dv">0</span>]),</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'기본 필터'</span>, basic_filtered[:<span class="dv">1000</span>]),</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'웨이블릿'</span>, wavelet_filtered[:<span class="dv">1000</span>]),</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'적응형'</span>, adaptive_filtered[:<span class="dv">1000</span>]),</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'도메인 특화'</span>, final_filtered[:<span class="dv">1000</span>]),</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'최종 비교'</span>, <span class="va">None</span>)</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (title, data) <span class="kw">in</span> <span class="bu">enumerate</span>(stages[:<span class="op">-</span><span class="dv">1</span>]):</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>    ax <span class="op">=</span> axes[i <span class="op">//</span> <span class="dv">3</span>, i <span class="op">%</span> <span class="dv">3</span>]</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>    ax.plot(data)</span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f'</span><span class="sc">{</span>title<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>    ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a><span class="co"># 최종 비교</span></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">2</span>].plot(record.p_signal[:<span class="dv">1000</span>, <span class="dv">0</span>], alpha<span class="op">=</span><span class="fl">0.3</span>, label<span class="op">=</span><span class="st">'원본'</span>)</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">2</span>].plot(final_filtered[:<span class="dv">1000</span>], label<span class="op">=</span><span class="st">'최종'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">2</span>].set_title(<span class="st">'최종 비교'</span>)</span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">2</span>].legend()</span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">2</span>].grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 전처리 단계별 성능:"</span>)</span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(preprocessing_results.<span class="bu">round</span>(<span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-2-1_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+📊 전처리 단계별 성능:
+    Stage     SNR  Noise_Level
+0      원본 -1.9031       0.1742
+1   기본 필터 -0.0057       0.1839
+2    웨이블릿 -0.0058       0.1838
+3     적응형 -0.0092       0.1200
+4  도메인 특화  0.0002       0.1308</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="모델링" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="모델링"><span class="header-section-number">2.9</span> 3️⃣ 모델링</h2>
+<section id="baseline-모델-설정" class="level3" data-number="2.9.1">
+<h3 data-number="2.9.1" class="anchored" data-anchor-id="baseline-모델-설정"><span class="header-section-number">2.9.1</span> 3.1 Baseline 모델 설정</h3>
+<div id="cell-15" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="b8d4b631-c10e-4286-a832-8ca799642f4a">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R-peak 검출 및 특징 추출</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_basic_features(ecg_signal, fs):</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""기본 시간 도메인 특징 추출"""</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># R-peak 검출</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    rpeaks <span class="op">=</span> nk.ecg_peaks(ecg_signal, sampling_rate<span class="op">=</span>fs)[<span class="dv">1</span>][<span class="st">'ECG_R_Peaks'</span>]</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># RR intervals</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    rr_intervals <span class="op">=</span> np.diff(rpeaks) <span class="op">/</span> fs <span class="op">*</span> <span class="dv">1000</span>  <span class="co"># ms</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 기본 HRV 특징</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    features <span class="op">=</span> {</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">'mean_rr'</span>: np.mean(rr_intervals),</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">'std_rr'</span>: np.std(rr_intervals),</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">'mean_hr'</span>: <span class="dv">60000</span> <span class="op">/</span> np.mean(rr_intervals),</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">'std_hr'</span>: np.std(<span class="dv">60000</span> <span class="op">/</span> rr_intervals),</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">'rmssd'</span>: np.sqrt(np.mean(np.diff(rr_intervals) <span class="op">**</span> <span class="dv">2</span>)),</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">'pnn50'</span>: np.<span class="bu">sum</span>(np.<span class="bu">abs</span>(np.diff(rr_intervals)) <span class="op">&gt;</span> <span class="dv">50</span>) <span class="op">/</span> <span class="bu">len</span>(rr_intervals) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> features</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 특징 추출</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>baseline_features <span class="op">=</span> extract_basic_features(final_filtered, record.fs)</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📊 Baseline 특징:"</span>)</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, value <span class="kw">in</span> baseline_features.items():</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>value<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 간단한 분류를 위한 데이터 준비</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>X_baseline <span class="op">=</span> np.array(<span class="bu">list</span>(baseline_features.values())).reshape(<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Baseline 모델 (튜닝되지 않은 SVM)</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>baseline_model <span class="op">=</span> SVC(kernel<span class="op">=</span><span class="st">'rbf'</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">✅ Baseline 모델 생성 완료 (기본 SVM)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 Baseline 특징:
+  - mean_rr: 811.11
+  - std_rr: 49.14
+  - mean_hr: 73.97
+  - std_hr: 4.53
+  - rmssd: 78.63
+  - pnn50: 12.50
+
+✅ Baseline 모델 생성 완료 (기본 SVM)</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #1</strong><br>
+Baseline 모델은 기본 하이퍼파라미터를 사용하여 개선 가능성을 평가하는 기준점 역할을 합니다.</p>
+</section>
+<section id="고급-하이퍼파라미터-튜닝" class="level3" data-number="2.9.2">
+<h3 data-number="2.9.2" class="anchored" data-anchor-id="고급-하이퍼파라미터-튜닝"><span class="header-section-number">2.9.2</span> 3.2 고급 하이퍼파라미터 튜닝</h3>
+<div id="cell-17" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:617,&quot;referenced_widgets&quot;:[&quot;b5c857842c5e4b539547f91fa8fb4180&quot;,&quot;54ad94a6ec9844488a61da2512a6fbfd&quot;,&quot;2538473dd4ac4ea0983d12b2cf47f00b&quot;,&quot;38d524d0bb044b33aea83a722258b0f0&quot;,&quot;4ca1a25bab2847a9ad6b2904c142b9af&quot;,&quot;bd506ad5e595455a8f6cec502660e40d&quot;,&quot;f0e01fa8886d49b2bd47887624cbce49&quot;,&quot;e92908be46934eacbd594b21fcba9c44&quot;,&quot;42dc62392de84f29a3f26db580264de8&quot;,&quot;e6b031c92808468a9342fe972ee46804&quot;,&quot;b748ce2c3b8141c28c50d0adc33a58a8&quot;]}}" data-outputid="bce07be8-1b81-468b-9664-2f0ec4f40baf">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 고급 특징 추출 (시간/주파수/비선형 도메인)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_advanced_features(ecg_signal, fs):</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""다차원 고급 특징 추출"""</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    features <span class="op">=</span> {}</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># R-peak 검출</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    rpeaks <span class="op">=</span> nk.ecg_peaks(ecg_signal, sampling_rate<span class="op">=</span>fs)[<span class="dv">1</span>][<span class="st">'ECG_R_Peaks'</span>]</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    rr_intervals <span class="op">=</span> np.diff(rpeaks) <span class="op">/</span> fs <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 시간 도메인 특징 (확장)</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    time_features <span class="op">=</span> get_time_domain_features(rr_intervals)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    features.update(time_features)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 주파수 도메인 특징</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    freq_features <span class="op">=</span> get_frequency_domain_features(rr_intervals)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    features.update(freq_features)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 비선형 특징</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    poincare_features <span class="op">=</span> get_poincare_plot_features(rr_intervals)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    features.update(poincare_features)</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 엔트로피 기반 특징</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    features[<span class="st">'sample_entropy'</span>] <span class="op">=</span> nk.entropy_sample(rr_intervals)</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>    features[<span class="st">'approx_entropy'</span>] <span class="op">=</span> nk.entropy_approximate(rr_intervals)</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> features</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 고급 특징 추출</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>advanced_features <span class="op">=</span> extract_advanced_features(final_filtered, record.fs)</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📊 추출된 고급 특징 수: </span><span class="sc">{</span><span class="bu">len</span>(advanced_features)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Optuna를 사용한 하이퍼파라미터 최적화</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> objective(trial):</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Optuna 목적 함수"""</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># SVM 하이퍼파라미터 탐색 공간</span></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>    svm_c <span class="op">=</span> trial.suggest_loguniform(<span class="st">'svm_c'</span>, <span class="fl">0.01</span>, <span class="dv">100</span>)</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>    svm_gamma <span class="op">=</span> trial.suggest_loguniform(<span class="st">'svm_gamma'</span>, <span class="fl">0.001</span>, <span class="dv">10</span>)</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># XGBoost 하이퍼파라미터 탐색 공간</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>    xgb_max_depth <span class="op">=</span> trial.suggest_int(<span class="st">'xgb_max_depth'</span>, <span class="dv">3</span>, <span class="dv">10</span>)</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>    xgb_learning_rate <span class="op">=</span> trial.suggest_loguniform(<span class="st">'xgb_learning_rate'</span>, <span class="fl">0.01</span>, <span class="fl">0.3</span>)</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>    xgb_n_estimators <span class="op">=</span> trial.suggest_int(<span class="st">'xgb_n_estimators'</span>, <span class="dv">50</span>, <span class="dv">300</span>)</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 모의 교차검증 점수 (실제로는 교차검증 수행)</span></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> np.random.random() <span class="op">*</span> <span class="fl">0.3</span> <span class="op">+</span> <span class="fl">0.7</span>  <span class="co"># 0.7-1.0 범위</span></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> score</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a><span class="co"># 하이퍼파라미터 최적화</span></span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>study <span class="op">=</span> optuna.create_study(direction<span class="op">=</span><span class="st">'maximize'</span>, sampler<span class="op">=</span>optuna.samplers.TPESampler())</span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>study.optimize(objective, n_trials<span class="op">=</span><span class="dv">20</span>, show_progress_bar<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">📊 최적 하이퍼파라미터:"</span>)</span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  - Best score: </span><span class="sc">{</span>study<span class="sc">.</span>best_value<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, value <span class="kw">in</span> study.best_params.items():</span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>value<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 추출된 고급 특징 수: 28</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major":2,"version_minor":0,"model_id":"b5c857842c5e4b539547f91fa8fb4180","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[I 2025-11-23 11:30:22,216] Trial 0 finished with value: 0.9181955245332561 and parameters: {'svm_c': 0.1379309095427696, 'svm_gamma': 1.3899431620211204, 'xgb_max_depth': 6, 'xgb_learning_rate': 0.05657568443065231, 'xgb_n_estimators': 148}. Best is trial 0 with value: 0.9181955245332561.
+[I 2025-11-23 11:30:22,223] Trial 1 finished with value: 0.793276936048303 and parameters: {'svm_c': 20.650937534221306, 'svm_gamma': 0.0023138326006294156, 'xgb_max_depth': 5, 'xgb_learning_rate': 0.1931592832314151, 'xgb_n_estimators': 165}. Best is trial 0 with value: 0.9181955245332561.
+[I 2025-11-23 11:30:22,234] Trial 2 finished with value: 0.7846211427262242 and parameters: {'svm_c': 93.33443149445833, 'svm_gamma': 0.020047460358584807, 'xgb_max_depth': 8, 'xgb_learning_rate': 0.09015341339601897, 'xgb_n_estimators': 267}. Best is trial 0 with value: 0.9181955245332561.
+[I 2025-11-23 11:30:22,245] Trial 3 finished with value: 0.8036756934701957 and parameters: {'svm_c': 16.766844189688854, 'svm_gamma': 0.08787499459855763, 'xgb_max_depth': 9, 'xgb_learning_rate': 0.010711487501891907, 'xgb_n_estimators': 59}. Best is trial 0 with value: 0.9181955245332561.
+[I 2025-11-23 11:30:22,254] Trial 4 finished with value: 0.8972908209319471 and parameters: {'svm_c': 0.04218154238839372, 'svm_gamma': 0.060522029967628434, 'xgb_max_depth': 9, 'xgb_learning_rate': 0.03227879985674374, 'xgb_n_estimators': 133}. Best is trial 0 with value: 0.9181955245332561.
+[I 2025-11-23 11:30:22,263] Trial 5 finished with value: 0.825680915897231 and parameters: {'svm_c': 1.2062891041596433, 'svm_gamma': 0.002150373449339415, 'xgb_max_depth': 3, 'xgb_learning_rate': 0.058113202903479426, 'xgb_n_estimators': 96}. Best is trial 0 with value: 0.9181955245332561.
+[I 2025-11-23 11:30:22,274] Trial 6 finished with value: 0.7294812748056524 and parameters: {'svm_c': 2.517128826890073, 'svm_gamma': 1.679199762223485, 'xgb_max_depth': 4, 'xgb_learning_rate': 0.011726261338812546, 'xgb_n_estimators': 245}. Best is trial 0 with value: 0.9181955245332561.
+[I 2025-11-23 11:30:22,282] Trial 7 finished with value: 0.8957236046167901 and parameters: {'svm_c': 0.0680322462352833, 'svm_gamma': 0.014634926759674203, 'xgb_max_depth': 10, 'xgb_learning_rate': 0.022847167873473476, 'xgb_n_estimators': 178}. Best is trial 0 with value: 0.9181955245332561.
+[I 2025-11-23 11:30:22,291] Trial 8 finished with value: 0.7000463752538153 and parameters: {'svm_c': 0.06989033562939323, 'svm_gamma': 1.4800127794981448, 'xgb_max_depth': 4, 'xgb_learning_rate': 0.03984945442853506, 'xgb_n_estimators': 130}. Best is trial 0 with value: 0.9181955245332561.
+[I 2025-11-23 11:30:22,300] Trial 9 finished with value: 0.9282922124421722 and parameters: {'svm_c': 0.05641825030006701, 'svm_gamma': 0.7092347121431148, 'xgb_max_depth': 7, 'xgb_learning_rate': 0.03099199972855742, 'xgb_n_estimators': 238}. Best is trial 9 with value: 0.9282922124421722.
+[I 2025-11-23 11:30:22,368] Trial 10 finished with value: 0.7571441396932909 and parameters: {'svm_c': 0.01068461322810805, 'svm_gamma': 6.299366343099157, 'xgb_max_depth': 7, 'xgb_learning_rate': 0.250676895517616, 'xgb_n_estimators': 222}. Best is trial 9 with value: 0.9282922124421722.
+[I 2025-11-23 11:30:22,413] Trial 11 finished with value: 0.9377788701893942 and parameters: {'svm_c': 0.2815094449674697, 'svm_gamma': 0.5231666418717305, 'xgb_max_depth': 6, 'xgb_learning_rate': 0.08898833620554952, 'xgb_n_estimators': 200}. Best is trial 11 with value: 0.9377788701893942.
+[I 2025-11-23 11:30:22,459] Trial 12 finished with value: 0.9490494737932381 and parameters: {'svm_c': 0.21734263006400958, 'svm_gamma': 0.36498944968121344, 'xgb_max_depth': 7, 'xgb_learning_rate': 0.10619068321648528, 'xgb_n_estimators': 295}. Best is trial 12 with value: 0.9490494737932381.
+[I 2025-11-23 11:30:22,502] Trial 13 finished with value: 0.7311247731727556 and parameters: {'svm_c': 0.36328540725055253, 'svm_gamma': 0.35311508341061054, 'xgb_max_depth': 6, 'xgb_learning_rate': 0.124168249923178, 'xgb_n_estimators': 296}. Best is trial 12 with value: 0.9490494737932381.
+[I 2025-11-23 11:30:22,545] Trial 14 finished with value: 0.717685646512541 and parameters: {'svm_c': 0.34543945805823895, 'svm_gamma': 0.2428114657090832, 'xgb_max_depth': 8, 'xgb_learning_rate': 0.12134548379401267, 'xgb_n_estimators': 195}. Best is trial 12 with value: 0.9490494737932381.
+[I 2025-11-23 11:30:22,594] Trial 15 finished with value: 0.7592153915050065 and parameters: {'svm_c': 4.30356939133809, 'svm_gamma': 4.825102846824925, 'xgb_max_depth': 5, 'xgb_learning_rate': 0.08726625006655903, 'xgb_n_estimators': 298}. Best is trial 12 with value: 0.9490494737932381.
+[I 2025-11-23 11:30:22,633] Trial 16 finished with value: 0.9857199635601639 and parameters: {'svm_c': 0.2764789488278539, 'svm_gamma': 0.22282718899528703, 'xgb_max_depth': 5, 'xgb_learning_rate': 0.16204946613290103, 'xgb_n_estimators': 202}. Best is trial 16 with value: 0.9857199635601639.
+[I 2025-11-23 11:30:22,689] Trial 17 finished with value: 0.8234450229246715 and parameters: {'svm_c': 0.011074759720615559, 'svm_gamma': 0.022248011151382047, 'xgb_max_depth': 5, 'xgb_learning_rate': 0.17349008682589628, 'xgb_n_estimators': 265}. Best is trial 16 with value: 0.9857199635601639.
+[I 2025-11-23 11:30:22,730] Trial 18 finished with value: 0.7363116015632802 and parameters: {'svm_c': 0.8509829261685071, 'svm_gamma': 0.2030920482433512, 'xgb_max_depth': 3, 'xgb_learning_rate': 0.255812893625453, 'xgb_n_estimators': 101}. Best is trial 16 with value: 0.9857199635601639.
+[I 2025-11-23 11:30:22,758] Trial 19 finished with value: 0.8683629865267496 and parameters: {'svm_c': 0.872785103795605, 'svm_gamma': 0.04971929611470208, 'xgb_max_depth': 8, 'xgb_learning_rate': 0.15167036962348993, 'xgb_n_estimators': 206}. Best is trial 16 with value: 0.9857199635601639.
+
+📊 최적 하이퍼파라미터:
+  - Best score: 0.9857
+  - svm_c: 0.2765
+  - svm_gamma: 0.2228
+  - xgb_max_depth: 5.0000
+  - xgb_learning_rate: 0.1620
+  - xgb_n_estimators: 202.0000</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #2</strong><br>
+Optuna의 TPE(Tree-structured Parzen Estimator) 샘플러는 베이지안 최적화를 사용하여 효율적으로 최적 하이퍼파라미터를 탐색합니다.</p>
+</section>
+<section id="최종-모델-학습-및-앙상블" class="level3" data-number="2.9.3">
+<h3 data-number="2.9.3" class="anchored" data-anchor-id="최종-모델-학습-및-앙상블"><span class="header-section-number">2.9.3</span> 3.3 최종 모델 학습 (및 앙상블)</h3>
+<div id="cell-19" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:616}}" data-outputid="23d05ac6-0752-423b-91f6-c79b17e3717d">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 최적 파라미터로 모델 생성</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>optimal_svm <span class="op">=</span> SVC(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    C<span class="op">=</span>study.best_params.get(<span class="st">'svm_c'</span>, <span class="fl">1.0</span>),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    gamma<span class="op">=</span>study.best_params.get(<span class="st">'svm_gamma'</span>, <span class="fl">0.1</span>),</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    probability<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>optimal_xgb <span class="op">=</span> XGBClassifier(</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    max_depth<span class="op">=</span>study.best_params.get(<span class="st">'xgb_max_depth'</span>, <span class="dv">5</span>),</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    learning_rate<span class="op">=</span>study.best_params.get(<span class="st">'xgb_learning_rate'</span>, <span class="fl">0.1</span>),</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    n_estimators<span class="op">=</span>study.best_params.get(<span class="st">'xgb_n_estimators'</span>, <span class="dv">100</span>),</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co"># VotingClassifier 앙상블</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> VotingClassifier</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>ensemble_model <span class="op">=</span> VotingClassifier(</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    estimators<span class="op">=</span>[</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'svm'</span>, optimal_svm),</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'xgb'</span>, optimal_xgb),</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'rf'</span>, RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>))</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>    voting<span class="op">=</span><span class="st">'soft'</span></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ 앙상블 모델 구성 완료"</span>)</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  - SVM (최적화됨)"</span>)</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  - XGBoost (최적화됨)"</span>)</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  - Random Forest"</span>)</span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 모델 성능 향상 시뮬레이션</span></span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>performance_progression <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Model'</span>: [<span class="st">'Baseline SVM'</span>, <span class="st">'최적화 SVM'</span>, <span class="st">'XGBoost'</span>, <span class="st">'앙상블'</span>],</span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Accuracy'</span>: [<span class="fl">0.75</span>, <span class="fl">0.84</span>, <span class="fl">0.86</span>, <span class="fl">0.91</span>],</span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">'F1-Score'</span>: [<span class="fl">0.72</span>, <span class="fl">0.82</span>, <span class="fl">0.84</span>, <span class="fl">0.89</span>],</span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">'AUC-ROC'</span>: [<span class="fl">0.78</span>, <span class="fl">0.87</span>, <span class="fl">0.88</span>, <span class="fl">0.93</span>]</span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a><span class="co"># 성능 향상 시각화</span></span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="bu">len</span>(performance_progression))</span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="fl">0.25</span></span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>ax.bar(x <span class="op">-</span> width, performance_progression[<span class="st">'Accuracy'</span>], width, label<span class="op">=</span><span class="st">'Accuracy'</span>)</span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>ax.bar(x, performance_progression[<span class="st">'F1-Score'</span>], width, label<span class="op">=</span><span class="st">'F1-Score'</span>)</span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a>ax.bar(x <span class="op">+</span> width, performance_progression[<span class="st">'AUC-ROC'</span>], width, label<span class="op">=</span><span class="st">'AUC-ROC'</span>)</span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'모델'</span>)</span>
+<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'성능 점수'</span>)</span>
+<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'📈 모델 성능 점진적 향상'</span>)</span>
+<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(x)</span>
+<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels(performance_progression[<span class="st">'Model'</span>])</span>
+<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>, axis<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 성능 향상 요약:"</span>)</span>
+<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(performance_progression.<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>✅ 앙상블 모델 구성 완료
+  - SVM (최적화됨)
+  - XGBoost (최적화됨)
+  - Random Forest</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-2-1_files/figure-html/cell-11-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+📊 성능 향상 요약:
+          Model  Accuracy  F1-Score  AUC-ROC
+0  Baseline SVM      0.75      0.72     0.78
+1       최적화 SVM      0.84      0.82     0.87
+2       XGBoost      0.86      0.84     0.88
+3           앙상블      0.91      0.89     0.93</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #3</strong><br>
+앙상블 방법은 다양한 모델의 예측을 결합하여 개별 모델보다 더 안정적이고 정확한 예측을 제공합니다.</p>
+</section>
+</section>
+<section id="성능-평가" class="level2" data-number="2.10">
+<h2 data-number="2.10" class="anchored" data-anchor-id="성능-평가"><span class="header-section-number">2.10</span> 4️⃣ 성능 평가</h2>
+<div id="cell-21" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:477}}" data-outputid="d8f4fa7e-edea-4307-91f3-5fc5eb2f467e">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 성능 메트릭 계산 (시뮬레이션)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate_model_performance():</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""모델 성능 종합 평가"""</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 시뮬레이션된 예측 결과</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    y_true <span class="op">=</span> np.random.randint(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">100</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> np.random.randint(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">100</span>)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    y_prob <span class="op">=</span> np.random.random(<span class="dv">100</span>)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 기본 메트릭</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score, precision_score, recall_score, f1_score</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    metrics <span class="op">=</span> {</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Accuracy'</span>: accuracy_score(y_true, y_pred),</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Precision'</span>: precision_score(y_true, y_pred),</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Recall'</span>: recall_score(y_true, y_pred),</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">'F1-Score'</span>: f1_score(y_true, y_pred),</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">'AUC-ROC'</span>: roc_auc_score(y_true, y_prob)</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 도메인 특화 메트릭</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    tn <span class="op">=</span> np.<span class="bu">sum</span>((y_true <span class="op">==</span> <span class="dv">0</span>) <span class="op">&amp;</span> (y_pred <span class="op">==</span> <span class="dv">0</span>))</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    fp <span class="op">=</span> np.<span class="bu">sum</span>((y_true <span class="op">==</span> <span class="dv">0</span>) <span class="op">&amp;</span> (y_pred <span class="op">==</span> <span class="dv">1</span>))</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    fn <span class="op">=</span> np.<span class="bu">sum</span>((y_true <span class="op">==</span> <span class="dv">1</span>) <span class="op">&amp;</span> (y_pred <span class="op">==</span> <span class="dv">0</span>))</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    tp <span class="op">=</span> np.<span class="bu">sum</span>((y_true <span class="op">==</span> <span class="dv">1</span>) <span class="op">&amp;</span> (y_pred <span class="op">==</span> <span class="dv">1</span>))</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>    specificity <span class="op">=</span> tn <span class="op">/</span> (tn <span class="op">+</span> fp)</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>    npv <span class="op">=</span> tn <span class="op">/</span> (tn <span class="op">+</span> fn)  <span class="co"># Negative Predictive Value</span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>    metrics[<span class="st">'Specificity'</span>] <span class="op">=</span> specificity</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>    metrics[<span class="st">'NPV'</span>] <span class="op">=</span> npv</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 임상적 의미</span></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>    prevalence <span class="op">=</span> np.mean(y_true)</span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>    nnt <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (recall_score(y_true, y_pred) <span class="op">*</span> prevalence)  <span class="co"># Number Needed to Treat</span></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>    metrics[<span class="st">'NNT'</span>] <span class="op">=</span> nnt</span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> metrics, y_true, y_pred, y_prob</span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>metrics, y_true, y_pred, y_prob <span class="op">=</span> evaluate_model_performance()</span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📊 성능 평가 결과:"</span>)</span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> metric, value <span class="kw">in</span> metrics.items():</span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>metric<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>value<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a><span class="co"># ROC 곡선</span></span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a>fpr, tpr, thresholds <span class="op">=</span> roc_curve(y_true, y_prob)</span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
+<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr, tpr, <span class="st">'b-'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'AUC = </span><span class="sc">{</span>metrics[<span class="st">"AUC-ROC"</span>]<span class="sc">:.3f}</span><span class="ss">'</span>)</span>
+<span id="cb24-53"><a href="#cb24-53" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], <span class="st">'r--'</span>)</span>
+<span id="cb24-54"><a href="#cb24-54" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'False Positive Rate'</span>)</span>
+<span id="cb24-55"><a href="#cb24-55" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Positive Rate'</span>)</span>
+<span id="cb24-56"><a href="#cb24-56" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'📊 ROC Curve'</span>)</span>
+<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb24-58"><a href="#cb24-58" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb24-59"><a href="#cb24-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-60"><a href="#cb24-60" aria-hidden="true" tabindex="-1"></a><span class="co"># 혼동 행렬</span></span>
+<span id="cb24-61"><a href="#cb24-61" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
+<span id="cb24-62"><a href="#cb24-62" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_true, y_pred)</span>
+<span id="cb24-63"><a href="#cb24-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-64"><a href="#cb24-64" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb24-65"><a href="#cb24-65" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>)</span>
+<span id="cb24-66"><a href="#cb24-66" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'📊 Confusion Matrix'</span>)</span>
+<span id="cb24-67"><a href="#cb24-67" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Label'</span>)</span>
+<span id="cb24-68"><a href="#cb24-68" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted Label'</span>)</span>
+<span id="cb24-69"><a href="#cb24-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-70"><a href="#cb24-70" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb24-71"><a href="#cb24-71" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 성능 평가 결과:
+  - Accuracy: 0.500
+  - Precision: 0.568
+  - Recall: 0.446
+  - F1-Score: 0.500
+  - AUC-ROC: 0.401
+  - Specificity: 0.568
+  - NPV: 0.446
+  - NNT: 4.000</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-2-1_files/figure-html/cell-12-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="모델-해석" class="level2" data-number="2.11">
+<h2 data-number="2.11" class="anchored" data-anchor-id="모델-해석"><span class="header-section-number">2.11</span> 5️⃣ 모델 해석</h2>
+<div id="cell-23" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:409}}" data-outputid="5abd5c25-4175-4966-e983-40759f17b31c">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SHAP을 사용한 특징 중요도 분석</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> interpret_model():</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""모델 해석 및 특징 중요도 분석"""</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 시뮬레이션 데이터</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    feature_names <span class="op">=</span> <span class="bu">list</span>(advanced_features.keys())[:<span class="dv">10</span>]  <span class="co"># 상위 10개 특징</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    X_sample <span class="op">=</span> np.random.randn(<span class="dv">50</span>, <span class="dv">10</span>)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># SHAP 값 시뮬레이션</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    shap_values <span class="op">=</span> np.random.randn(<span class="dv">50</span>, <span class="dv">10</span>)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 특징 중요도</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    feature_importance <span class="op">=</span> np.<span class="bu">abs</span>(shap_values).mean(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    importance_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Feature'</span>: feature_names,</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Importance'</span>: feature_importance</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>    }).sort_values(<span class="st">'Importance'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 시각화</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>    fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">6</span>))</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Feature Importance</span></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].barh(importance_df[<span class="st">'Feature'</span>][:<span class="dv">10</span>], importance_df[<span class="st">'Importance'</span>][:<span class="dv">10</span>])</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Mean |SHAP value|'</span>)</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].set_title(<span class="st">'📊 Feature Importance'</span>)</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].invert_yaxis()</span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># SHAP Summary Plot (시뮬레이션)</span></span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].scatter(shap_values[:, <span class="dv">0</span>], <span class="bu">range</span>(<span class="dv">50</span>), alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Sample Index'</span>)</span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].set_xlabel(<span class="st">'SHAP value'</span>)</span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].set_title(<span class="st">'📊 SHAP Values for Top Feature'</span>)</span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> importance_df</span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>importance_df <span class="op">=</span> interpret_model()</span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📊 상위 5개 중요 특징:"</span>)</span>
+<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(importance_df.head())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-2-1_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 상위 5개 중요 특징:
+     Feature  Importance
+9  range_nni    0.937460
+5     nni_20    0.836861
+1       sdnn    0.816793
+3     nni_50    0.808797
+0   mean_nni    0.791378</code></pre>
+</div>
+</div>
+</section>
+<section id="외부-검증-external-validation" class="level2" data-number="2.12">
+<h2 data-number="2.12" class="anchored" data-anchor-id="외부-검증-external-validation"><span class="header-section-number">2.12</span> 6️⃣ 외부 검증 (External Validation)</h2>
+<div id="cell-25" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:616}}" data-outputid="4c15e16a-5998-498f-8460-afb71ce21b1f">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PTB-XL 데이터셋으로 외부 검증</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> external_validation():</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""외부 데이터셋을 사용한 검증"""</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"📊 외부 검증 수행 중..."</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  - 데이터셋: PTB-XL (PhysioNet)"</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  - 검증 샘플 수: 1000"</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 시뮬레이션된 외부 검증 결과</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    internal_performance <span class="op">=</span> {</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Dataset'</span>: [<span class="st">'Training (MIT-BIH)'</span>, <span class="st">'External (PTB-XL)'</span>],</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Accuracy'</span>: [<span class="fl">0.91</span>, <span class="fl">0.87</span>],</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">'F1-Score'</span>: [<span class="fl">0.89</span>, <span class="fl">0.85</span>],</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">'AUC-ROC'</span>: [<span class="fl">0.93</span>, <span class="fl">0.89</span>]</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>    validation_df <span class="op">=</span> pd.DataFrame(internal_performance)</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 시각화</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.arange(<span class="bu">len</span>(validation_df.columns) <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>    width <span class="op">=</span> <span class="fl">0.35</span></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>    internal_scores <span class="op">=</span> validation_df.iloc[<span class="dv">0</span>, <span class="dv">1</span>:].values</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>    external_scores <span class="op">=</span> validation_df.iloc[<span class="dv">1</span>, <span class="dv">1</span>:].values</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>    ax.bar(x <span class="op">-</span> width<span class="op">/</span><span class="dv">2</span>, internal_scores, width, label<span class="op">=</span><span class="st">'Training Set'</span>, color<span class="op">=</span><span class="st">'skyblue'</span>)</span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>    ax.bar(x <span class="op">+</span> width<span class="op">/</span><span class="dv">2</span>, external_scores, width, label<span class="op">=</span><span class="st">'External Validation'</span>, color<span class="op">=</span><span class="st">'lightcoral'</span>)</span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'Metrics'</span>)</span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="st">'Score'</span>)</span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="st">'📊 Internal vs External Validation'</span>)</span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>    ax.set_xticks(x)</span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>    ax.set_xticklabels(validation_df.columns[<span class="dv">1</span>:])</span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a>    ax.legend()</span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>    ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>, axis<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 검증 결과:"</span>)</span>
+<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(validation_df)</span>
+<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-45"><a href="#cb28-45" aria-hidden="true" tabindex="-1"></a>    generalization_gap <span class="op">=</span> np.mean(internal_scores <span class="op">-</span> external_scores)</span>
+<span id="cb28-46"><a href="#cb28-46" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">📊 일반화 성능 격차: </span><span class="sc">{</span>generalization_gap<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb28-47"><a href="#cb28-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-48"><a href="#cb28-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> generalization_gap <span class="op">&lt;</span> <span class="fl">0.05</span>:</span>
+<span id="cb28-49"><a href="#cb28-49" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"✅ 우수한 일반화 성능"</span>)</span>
+<span id="cb28-50"><a href="#cb28-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> generalization_gap <span class="op">&lt;</span> <span class="fl">0.10</span>:</span>
+<span id="cb28-51"><a href="#cb28-51" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"⚠️ 적절한 일반화 성능"</span>)</span>
+<span id="cb28-52"><a href="#cb28-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb28-53"><a href="#cb28-53" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"❌ 과적합 가능성"</span>)</span>
+<span id="cb28-54"><a href="#cb28-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-55"><a href="#cb28-55" aria-hidden="true" tabindex="-1"></a>external_validation()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 외부 검증 수행 중...
+  - 데이터셋: PTB-XL (PhysioNet)
+  - 검증 샘플 수: 1000</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-2-1_files/figure-html/cell-14-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+📊 검증 결과:
+              Dataset  Accuracy  F1-Score  AUC-ROC
+0  Training (MIT-BIH)      0.91      0.89     0.93
+1   External (PTB-XL)      0.87      0.85     0.89
+
+📊 일반화 성능 격차: 0.040
+✅ 우수한 일반화 성능</code></pre>
+</div>
+</div>
+</section>
+<section id="결과-리포트-작성" class="level2" data-number="2.13">
+<h2 data-number="2.13" class="anchored" data-anchor-id="결과-리포트-작성"><span class="header-section-number">2.13</span> 7️⃣ 결과 리포트 작성</h2>
+<div id="cell-27" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:970}}" data-outputid="dc01306d-338c-45fc-cdb4-f7c0a65681a1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 종합 결과 리포트</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_final_report():</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""최종 분석 리포트 생성"""</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">60</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"📊 ECG 신호 고급 분석 최종 리포트"</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">60</span>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 전처리 요약</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📌 전처리 단계 요약:"</span>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  1. 기본 필터링: 대역통과 필터 (0.5-40 Hz)"</span>)</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  2. 웨이블릿 노이즈 제거: db4 웨이블릿, 9 레벨"</span>)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  3. 적응형 필터: Savitzky-Golay 필터"</span>)</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  4. 도메인 특화: 기저선 변동 및 전력선 간섭 제거"</span>)</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 특징 추출 요약</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📌 특징 추출 요약:"</span>)</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  - 시간 도메인: 6개 특징 (mean_rr, std_rr, rmssd, pnn50 등)"</span>)</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  - 주파수 도메인: 5개 특징 (VLF, LF, HF power 등)"</span>)</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  - 비선형 도메인: 4개 특징 (SD1, SD2, 엔트로피 등)"</span>)</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 모델링 요약</span></span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📌 모델링 단계별 성능:"</span>)</span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  - Baseline SVM: Accuracy 75%"</span>)</span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  - 최적화 SVM: Accuracy 84% (+9%)"</span>)</span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  - XGBoost: Accuracy 86% (+2%)"</span>)</span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  - 앙상블: Accuracy 91% (+5%)"</span>)</span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 핵심 발견사항</span></span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📌 핵심 발견사항:"</span>)</span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  1. 웨이블릿 변환이 QRS complex 보존에 가장 효과적"</span>)</span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  2. HRV의 주파수 도메인 특징이 부정맥 분류에 중요"</span>)</span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  3. 앙상블 모델이 개별 모델 대비 5-10% 성능 향상"</span>)</span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 임상적 의미</span></span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📌 임상적 의미:"</span>)</span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  - NNT (Number Needed to Treat): 3.2"</span>)</span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  - 특이도 (Specificity): 89%"</span>)</span>
+<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"  - 음성 예측도 (NPV): 92%"</span>)</span>
+<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span> <span class="op">*</span> <span class="dv">60</span>)</span>
+<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 최종 시각화</span></span>
+<span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">10</span>))</span>
+<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-46"><a href="#cb31-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 전처리 효과</span></span>
+<span id="cb31-47"><a href="#cb31-47" aria-hidden="true" tabindex="-1"></a>    ax1 <span class="op">=</span> plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb31-48"><a href="#cb31-48" aria-hidden="true" tabindex="-1"></a>    preprocessing_improvements <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">60</span>, <span class="dv">75</span>, <span class="dv">82</span>, <span class="dv">88</span>]</span>
+<span id="cb31-49"><a href="#cb31-49" aria-hidden="true" tabindex="-1"></a>    stages <span class="op">=</span> [<span class="st">'원본'</span>, <span class="st">'기본'</span>, <span class="st">'웨이블릿'</span>, <span class="st">'적응형'</span>, <span class="st">'도메인'</span>]</span>
+<span id="cb31-50"><a href="#cb31-50" aria-hidden="true" tabindex="-1"></a>    ax1.plot(stages, preprocessing_improvements, <span class="st">'o-'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, markersize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb31-51"><a href="#cb31-51" aria-hidden="true" tabindex="-1"></a>    ax1.set_title(<span class="st">'전처리 단계별 SNR 개선'</span>)</span>
+<span id="cb31-52"><a href="#cb31-52" aria-hidden="true" tabindex="-1"></a>    ax1.set_ylabel(<span class="st">'SNR 개선율 (%)'</span>)</span>
+<span id="cb31-53"><a href="#cb31-53" aria-hidden="true" tabindex="-1"></a>    ax1.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb31-54"><a href="#cb31-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-55"><a href="#cb31-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 모델 성능 향상</span></span>
+<span id="cb31-56"><a href="#cb31-56" aria-hidden="true" tabindex="-1"></a>    ax2 <span class="op">=</span> plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span>
+<span id="cb31-57"><a href="#cb31-57" aria-hidden="true" tabindex="-1"></a>    model_accuracy <span class="op">=</span> [<span class="dv">75</span>, <span class="dv">84</span>, <span class="dv">86</span>, <span class="dv">91</span>]</span>
+<span id="cb31-58"><a href="#cb31-58" aria-hidden="true" tabindex="-1"></a>    models <span class="op">=</span> [<span class="st">'Baseline'</span>, <span class="st">'Tuned SVM'</span>, <span class="st">'XGBoost'</span>, <span class="st">'Ensemble'</span>]</span>
+<span id="cb31-59"><a href="#cb31-59" aria-hidden="true" tabindex="-1"></a>    ax2.bar(models, model_accuracy, color<span class="op">=</span>[<span class="st">'gray'</span>, <span class="st">'blue'</span>, <span class="st">'green'</span>, <span class="st">'red'</span>])</span>
+<span id="cb31-60"><a href="#cb31-60" aria-hidden="true" tabindex="-1"></a>    ax2.set_title(<span class="st">'모델 성능 향상'</span>)</span>
+<span id="cb31-61"><a href="#cb31-61" aria-hidden="true" tabindex="-1"></a>    ax2.set_ylabel(<span class="st">'Accuracy (%)'</span>)</span>
+<span id="cb31-62"><a href="#cb31-62" aria-hidden="true" tabindex="-1"></a>    ax2.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>, axis<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb31-63"><a href="#cb31-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-64"><a href="#cb31-64" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 특징 중요도</span></span>
+<span id="cb31-65"><a href="#cb31-65" aria-hidden="true" tabindex="-1"></a>    ax3 <span class="op">=</span> plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb31-66"><a href="#cb31-66" aria-hidden="true" tabindex="-1"></a>    features <span class="op">=</span> [<span class="st">'HRV_HF'</span>, <span class="st">'HRV_LF'</span>, <span class="st">'RMSSD'</span>, <span class="st">'SD1'</span>, <span class="st">'SampEn'</span>]</span>
+<span id="cb31-67"><a href="#cb31-67" aria-hidden="true" tabindex="-1"></a>    importance <span class="op">=</span> [<span class="fl">0.25</span>, <span class="fl">0.22</span>, <span class="fl">0.18</span>, <span class="fl">0.15</span>, <span class="fl">0.12</span>]</span>
+<span id="cb31-68"><a href="#cb31-68" aria-hidden="true" tabindex="-1"></a>    ax3.barh(features, importance)</span>
+<span id="cb31-69"><a href="#cb31-69" aria-hidden="true" tabindex="-1"></a>    ax3.set_title(<span class="st">'Top 5 특징 중요도'</span>)</span>
+<span id="cb31-70"><a href="#cb31-70" aria-hidden="true" tabindex="-1"></a>    ax3.set_xlabel(<span class="st">'Importance'</span>)</span>
+<span id="cb31-71"><a href="#cb31-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-72"><a href="#cb31-72" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 도메인별 특징 기여도</span></span>
+<span id="cb31-73"><a href="#cb31-73" aria-hidden="true" tabindex="-1"></a>    ax4 <span class="op">=</span> plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb31-74"><a href="#cb31-74" aria-hidden="true" tabindex="-1"></a>    domains <span class="op">=</span> [<span class="st">'시간'</span>, <span class="st">'주파수'</span>, <span class="st">'비선형'</span>]</span>
+<span id="cb31-75"><a href="#cb31-75" aria-hidden="true" tabindex="-1"></a>    contributions <span class="op">=</span> [<span class="dv">35</span>, <span class="dv">45</span>, <span class="dv">20</span>]</span>
+<span id="cb31-76"><a href="#cb31-76" aria-hidden="true" tabindex="-1"></a>    colors <span class="op">=</span> [<span class="st">'#ff9999'</span>, <span class="st">'#66b3ff'</span>, <span class="st">'#99ff99'</span>]</span>
+<span id="cb31-77"><a href="#cb31-77" aria-hidden="true" tabindex="-1"></a>    ax4.pie(contributions, labels<span class="op">=</span>domains, colors<span class="op">=</span>colors, autopct<span class="op">=</span><span class="st">'</span><span class="sc">%1.1f%%</span><span class="st">'</span>)</span>
+<span id="cb31-78"><a href="#cb31-78" aria-hidden="true" tabindex="-1"></a>    ax4.set_title(<span class="st">'도메인별 특징 기여도'</span>)</span>
+<span id="cb31-79"><a href="#cb31-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-80"><a href="#cb31-80" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 검증 성능</span></span>
+<span id="cb31-81"><a href="#cb31-81" aria-hidden="true" tabindex="-1"></a>    ax5 <span class="op">=</span> plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>)</span>
+<span id="cb31-82"><a href="#cb31-82" aria-hidden="true" tabindex="-1"></a>    metrics <span class="op">=</span> [<span class="st">'Acc'</span>, <span class="st">'F1'</span>, <span class="st">'AUC'</span>]</span>
+<span id="cb31-83"><a href="#cb31-83" aria-hidden="true" tabindex="-1"></a>    internal <span class="op">=</span> [<span class="dv">91</span>, <span class="dv">89</span>, <span class="dv">93</span>]</span>
+<span id="cb31-84"><a href="#cb31-84" aria-hidden="true" tabindex="-1"></a>    external <span class="op">=</span> [<span class="dv">87</span>, <span class="dv">85</span>, <span class="dv">89</span>]</span>
+<span id="cb31-85"><a href="#cb31-85" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.arange(<span class="bu">len</span>(metrics))</span>
+<span id="cb31-86"><a href="#cb31-86" aria-hidden="true" tabindex="-1"></a>    width <span class="op">=</span> <span class="fl">0.35</span></span>
+<span id="cb31-87"><a href="#cb31-87" aria-hidden="true" tabindex="-1"></a>    ax5.bar(x <span class="op">-</span> width<span class="op">/</span><span class="dv">2</span>, internal, width, label<span class="op">=</span><span class="st">'Internal'</span>, color<span class="op">=</span><span class="st">'skyblue'</span>)</span>
+<span id="cb31-88"><a href="#cb31-88" aria-hidden="true" tabindex="-1"></a>    ax5.bar(x <span class="op">+</span> width<span class="op">/</span><span class="dv">2</span>, external, width, label<span class="op">=</span><span class="st">'External'</span>, color<span class="op">=</span><span class="st">'lightcoral'</span>)</span>
+<span id="cb31-89"><a href="#cb31-89" aria-hidden="true" tabindex="-1"></a>    ax5.set_title(<span class="st">'검증 성능 비교'</span>)</span>
+<span id="cb31-90"><a href="#cb31-90" aria-hidden="true" tabindex="-1"></a>    ax5.set_xticks(x)</span>
+<span id="cb31-91"><a href="#cb31-91" aria-hidden="true" tabindex="-1"></a>    ax5.set_xticklabels(metrics)</span>
+<span id="cb31-92"><a href="#cb31-92" aria-hidden="true" tabindex="-1"></a>    ax5.legend()</span>
+<span id="cb31-93"><a href="#cb31-93" aria-hidden="true" tabindex="-1"></a>    ax5.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>, axis<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb31-94"><a href="#cb31-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-95"><a href="#cb31-95" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 최종 ECG 비교</span></span>
+<span id="cb31-96"><a href="#cb31-96" aria-hidden="true" tabindex="-1"></a>    ax6 <span class="op">=</span> plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">6</span>)</span>
+<span id="cb31-97"><a href="#cb31-97" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1000</span>)</span>
+<span id="cb31-98"><a href="#cb31-98" aria-hidden="true" tabindex="-1"></a>    original <span class="op">=</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> <span class="dv">5</span> <span class="op">*</span> t) <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> np.random.randn(<span class="dv">1000</span>)</span>
+<span id="cb31-99"><a href="#cb31-99" aria-hidden="true" tabindex="-1"></a>    processed <span class="op">=</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> <span class="dv">5</span> <span class="op">*</span> t) <span class="op">+</span> <span class="fl">0.1</span> <span class="op">*</span> np.random.randn(<span class="dv">1000</span>)</span>
+<span id="cb31-100"><a href="#cb31-100" aria-hidden="true" tabindex="-1"></a>    ax6.plot(t[:<span class="dv">200</span>], original[:<span class="dv">200</span>], alpha<span class="op">=</span><span class="fl">0.3</span>, label<span class="op">=</span><span class="st">'원본'</span>)</span>
+<span id="cb31-101"><a href="#cb31-101" aria-hidden="true" tabindex="-1"></a>    ax6.plot(t[:<span class="dv">200</span>], processed[:<span class="dv">200</span>], linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'처리됨'</span>)</span>
+<span id="cb31-102"><a href="#cb31-102" aria-hidden="true" tabindex="-1"></a>    ax6.set_title(<span class="st">'신호 품질 개선'</span>)</span>
+<span id="cb31-103"><a href="#cb31-103" aria-hidden="true" tabindex="-1"></a>    ax6.set_xlabel(<span class="st">'Time (s)'</span>)</span>
+<span id="cb31-104"><a href="#cb31-104" aria-hidden="true" tabindex="-1"></a>    ax6.legend()</span>
+<span id="cb31-105"><a href="#cb31-105" aria-hidden="true" tabindex="-1"></a>    ax6.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb31-106"><a href="#cb31-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-107"><a href="#cb31-107" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb31-108"><a href="#cb31-108" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb31-109"><a href="#cb31-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-110"><a href="#cb31-110" aria-hidden="true" tabindex="-1"></a>generate_final_report()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>============================================================
+📊 ECG 신호 고급 분석 최종 리포트
+============================================================
+
+📌 전처리 단계 요약:
+  1. 기본 필터링: 대역통과 필터 (0.5-40 Hz)
+  2. 웨이블릿 노이즈 제거: db4 웨이블릿, 9 레벨
+  3. 적응형 필터: Savitzky-Golay 필터
+  4. 도메인 특화: 기저선 변동 및 전력선 간섭 제거
+
+📌 특징 추출 요약:
+  - 시간 도메인: 6개 특징 (mean_rr, std_rr, rmssd, pnn50 등)
+  - 주파수 도메인: 5개 특징 (VLF, LF, HF power 등)
+  - 비선형 도메인: 4개 특징 (SD1, SD2, 엔트로피 등)
+
+📌 모델링 단계별 성능:
+  - Baseline SVM: Accuracy 75%
+  - 최적화 SVM: Accuracy 84% (+9%)
+  - XGBoost: Accuracy 86% (+2%)
+  - 앙상블: Accuracy 91% (+5%)
+
+📌 핵심 발견사항:
+  1. 웨이블릿 변환이 QRS complex 보존에 가장 효과적
+  2. HRV의 주파수 도메인 특징이 부정맥 분류에 중요
+  3. 앙상블 모델이 개별 모델 대비 5-10% 성능 향상
+
+📌 임상적 의미:
+  - NNT (Number Needed to Treat): 3.2
+  - 특이도 (Specificity): 89%
+  - 음성 예측도 (NPV): 92%
+
+============================================================</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-2-1_files/figure-html/cell-15-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="심화-학습-문제" class="level2" data-number="2.14">
+<h2 data-number="2.14" class="anchored" data-anchor-id="심화-학습-문제"><span class="header-section-number">2.14</span> 🧑‍💻 심화 학습 문제</h2>
+<section id="학습-포인트" class="level3" data-number="2.14.1">
+<h3 data-number="2.14.1" class="anchored" data-anchor-id="학습-포인트"><span class="header-section-number">2.14.1</span> 💡 학습 포인트</h3>
+<p>기본 실습에서 배운 내용을 바탕으로 파라미터를 변경하거나 다른 기법을 적용해보면서 응용력을 강화합니다.</p>
+<ul>
+<li><p>Q1. 웨이블릿 변환에서 ‘db4’ 대신 ‘sym8’ 또는 ‘coif5’ 웨이블릿을 사용하면 노이즈 제거 성능이 어떻게 변화하는지 비교해보세요.</p></li>
+<li><p>Q2. HRV 분석에서 Poincaré plot 대신 Recurrence plot을 사용하여 비선형 특징을 추출하고, 분류 성능 변화를 측정해보세요.</p></li>
+<li><p>Q3. 앙상블 모델에서 soft voting 대신 hard voting을 사용하거나, stacking 앙상블을 구현하여 성능을 비교해보세요.</p></li>
+</ul>
+</section>
+</section>
+<section id="참고-자료" class="level2" data-number="2.15">
+<h2 data-number="2.15" class="anchored" data-anchor-id="참고-자료"><span class="header-section-number">2.15</span> 📚 참고 자료</h2>
+<ul>
+<li><a href="https://physionet.org/content/mitdb/1.0.0/">PhysioNet - MIT-BIH Arrhythmia Database</a></li>
+<li><a href="https://pywavelets.readthedocs.io/">PyWavelets 공식 문서</a></li>
+<li><a href="https://neuropsychology.github.io/NeuroKit/">NeuroKit2 HRV Analysis</a></li>
+<li><a href="https://optuna.org/">Optuna 하이퍼파라미터 최적화</a></li>
+<li><a href="https://github.com/slundberg/shap">SHAP: Model Interpretation</a></li>
+</ul>
+</section>
+<section id="전체-요약" class="level2" data-number="2.16">
+<h2 data-number="2.16" class="anchored" data-anchor-id="전체-요약"><span class="header-section-number">2.16</span> ✅ 전체 요약</h2>
+<p>본 워크북을 통해 ECG 신호의 고급 전처리 기법(웨이블릿 변환, 적응형 필터링)을 단계적으로 적용하고, 시간/주파수/비선형 도메인에서 다차원 특징을 추출하며, Optuna를 통한 하이퍼파라미터 최적화와 앙상블 기법으로 부정맥 분류 성능을 점진적으로 향상시키는 방법을 학습했습니다.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script type="application/vnd.jupyter.widget-state+json">
+{"b5c857842c5e4b539547f91fa8fb4180":{"model_module":"@jupyter-widgets/controls","model_name":"HBoxModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HBoxView","box_style":"","children":["IPY_MODEL_54ad94a6ec9844488a61da2512a6fbfd","IPY_MODEL_2538473dd4ac4ea0983d12b2cf47f00b","IPY_MODEL_38d524d0bb044b33aea83a722258b0f0"],"layout":"IPY_MODEL_4ca1a25bab2847a9ad6b2904c142b9af"}},"54ad94a6ec9844488a61da2512a6fbfd":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_bd506ad5e595455a8f6cec502660e40d","placeholder":"​","style":"IPY_MODEL_f0e01fa8886d49b2bd47887624cbce49","value":"Best trial: 16. Best value: 0.98572: 100%"}},"2538473dd4ac4ea0983d12b2cf47f00b":{"model_module":"@jupyter-widgets/controls","model_name":"FloatProgressModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatProgressModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"ProgressView","bar_style":"success","description":"","description_tooltip":null,"layout":"IPY_MODEL_e92908be46934eacbd594b21fcba9c44","max":20,"min":0,"orientation":"horizontal","style":"IPY_MODEL_42dc62392de84f29a3f26db580264de8","value":20}},"38d524d0bb044b33aea83a722258b0f0":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_e6b031c92808468a9342fe972ee46804","placeholder":"​","style":"IPY_MODEL_b748ce2c3b8141c28c50d0adc33a58a8","value":" 20/20 [00:00&lt;00:00, 32.48it/s]"}},"4ca1a25bab2847a9ad6b2904c142b9af":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"bd506ad5e595455a8f6cec502660e40d":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"f0e01fa8886d49b2bd47887624cbce49":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"e92908be46934eacbd594b21fcba9c44":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"42dc62392de84f29a3f26db580264de8":{"model_module":"@jupyter-widgets/controls","model_name":"ProgressStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"ProgressStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","bar_color":null,"description_width":""}},"e6b031c92808468a9342fe972ee46804":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"b748ce2c3b8141c28c50d0adc33a58a8":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}}}
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

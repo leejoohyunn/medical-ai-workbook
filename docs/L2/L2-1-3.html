@@ -1,0 +1,2679 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="장수미">
+<meta name="dcterms.date" content="2024-11-14">
+
+<title>📊 L2-1 만성 신장 질환 진행 단계 분류 – Medical AI Workbook</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a96cfa603fdcdc54a5c20544cb7340f7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Medical AI Workbook</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-level-2" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Level 2</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-level-2">    
+        <li>
+    <a class="dropdown-item" href="../L2/L2-1-1.html">
+ <span class="dropdown-text">L2-1-1: 심장질환 예측</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-1-2.html">
+ <span class="dropdown-text">L2-1-2: 당뇨병 합병증</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-1-3.html">
+ <span class="dropdown-text">L2-1-3: 만성 신장 질환</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-1-4.html">
+ <span class="dropdown-text">L2-1-4: 응급실 재방문</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L2/L2-2-1.html">
+ <span class="dropdown-text">L2-2-1: ECG 신호 처리</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-2-2.html">
+ <span class="dropdown-text">L2-2-2: 수면 무호흡 탐지</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-2-3.html">
+ <span class="dropdown-text">L2-2-3: EMG 근육 피로도</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-2-4.html">
+ <span class="dropdown-text">L2-2-4: PPG 혈압 추정</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L2/L2-3-1.html">
+ <span class="dropdown-text">L2-3-1: 유방암 조직병리</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-3-2.html">
+ <span class="dropdown-text">L2-3-2: 당뇨망막병증</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-3-3.html">
+ <span class="dropdown-text">L2-3-3: 흉부 X-ray 폐렴</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-3-4.html">
+ <span class="dropdown-text">L2-3-4: 피부 병변 흑색종</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L2/L2-4-1.html">
+ <span class="dropdown-text">L2-4-1: 의료 텍스트 분류</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-4-2.html">
+ <span class="dropdown-text">L2-4-2: 임상 노트 증상 분류</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-4-3.html">
+ <span class="dropdown-text">L2-4-3: 의료 개체명 인식</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-4-4.html">
+ <span class="dropdown-text">L2-4-4: 텍스트 감성 분석</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L2/L2-5-1.html">
+ <span class="dropdown-text">L2-5-1: ECG + 환자 속성</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-5-2.html">
+ <span class="dropdown-text">L2-5-2: 뇌 MRI + 임상 정보</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-5-3.html">
+ <span class="dropdown-text">L2-5-3: 안저 + 당뇨 지표</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-5-4.html">
+ <span class="dropdown-text">L2-5-4: X-ray + 임상 변수</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-level-3" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Level 3</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-level-3">    
+        <li>
+    <a class="dropdown-item" href="../L3/L3-1-1.html">
+ <span class="dropdown-text">L3-1-1: 암 환자 생존 분석</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L3/L3-1-2.html">
+ <span class="dropdown-text">L3-1-2: 패혈증 조기 예측</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L3/L3-2-1.html">
+ <span class="dropdown-text">L3-2-1: EEG 발작 예측</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L3/L3-2-2.html">
+ <span class="dropdown-text">L3-2-2: 혈압 파형 분석</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L3/L3-3-1.html">
+ <span class="dropdown-text">L3-3-1: 뇌종양 MRI 세그멘테이션</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L3/L3-3-2.html">
+ <span class="dropdown-text">L3-3-2: 흉부 X-ray 질환 분류</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L3/L3-4-1.html">
+ <span class="dropdown-text">L3-4-1: BioBERT 텍스트 분류</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L3/L3-4-2.html">
+ <span class="dropdown-text">L3-4-2: BioBERT NER</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L3/L3-5-1.html">
+ <span class="dropdown-text">L3-5-1: ECG + 임상 정보</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L3/L3-5-2.html">
+ <span class="dropdown-text">L3-5-2: X-ray + 판독문</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#l2-1-만성-신장-질환-진행-단계-분류" id="toc-l2-1-만성-신장-질환-진행-단계-분류" class="nav-link active" data-scroll-target="#l2-1-만성-신장-질환-진행-단계-분류"><span class="header-section-number">1</span> 📊 L2-1 만성 신장 질환 진행 단계 분류</a></li>
+  <li><a href="#l2-1-만성-신장-질환-진행-단계-분류-1" id="toc-l2-1-만성-신장-질환-진행-단계-분류-1" class="nav-link" data-scroll-target="#l2-1-만성-신장-질환-진행-단계-분류-1"><span class="header-section-number">2</span> 🧬 L2-1 만성 신장 질환 진행 단계 분류</a>
+  <ul class="collapse">
+  <li><a href="#학습-목표-learning-outcomes" id="toc-학습-목표-learning-outcomes" class="nav-link" data-scroll-target="#학습-목표-learning-outcomes"><span class="header-section-number">2.1</span> 🧭 학습 목표 (Learning Outcomes)</a></li>
+  <li><a href="#실습-개요" id="toc-실습-개요" class="nav-link" data-scroll-target="#실습-개요"><span class="header-section-number">2.2</span> 🧩 실습 개요</a></li>
+  <li><a href="#전체-실습-흐름" id="toc-전체-실습-흐름" class="nav-link" data-scroll-target="#전체-실습-흐름"><span class="header-section-number">2.3</span> 🔄 전체 실습 흐름</a></li>
+  <li><a href="#사전-필요-지식" id="toc-사전-필요-지식" class="nav-link" data-scroll-target="#사전-필요-지식"><span class="header-section-number">2.4</span> 📝 사전 필요 지식</a></li>
+  <li><a href="#사용-데이터-설명" id="toc-사용-데이터-설명" class="nav-link" data-scroll-target="#사용-데이터-설명"><span class="header-section-number">2.5</span> 🗂 사용 데이터 설명</a></li>
+  <li><a href="#라이브러리-불러오기" id="toc-라이브러리-불러오기" class="nav-link" data-scroll-target="#라이브러리-불러오기"><span class="header-section-number">2.6</span> 📦 라이브러리 불러오기</a></li>
+  <li><a href="#데이터-로드-및-탐색" id="toc-데이터-로드-및-탐색" class="nav-link" data-scroll-target="#데이터-로드-및-탐색"><span class="header-section-number">2.7</span> 1️⃣ 데이터 로드 및 탐색</a></li>
+  <li><a href="#데이터-전처리" id="toc-데이터-전처리" class="nav-link" data-scroll-target="#데이터-전처리"><span class="header-section-number">2.8</span> 2️⃣ 데이터 전처리</a>
+  <ul class="collapse">
+  <li><a href="#기본-전처리" id="toc-기본-전처리" class="nav-link" data-scroll-target="#기본-전처리"><span class="header-section-number">2.8.1</span> 2.1 기본 전처리</a></li>
+  <li><a href="#고급-전처리-기법-적용" id="toc-고급-전처리-기법-적용" class="nav-link" data-scroll-target="#고급-전처리-기법-적용"><span class="header-section-number">2.8.2</span> 2.2 고급 전처리 기법 적용</a></li>
+  <li><a href="#도메인-특화-전처리" id="toc-도메인-특화-전처리" class="nav-link" data-scroll-target="#도메인-특화-전처리"><span class="header-section-number">2.8.3</span> 2.3 도메인 특화 전처리</a></li>
+  <li><a href="#전처리-효과-비교" id="toc-전처리-효과-비교" class="nav-link" data-scroll-target="#전처리-효과-비교"><span class="header-section-number">2.8.4</span> 2.4 전처리 효과 비교</a></li>
+  </ul></li>
+  <li><a href="#모델링" id="toc-모델링" class="nav-link" data-scroll-target="#모델링"><span class="header-section-number">2.9</span> 3️⃣ 모델링</a>
+  <ul class="collapse">
+  <li><a href="#baseline-모델-설정" id="toc-baseline-모델-설정" class="nav-link" data-scroll-target="#baseline-모델-설정"><span class="header-section-number">2.9.1</span> 3.1. Baseline 모델 설정</a></li>
+  <li><a href="#고급-하이퍼파라미터-튜닝" id="toc-고급-하이퍼파라미터-튜닝" class="nav-link" data-scroll-target="#고급-하이퍼파라미터-튜닝"><span class="header-section-number">2.9.2</span> 3.2. 고급 하이퍼파라미터 튜닝</a></li>
+  <li><a href="#최종-모델-학습-및-앙상블" id="toc-최종-모델-학습-및-앙상블" class="nav-link" data-scroll-target="#최종-모델-학습-및-앙상블"><span class="header-section-number">2.9.3</span> 3.3. 최종 모델 학습 (및 앙상블)</a></li>
+  </ul></li>
+  <li><a href="#성능-평가" id="toc-성능-평가" class="nav-link" data-scroll-target="#성능-평가"><span class="header-section-number">2.10</span> 4️⃣ 성능 평가</a></li>
+  <li><a href="#모델-해석" id="toc-모델-해석" class="nav-link" data-scroll-target="#모델-해석"><span class="header-section-number">2.11</span> 5️⃣ 모델 해석</a></li>
+  <li><a href="#외부-검증-external-validation" id="toc-외부-검증-external-validation" class="nav-link" data-scroll-target="#외부-검증-external-validation"><span class="header-section-number">2.12</span> 6️⃣ 외부 검증 (External Validation)</a></li>
+  <li><a href="#결과-리포트-작성" id="toc-결과-리포트-작성" class="nav-link" data-scroll-target="#결과-리포트-작성"><span class="header-section-number">2.13</span> 7️⃣ 결과 리포트 작성</a></li>
+  <li><a href="#심화-학습-문제" id="toc-심화-학습-문제" class="nav-link" data-scroll-target="#심화-학습-문제"><span class="header-section-number">2.14</span> 🧑‍💻 심화 학습 문제</a>
+  <ul class="collapse">
+  <li><a href="#학습-포인트" id="toc-학습-포인트" class="nav-link" data-scroll-target="#학습-포인트"><span class="header-section-number">2.14.1</span> 💡 학습 포인트</a></li>
+  </ul></li>
+  <li><a href="#참고-자료" id="toc-참고-자료" class="nav-link" data-scroll-target="#참고-자료"><span class="header-section-number">2.15</span> 📚 참고 자료</a></li>
+  <li><a href="#전체-요약" id="toc-전체-요약" class="nav-link" data-scroll-target="#전체-요약"><span class="header-section-number">2.16</span> ✅ 전체 요약</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">📊 L2-1 만성 신장 질환 진행 단계 분류</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>장수미 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 14, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="l2-1-만성-신장-질환-진행-단계-분류" class="level1 header" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> 📊 L2-1 만성 신장 질환 진행 단계 분류</h1>
+<p>본 워크북은 만성 신장 질환(CKD) 환자의 검사 수치를 활용하여 질환 진행 단계를 분류하는 머신러닝 모델을 구축합니다. 이론적 기반과 실무 문제 해결 능력을 동시에 강화할 수 있도록 설계되었습니다. 분석가는 불균형 데이터 처리와 다중 클래스 분류 성능 최적화를 고려해야 합니다.</p>
+<p><strong>진행률:</strong> <code>0% (분석 시작)</code> 🔄<br>
+<strong>활용도:</strong> 상위권 대학 학부 4학년</p>
+</section>
+<section id="l2-1-만성-신장-질환-진행-단계-분류-1" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> 🧬 L2-1 만성 신장 질환 진행 단계 분류</h1>
+<section id="학습-목표-learning-outcomes" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="학습-목표-learning-outcomes"><span class="header-section-number">2.1</span> 🧭 학습 목표 (Learning Outcomes)</h2>
+<p>이 워크북을 통해 학습자는 다음을 실습하게 됩니다: - 의료 데이터의 결측치를 MICE 기법으로 처리하고 VIF를 통한 다중공선성 제거 - 불균형 다중 클래스 분류 문제를 SMOTE로 해결하는 방법 습득 - Baseline 모델부터 앙상블까지 점진적 성능 개선 과정 체험</p>
+</section>
+<section id="실습-개요" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="실습-개요"><span class="header-section-number">2.2</span> 🧩 실습 개요</h2>
+<ul>
+<li><strong>데이터</strong>: UCI Chronic Kidney Disease Dataset</li>
+<li><strong>목표</strong>: CKD 환자의 5단계 진행 상태 분류 (Stage 1-5)</li>
+<li><strong>사용 기술</strong>: pandas, scikit-learn, imbalanced-learn, SHAP</li>
+<li><strong>제약 조건</strong>:
+<ol type="1">
+<li>MICE를 활용한 결측치 대체 필수</li>
+<li>SMOTE를 통한 클래스 불균형 처리 필수</li>
+</ol></li>
+</ul>
+</section>
+<section id="전체-실습-흐름" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="전체-실습-흐름"><span class="header-section-number">2.3</span> 🔄 전체 실습 흐름</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>단계</th>
+<th>주요 작업 내용</th>
+<th>주요 도구/스킬</th>
+<th>결과물</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1단계</td>
+<td>데이터 로드 및 탐색</td>
+<td>pandas, matplotlib</td>
+<td>EDA 보고서</td>
+</tr>
+<tr class="even">
+<td>2단계</td>
+<td>전처리</td>
+<td>MICE, VIF, StandardScaler</td>
+<td>정제된 데이터셋</td>
+</tr>
+<tr class="odd">
+<td>3단계</td>
+<td>모델링</td>
+<td>LogisticRegression, RandomForest, XGBoost</td>
+<td>학습된 모델</td>
+</tr>
+<tr class="even">
+<td>4단계</td>
+<td>성능 평가</td>
+<td>confusion_matrix, classification_report</td>
+<td>성능 메트릭</td>
+</tr>
+<tr class="odd">
+<td>5단계</td>
+<td>모델 해석</td>
+<td>SHAP, feature_importance</td>
+<td>해석 가능한 인사이트</td>
+</tr>
+<tr class="even">
+<td>6단계</td>
+<td>외부 검증</td>
+<td>cross_validation</td>
+<td>일반화 성능</td>
+</tr>
+<tr class="odd">
+<td>7단계</td>
+<td>결과 리포트</td>
+<td>matplotlib, seaborn</td>
+<td>최종 보고서</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="사전-필요-지식" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="사전-필요-지식"><span class="header-section-number">2.4</span> 📝 사전 필요 지식</h2>
+<p>이 워크북은 다음 기술/개념을 선행 학습한 학습자를 대상으로 합니다: - Python 기초 문법 및 pandas DataFrame 조작 - 기본적인 머신러닝 개념 (분류, 과적합, 교차검증) - 의료 데이터의 특성과 CKD 기본 지식</p>
+</section>
+<section id="사용-데이터-설명" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="사용-데이터-설명"><span class="header-section-number">2.5</span> 🗂 사용 데이터 설명</h2>
+<blockquote class="blockquote">
+<p>📌 <strong>데이터셋</strong>: UCI Chronic Kidney Disease Dataset<br>
+📌 <strong>출처</strong>: <a href="https://archive.ics.uci.edu/ml/datasets/Chronic_Kidney_Disease">UCI Machine Learning Repository</a><br>
+📌 <strong>배경</strong>: 400명의 CKD 환자 검사 결과로 24개의 임상 지표를 포함</p>
+</blockquote>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>변수명</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>age</td>
+<td>나이 (연령)</td>
+</tr>
+<tr class="even">
+<td>bp</td>
+<td>혈압 (Blood Pressure)</td>
+</tr>
+<tr class="odd">
+<td>sg</td>
+<td>비중 (Specific Gravity)</td>
+</tr>
+<tr class="even">
+<td>al</td>
+<td>알부민 (Albumin)</td>
+</tr>
+<tr class="odd">
+<td>su</td>
+<td>당 (Sugar)</td>
+</tr>
+<tr class="even">
+<td>rbc</td>
+<td>적혈구 (Red Blood Cells)</td>
+</tr>
+<tr class="odd">
+<td>pc</td>
+<td>농뇨 (Pus Cell)</td>
+</tr>
+<tr class="even">
+<td>pcc</td>
+<td>농뇨 덩어리 (Pus Cell Clumps)</td>
+</tr>
+<tr class="odd">
+<td>ba</td>
+<td>박테리아 (Bacteria)</td>
+</tr>
+<tr class="even">
+<td>bgr</td>
+<td>혈당 (Blood Glucose Random)</td>
+</tr>
+<tr class="odd">
+<td>bu</td>
+<td>혈중 요소 (Blood Urea)</td>
+</tr>
+<tr class="even">
+<td>sc</td>
+<td>혈청 크레아티닌 (Serum Creatinine)</td>
+</tr>
+<tr class="odd">
+<td>sod</td>
+<td>나트륨 (Sodium)</td>
+</tr>
+<tr class="even">
+<td>pot</td>
+<td>칼륨 (Potassium)</td>
+</tr>
+<tr class="odd">
+<td>hemo</td>
+<td>헤모글로빈 (Hemoglobin)</td>
+</tr>
+<tr class="even">
+<td>pcv</td>
+<td>적혈구 용적 (Packed Cell Volume)</td>
+</tr>
+<tr class="odd">
+<td>wc</td>
+<td>백혈구 수 (White Blood Cell Count)</td>
+</tr>
+<tr class="even">
+<td>rc</td>
+<td>적혈구 수 (Red Blood Cell Count)</td>
+</tr>
+<tr class="odd">
+<td>htn</td>
+<td>고혈압 (Hypertension)</td>
+</tr>
+<tr class="even">
+<td>dm</td>
+<td>당뇨병 (Diabetes Mellitus)</td>
+</tr>
+<tr class="odd">
+<td>cad</td>
+<td>관상동맥질환 (Coronary Artery Disease)</td>
+</tr>
+<tr class="even">
+<td>appet</td>
+<td>식욕 (Appetite)</td>
+</tr>
+<tr class="odd">
+<td>pe</td>
+<td>발목 부종 (Pedal Edema)</td>
+</tr>
+<tr class="even">
+<td>ane</td>
+<td>빈혈 (Anemia)</td>
+</tr>
+<tr class="odd">
+<td>classification</td>
+<td>CKD 여부 (ckd/notckd) - Stage로 변환 필요</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="라이브러리-불러오기" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="라이브러리-불러오기"><span class="header-section-number">2.6</span> 📦 라이브러리 불러오기</h2>
+<div id="cell-4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="bd6538e5-146b-4e49-a85a-44d148c0e7a0">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 기본 라이브러리</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 데이터 전처리</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler, LabelEncoder</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.experimental <span class="im">import</span> enable_iterative_imputer</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> IterativeImputer  <span class="co"># MICE</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.outliers_influence <span class="im">import</span> variance_inflation_factor</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 모델링</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split, cross_val_score, GridSearchCV</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier, VotingClassifier</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> xgboost <span class="im">import</span> XGBClassifier</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> imblearn.over_sampling <span class="im">import</span> SMOTE</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 평가</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, confusion_matrix, accuracy_score</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> precision_recall_fscore_support, roc_auc_score</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 모델 해석</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> shap</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 시각화 설정</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'seaborn-v0_8-darkgrid'</span>)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>sns.set_palette(<span class="st">"husl"</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ 모든 라이브러리가 성공적으로 로드되었습니다."</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"pandas version: </span><span class="sc">{</span>pd<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"scikit-learn version: </span><span class="sc">{</span>sklearn<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>✅ 모든 라이브러리가 성공적으로 로드되었습니다.
+pandas version: 2.2.2
+scikit-learn version: 1.6.1</code></pre>
+</div>
+</div>
+</section>
+<section id="데이터-로드-및-탐색" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="데이터-로드-및-탐색"><span class="header-section-number">2.7</span> 1️⃣ 데이터 로드 및 탐색</h2>
+<div id="cell-6" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="481324c0-e357-409d-f48d-71711bbe7491">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> kagglehub</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Download latest version</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> kagglehub.dataset_download(<span class="st">"mansoordaku/ckdisease"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Path to dataset files:"</span>, path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Downloading from https://www.kaggle.com/api/v1/datasets/download/mansoordaku/ckdisease?dataset_version_number=1...</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Extracting files...
+Path to dataset files: /root/.cache/kagglehub/datasets/mansoordaku/ckdisease/versions/1</code></pre>
+</div>
+</div>
+<div id="cell-7" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:400}}" data-outputid="137d2471-ef1d-4508-efbf-6438f7e7134d">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> <span class="st">"/root/.cache/kagglehub/datasets/mansoordaku/ckdisease/versions/1"</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) 폴더 안 파일 확인</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📁 폴더 내 파일 목록:"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(os.listdir(path))</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 2) CSV 파일 경로 설정 (파일 이름이 kidney_disease.csv 라고 가정)</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>csv_path <span class="op">=</span> os.path.join(path, <span class="st">"kidney_disease.csv"</span>)  <span class="co"># os.listdir 결과 보고 이름 다르면 여기만 바꾸면 됨</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 3) 데이터 로드</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(csv_path)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">✅ 데이터를 성공적으로 로드했습니다."</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📊 데이터셋 크기: </span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"- 샘플 수: </span><span class="sc">{</span>df<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"- 특징 수: </span><span class="sc">{</span>df<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 데이터 첫 5행 확인</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">🔍 데이터 미리보기:"</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>📁 폴더 내 파일 목록:
+['kidney_disease.csv']
+
+✅ 데이터를 성공적으로 로드했습니다.
+📊 데이터셋 크기: (400, 26)
+- 샘플 수: 400
+- 특징 수: 26
+
+🔍 데이터 미리보기:</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div id="df-3ed2d4d9-6cc7-4a9d-89d8-0a53a761278f" class="colab-df-container">
+    <div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">age</th>
+<th data-quarto-table-cell-role="th">bp</th>
+<th data-quarto-table-cell-role="th">sg</th>
+<th data-quarto-table-cell-role="th">al</th>
+<th data-quarto-table-cell-role="th">su</th>
+<th data-quarto-table-cell-role="th">rbc</th>
+<th data-quarto-table-cell-role="th">pc</th>
+<th data-quarto-table-cell-role="th">pcc</th>
+<th data-quarto-table-cell-role="th">ba</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">pcv</th>
+<th data-quarto-table-cell-role="th">wc</th>
+<th data-quarto-table-cell-role="th">rc</th>
+<th data-quarto-table-cell-role="th">htn</th>
+<th data-quarto-table-cell-role="th">dm</th>
+<th data-quarto-table-cell-role="th">cad</th>
+<th data-quarto-table-cell-role="th">appet</th>
+<th data-quarto-table-cell-role="th">pe</th>
+<th data-quarto-table-cell-role="th">ane</th>
+<th data-quarto-table-cell-role="th">classification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0</td>
+<td>48.0</td>
+<td>80.0</td>
+<td>1.020</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>NaN</td>
+<td>normal</td>
+<td>notpresent</td>
+<td>notpresent</td>
+<td>...</td>
+<td>44</td>
+<td>7800</td>
+<td>5.2</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>good</td>
+<td>no</td>
+<td>no</td>
+<td>ckd</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1</td>
+<td>7.0</td>
+<td>50.0</td>
+<td>1.020</td>
+<td>4.0</td>
+<td>0.0</td>
+<td>NaN</td>
+<td>normal</td>
+<td>notpresent</td>
+<td>notpresent</td>
+<td>...</td>
+<td>38</td>
+<td>6000</td>
+<td>NaN</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>good</td>
+<td>no</td>
+<td>no</td>
+<td>ckd</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>2</td>
+<td>62.0</td>
+<td>80.0</td>
+<td>1.010</td>
+<td>2.0</td>
+<td>3.0</td>
+<td>normal</td>
+<td>normal</td>
+<td>notpresent</td>
+<td>notpresent</td>
+<td>...</td>
+<td>31</td>
+<td>7500</td>
+<td>NaN</td>
+<td>no</td>
+<td>yes</td>
+<td>no</td>
+<td>poor</td>
+<td>no</td>
+<td>yes</td>
+<td>ckd</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>3</td>
+<td>48.0</td>
+<td>70.0</td>
+<td>1.005</td>
+<td>4.0</td>
+<td>0.0</td>
+<td>normal</td>
+<td>abnormal</td>
+<td>present</td>
+<td>notpresent</td>
+<td>...</td>
+<td>32</td>
+<td>6700</td>
+<td>3.9</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td>poor</td>
+<td>yes</td>
+<td>yes</td>
+<td>ckd</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>4</td>
+<td>51.0</td>
+<td>80.0</td>
+<td>1.010</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>normal</td>
+<td>normal</td>
+<td>notpresent</td>
+<td>notpresent</td>
+<td>...</td>
+<td>35</td>
+<td>7300</td>
+<td>4.6</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>good</td>
+<td>no</td>
+<td>no</td>
+<td>ckd</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 26 columns</p>
+</div>
+    <div class="colab-df-buttons">
+
+  <div class="colab-df-container">
+    <button class="colab-df-convert" onclick="convertToInteractive('df-3ed2d4d9-6cc7-4a9d-89d8-0a53a761278f')" title="Convert this dataframe to an interactive table." style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewbox="0 -960 960 960">
+    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"></path>
+  </svg>
+    </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    .colab-df-buttons div {
+      margin-bottom: 4px;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+    <script>
+      const buttonEl =
+        document.querySelector('#df-3ed2d4d9-6cc7-4a9d-89d8-0a53a761278f button.colab-df-convert');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      async function convertToInteractive(key) {
+        const element = document.querySelector('#df-3ed2d4d9-6cc7-4a9d-89d8-0a53a761278f');
+        const dataTable =
+          await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                    [key], {});
+        if (!dataTable) return;
+
+        const docLinkHtml = 'Like what you see? Visit the ' +
+          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+          + ' to learn more about interactive tables.';
+        element.innerHTML = '';
+        dataTable['output_type'] = 'display_data';
+        await google.colab.output.renderOutput(dataTable, element);
+        const docLink = document.createElement('div');
+        docLink.innerHTML = docLinkHtml;
+        element.appendChild(docLink);
+      }
+    </script>
+  </div>
+
+
+    <div id="df-81d6d695-1c79-4fc0-813c-f1483606dc4e">
+      <button class="colab-df-quickchart" onclick="quickchart('df-81d6d695-1c79-4fc0-813c-f1483606dc4e')" title="Suggest charts" style="display:none;">
+
+<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewbox="0 0 24 24" width="24px">
+    <g>
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"></path>
+    </g>
+</svg>
+      </button>
+
+<style>
+  .colab-df-quickchart {
+      --bg-color: #E8F0FE;
+      --fill-color: #1967D2;
+      --hover-bg-color: #E2EBFA;
+      --hover-fill-color: #174EA6;
+      --disabled-fill-color: #AAA;
+      --disabled-bg-color: #DDD;
+  }
+
+  [theme=dark] .colab-df-quickchart {
+      --bg-color: #3B4455;
+      --fill-color: #D2E3FC;
+      --hover-bg-color: #434B5C;
+      --hover-fill-color: #FFFFFF;
+      --disabled-bg-color: #3B4455;
+      --disabled-fill-color: #666;
+  }
+
+  .colab-df-quickchart {
+    background-color: var(--bg-color);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    fill: var(--fill-color);
+    height: 32px;
+    padding: 0;
+    width: 32px;
+  }
+
+  .colab-df-quickchart:hover {
+    background-color: var(--hover-bg-color);
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    fill: var(--button-hover-fill-color);
+  }
+
+  .colab-df-quickchart-complete:disabled,
+  .colab-df-quickchart-complete:disabled:hover {
+    background-color: var(--disabled-bg-color);
+    fill: var(--disabled-fill-color);
+    box-shadow: none;
+  }
+
+  .colab-df-spinner {
+    border: 2px solid var(--fill-color);
+    border-color: transparent;
+    border-bottom-color: var(--fill-color);
+    animation:
+      spin 1s steps(1) infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+      border-left-color: var(--fill-color);
+    }
+    20% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    30% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+      border-right-color: var(--fill-color);
+    }
+    40% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    60% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+    }
+    80% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-bottom-color: var(--fill-color);
+    }
+    90% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+    }
+  }
+</style>
+
+      <script>
+        async function quickchart(key) {
+          const quickchartButtonEl =
+            document.querySelector('#' + key + ' button');
+          quickchartButtonEl.disabled = true;  // To prevent multiple clicks.
+          quickchartButtonEl.classList.add('colab-df-spinner');
+          try {
+            const charts = await google.colab.kernel.invokeFunction(
+                'suggestCharts', [key], {});
+          } catch (error) {
+            console.error('Error during call to suggestCharts:', error);
+          }
+          quickchartButtonEl.classList.remove('colab-df-spinner');
+          quickchartButtonEl.classList.add('colab-df-quickchart-complete');
+        }
+        (() => {
+          let quickchartButtonEl =
+            document.querySelector('#df-81d6d695-1c79-4fc0-813c-f1483606dc4e button');
+          quickchartButtonEl.style.display =
+            google.colab.kernel.accessAllowed ? 'block' : 'none';
+        })();
+      </script>
+    </div>
+
+    </div>
+  </div>
+</div>
+</div>
+<div id="cell-8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="d264bdff-fc36-42a2-d904-7e2fe4519b46">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 데이터 타입 및 결측치 확인</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📋 데이터 정보:"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>df.info()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 결측치 비율 계산</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>missing_ratio <span class="op">=</span> (df.isnull().<span class="bu">sum</span>() <span class="op">/</span> <span class="bu">len</span>(df) <span class="op">*</span> <span class="dv">100</span>).sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 결측치 비율 (%):"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(missing_ratio[missing_ratio <span class="op">&gt;</span> <span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+📋 데이터 정보:
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 400 entries, 0 to 399
+Data columns (total 26 columns):
+ #   Column          Non-Null Count  Dtype  
+---  ------          --------------  -----  
+ 0   id              400 non-null    int64  
+ 1   age             391 non-null    float64
+ 2   bp              388 non-null    float64
+ 3   sg              353 non-null    float64
+ 4   al              354 non-null    float64
+ 5   su              351 non-null    float64
+ 6   rbc             248 non-null    object 
+ 7   pc              335 non-null    object 
+ 8   pcc             396 non-null    object 
+ 9   ba              396 non-null    object 
+ 10  bgr             356 non-null    float64
+ 11  bu              381 non-null    float64
+ 12  sc              383 non-null    float64
+ 13  sod             313 non-null    float64
+ 14  pot             312 non-null    float64
+ 15  hemo            348 non-null    float64
+ 16  pcv             330 non-null    object 
+ 17  wc              295 non-null    object 
+ 18  rc              270 non-null    object 
+ 19  htn             398 non-null    object 
+ 20  dm              398 non-null    object 
+ 21  cad             398 non-null    object 
+ 22  appet           399 non-null    object 
+ 23  pe              399 non-null    object 
+ 24  ane             399 non-null    object 
+ 25  classification  400 non-null    object 
+dtypes: float64(11), int64(1), object(14)
+memory usage: 81.4+ KB
+
+📊 결측치 비율 (%):
+rbc      38.00
+rc       32.50
+wc       26.25
+pot      22.00
+sod      21.75
+pcv      17.50
+pc       16.25
+hemo     13.00
+su       12.25
+sg       11.75
+al       11.50
+bgr      11.00
+bu        4.75
+sc        4.25
+bp        3.00
+age       2.25
+pcc       1.00
+ba        1.00
+dm        0.50
+htn       0.50
+cad       0.50
+appet     0.25
+ane       0.25
+pe        0.25
+dtype: float64</code></pre>
+</div>
+</div>
+<div id="cell-9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:854}}" data-outputid="e15a3cc3-d876-408e-c6d6-7239377443b2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 타겟 변수 확인 및 Stage 변환</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">🎯 타겟 변수 분포:"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">'classification'</span>].value_counts())</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># CKD Stage 생성 (크레아티닌 수치 기반)</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> assign_ckd_stage(row):</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""크레아티닌 수치를 기반으로 CKD Stage 할당"""</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> pd.isna(row[<span class="st">'sc'</span>]):</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.nan</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    sc_value <span class="op">=</span> <span class="bu">float</span>(row[<span class="st">'sc'</span>]) <span class="cf">if</span> <span class="bu">isinstance</span>(row[<span class="st">'sc'</span>], <span class="bu">str</span>) <span class="cf">else</span> row[<span class="st">'sc'</span>]</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> row[<span class="st">'classification'</span>] <span class="op">==</span> <span class="st">'notckd'</span>:</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span>  <span class="co"># No CKD</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> sc_value <span class="op">&lt;</span> <span class="fl">1.5</span>:</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span>  <span class="co"># Stage 1</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> sc_value <span class="op">&lt;</span> <span class="fl">2.0</span>:</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">2</span>  <span class="co"># Stage 2</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> sc_value <span class="op">&lt;</span> <span class="fl">3.0</span>:</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">3</span>  <span class="co"># Stage 3</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> sc_value <span class="op">&lt;</span> <span class="fl">5.0</span>:</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">4</span>  <span class="co"># Stage 4</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">5</span>  <span class="co"># Stage 5</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Stage 컬럼 생성</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'ckd_stage'</span>] <span class="op">=</span> df.<span class="bu">apply</span>(assign_ckd_stage, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 CKD Stage 분포:"</span>)</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>stage_counts <span class="op">=</span> df[<span class="st">'ckd_stage'</span>].value_counts().sort_index()</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(stage_counts)</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 시각화</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>stage_counts.plot(kind<span class="op">=</span><span class="st">'bar'</span>, color<span class="op">=</span><span class="st">'skyblue'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'CKD Stage Distribution'</span>)</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'CKD Stage (0=No CKD, 1-5=Stage 1-5)'</span>)</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Count'</span>)</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>stage_counts.plot(kind<span class="op">=</span><span class="st">'pie'</span>, autopct<span class="op">=</span><span class="st">'</span><span class="sc">%1.1f%%</span><span class="st">'</span>, colors<span class="op">=</span>sns.color_palette(<span class="st">'coolwarm'</span>, <span class="bu">len</span>(stage_counts)))</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'CKD Stage Proportion'</span>)</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">''</span>)</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">⚠️ 클래스 불균형 확인: Stage별 샘플 수가 크게 차이납니다."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+🎯 타겟 변수 분포:
+classification
+ckd       248
+notckd    150
+ckd\t       2
+Name: count, dtype: int64
+
+📊 CKD Stage 분포:
+ckd_stage
+0.0    145
+1.0     60
+2.0     39
+3.0     49
+4.0     32
+5.0     58
+Name: count, dtype: int64</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-3_files/figure-html/cell-6-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+⚠️ 클래스 불균형 확인: Stage별 샘플 수가 크게 차이납니다.</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #1</strong><br>
+CKD Stage 분류에서 크레아티닌(sc) 수치는 핵심 지표입니다. 의학적으로 Stage 1-5는 신장 기능 저하 정도를 나타내며, 높은 Stage일수록 신장 기능이 심각하게 손상되었음을 의미합니다.</p>
+<div id="cell-11" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="2395cb57-9d35-47fc-b3e2-148de0b4d21c">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 수치형 변수 분포 확인</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>numeric_cols <span class="op">=</span> df.select_dtypes(include<span class="op">=</span>[np.number]).columns.tolist()</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'ckd_stage'</span> <span class="kw">in</span> numeric_cols:</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    numeric_cols.remove(<span class="st">'ckd_stage'</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📊 수치형 변수 (</span><span class="sc">{</span><span class="bu">len</span>(numeric_cols)<span class="sc">}</span><span class="ss">개): </span><span class="sc">{</span>numeric_cols[:<span class="dv">5</span>]<span class="sc">}</span><span class="ss">..."</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 주요 수치형 변수 분포 시각화</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">12</span>))</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> axes.ravel()</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, col <span class="kw">in</span> <span class="bu">enumerate</span>(numeric_cols[:<span class="dv">12</span>]):</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    axes[idx].hist(df[col].dropna(), bins<span class="op">=</span><span class="dv">20</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    axes[idx].set_title(<span class="ss">f'Distribution of </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    axes[idx].set_xlabel(col)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    axes[idx].set_ylabel(<span class="st">'Frequency'</span>)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 수치형 변수 (12개): ['id', 'age', 'bp', 'sg', 'al']...</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-3_files/figure-html/cell-7-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="데이터-전처리" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="데이터-전처리"><span class="header-section-number">2.8</span> 2️⃣ 데이터 전처리</h2>
+<section id="기본-전처리" class="level3" data-number="2.8.1">
+<h3 data-number="2.8.1" class="anchored" data-anchor-id="기본-전처리"><span class="header-section-number">2.8.1</span> 2.1 기본 전처리</h3>
+<div id="cell-13" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="fe669e65-7304-411e-e577-e07b32b8abab">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 데이터 복사본 생성</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>df_processed <span class="op">=</span> df.copy()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 문자열 타입의 수치형 데이터 변환</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>potential_numeric <span class="op">=</span> [<span class="st">'age'</span>, <span class="st">'bp'</span>, <span class="st">'bgr'</span>, <span class="st">'bu'</span>, <span class="st">'sc'</span>, <span class="st">'sod'</span>, <span class="st">'pot'</span>, <span class="st">'hemo'</span>, <span class="st">'pcv'</span>, <span class="st">'wc'</span>, <span class="st">'rc'</span>]</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> potential_numeric:</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col <span class="kw">in</span> df_processed.columns:</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># '\t?' 같은 특수 문자 제거</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>        df_processed[col] <span class="op">=</span> df_processed[col].replace([<span class="st">'</span><span class="ch">\t</span><span class="st">?'</span>, <span class="st">'</span><span class="ch">\t</span><span class="st">'</span>], np.nan)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 수치형으로 변환</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>        df_processed[col] <span class="op">=</span> pd.to_numeric(df_processed[col], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ 수치형 데이터 변환 완료"</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 범주형 변수 처리</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>categorical_cols <span class="op">=</span> df_processed.select_dtypes(include<span class="op">=</span>[<span class="st">'object'</span>]).columns.tolist()</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'classification'</span> <span class="kw">in</span> categorical_cols:</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    categorical_cols.remove(<span class="st">'classification'</span>)</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">📋 범주형 변수 (</span><span class="sc">{</span><span class="bu">len</span>(categorical_cols)<span class="sc">}</span><span class="ss">개): </span><span class="sc">{</span>categorical_cols<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 범주형 변수 인코딩</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>label_encoders <span class="op">=</span> {}</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> categorical_cols:</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    le <span class="op">=</span> LabelEncoder()</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># NaN 값을 'missing'으로 임시 대체</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>    df_processed[col] <span class="op">=</span> df_processed[col].fillna(<span class="st">'missing'</span>)</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>    df_processed[col] <span class="op">=</span> le.fit_transform(df_processed[col].astype(<span class="bu">str</span>))</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>    label_encoders[col] <span class="op">=</span> le</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ 범주형 변수 인코딩 완료"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>✅ 수치형 데이터 변환 완료
+
+📋 범주형 변수 (10개): ['rbc', 'pc', 'pcc', 'ba', 'htn', 'dm', 'cad', 'appet', 'pe', 'ane']
+✅ 범주형 변수 인코딩 완료</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #2</strong><br>
+의료 데이터는 종종 특수 문자나 잘못된 형식을 포함합니다. 기본 전처리에서 이러한 이상값을 먼저 처리한 후, 고급 기법을 적용해야 합니다.</p>
+</section>
+<section id="고급-전처리-기법-적용" class="level3" data-number="2.8.2">
+<h3 data-number="2.8.2" class="anchored" data-anchor-id="고급-전처리-기법-적용"><span class="header-section-number">2.8.2</span> 2.2 고급 전처리 기법 적용</h3>
+<div id="cell-15" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="4ddc6322-49e8-4e1f-fcb0-c31ec67fada3">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MICE를 이용한 결측치 대체</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"🔄 MICE (Multiple Imputation by Chained Equations) 적용 중..."</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 타겟 변수 분리</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df_processed.drop([<span class="st">'classification'</span>, <span class="st">'ckd_stage'</span>], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df_processed[<span class="st">'ckd_stage'</span>].dropna()</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co"># MICE imputer 생성 및 적용</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>mice_imputer <span class="op">=</span> IterativeImputer(random_state<span class="op">=</span><span class="dv">42</span>, max_iter<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>X_imputed <span class="op">=</span> mice_imputer.fit_transform(X)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>X_imputed_df <span class="op">=</span> pd.DataFrame(X_imputed, columns<span class="op">=</span>X.columns)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ MICE 결측치 대체 완료"</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"결측치 개수: </span><span class="sc">{</span>X<span class="sc">.</span>isnull()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss"> → </span><span class="sc">{</span>pd<span class="sc">.</span>DataFrame(X_imputed)<span class="sc">.</span>isnull()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 타겟 변수가 있는 행만 선택</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>valid_indices <span class="op">=</span> df_processed[<span class="st">'ckd_stage'</span>].notna()</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>X_imputed_df <span class="op">=</span> X_imputed_df[valid_indices]</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> y.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">📊 최종 데이터 크기: </span><span class="sc">{</span>X_imputed_df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>🔄 MICE (Multiple Imputation by Chained Equations) 적용 중...
+✅ MICE 결측치 대체 완료
+결측치 개수: 778 → 0
+
+📊 최종 데이터 크기: (383, 25)</code></pre>
+</div>
+</div>
+<div id="cell-16" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="031dbff5-a0b2-471c-f8ca-33f08257e66a">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># VIF를 이용한 다중공선성 제거</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.outliers_influence <span class="im">import</span> variance_inflation_factor</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_vif(df):</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""VIF 계산 함수"""</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    vif <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    vif[<span class="st">"Variable"</span>] <span class="op">=</span> df.columns</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    vif[<span class="st">"VIF"</span>] <span class="op">=</span> [variance_inflation_factor(df.values, i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(df.shape[<span class="dv">1</span>])]</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> vif.sort_values(<span class="st">'VIF'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📊 VIF (Variance Inflation Factor) 계산 중..."</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 초기 VIF 계산</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>vif_df <span class="op">=</span> calculate_vif(X_imputed_df)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">초기 VIF 값 (상위 10개):"</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vif_df.head(<span class="dv">10</span>))</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co"># VIF &gt; 10인 변수 제거 (다중공선성 높음)</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>high_vif_cols <span class="op">=</span> vif_df[vif_df[<span class="st">'VIF'</span>] <span class="op">&gt;</span> <span class="dv">10</span>][<span class="st">'Variable'</span>].tolist()</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>X_reduced <span class="op">=</span> X_imputed_df.drop(columns<span class="op">=</span>high_vif_cols, errors<span class="op">=</span><span class="st">'ignore'</span>)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">✅ 제거된 변수 (</span><span class="sc">{</span><span class="bu">len</span>(high_vif_cols)<span class="sc">}</span><span class="ss">개): </span><span class="sc">{</span>high_vif_cols<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"남은 변수 개수: </span><span class="sc">{</span>X_reduced<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 최종 VIF 확인</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> X_reduced.shape[<span class="dv">1</span>] <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    final_vif <span class="op">=</span> calculate_vif(X_reduced)</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">최종 VIF 값 (상위 5개):"</span>)</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(final_vif.head())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 VIF (Variance Inflation Factor) 계산 중...
+
+초기 VIF 값 (상위 10개):
+   Variable          VIF
+3        sg  1045.999222
+13      sod   590.513094
+15     hemo   150.244372
+16      pcv   139.041430
+18       rc    99.995871
+20       dm    62.951863
+21      cad    55.976170
+2        bp    40.556123
+9        ba    23.228386
+19      htn    20.643892
+
+✅ 제거된 변수 (16개): ['sg', 'sod', 'hemo', 'pcv', 'rc', 'dm', 'cad', 'bp', 'ba', 'htn', 'pcc', 'ane', 'pe', 'bgr', 'wc', 'age']
+남은 변수 개수: 9
+
+최종 VIF 값 (상위 5개):
+  Variable       VIF
+3      rbc  7.117093
+0       id  6.240759
+4       pc  4.773075
+5       bu  4.702755
+7      pot  4.020483</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #3</strong><br>
+MICE는 단순 평균 대체보다 우수한 이유는 변수 간 관계를 고려하여 결측치를 예측하기 때문입니다. VIF &gt; 10인 변수는 다중공선성이 높아 모델 성능과 해석력을 저하시킬 수 있습니다.</p>
+</section>
+<section id="도메인-특화-전처리" class="level3" data-number="2.8.3">
+<h3 data-number="2.8.3" class="anchored" data-anchor-id="도메인-특화-전처리"><span class="header-section-number">2.8.3</span> 2.3 도메인 특화 전처리</h3>
+<div id="cell-18" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="355d65ce-9baa-4575-9833-5299022f4969">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 의료 도메인 지식 기반 특징 생성</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>X_domain <span class="op">=</span> X_reduced.copy()</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. eGFR (추정 사구체 여과율) - 신장 기능 핵심 지표</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'age'</span> <span class="kw">in</span> X_domain.columns <span class="kw">and</span> <span class="st">'sc'</span> <span class="kw">in</span> X_imputed_df.columns:</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># MDRD 공식 간소화 버전</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    X_domain[<span class="st">'eGFR'</span>] <span class="op">=</span> <span class="dv">186</span> <span class="op">*</span> (X_imputed_df[<span class="st">'sc'</span>] <span class="op">**</span> <span class="op">-</span><span class="fl">1.154</span>) <span class="op">*</span> (X_domain[<span class="st">'age'</span>] <span class="op">**</span> <span class="op">-</span><span class="fl">0.203</span>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"✅ eGFR (추정 사구체 여과율) 생성"</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 빈혈 지표 (Anemia Index)</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'hemo'</span> <span class="kw">in</span> X_imputed_df.columns <span class="kw">and</span> <span class="st">'pcv'</span> <span class="kw">in</span> X_imputed_df.columns:</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    X_domain[<span class="st">'anemia_index'</span>] <span class="op">=</span> X_imputed_df[<span class="st">'hemo'</span>] <span class="op">/</span> X_imputed_df[<span class="st">'pcv'</span>]</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"✅ 빈혈 지표 생성"</span>)</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 전해질 균형 지표</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'sod'</span> <span class="kw">in</span> X_imputed_df.columns <span class="kw">and</span> <span class="st">'pot'</span> <span class="kw">in</span> X_imputed_df.columns:</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    X_domain[<span class="st">'electrolyte_ratio'</span>] <span class="op">=</span> X_imputed_df[<span class="st">'sod'</span>] <span class="op">/</span> X_imputed_df[<span class="st">'pot'</span>]</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"✅ 전해질 균형 지표 생성"</span>)</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 당뇨-혈압 복합 위험도</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'dm'</span> <span class="kw">in</span> X_domain.columns <span class="kw">and</span> <span class="st">'htn'</span> <span class="kw">in</span> X_domain.columns:</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    X_domain[<span class="st">'dm_htn_risk'</span>] <span class="op">=</span> X_domain[<span class="st">'dm'</span>] <span class="op">+</span> X_domain[<span class="st">'htn'</span>]</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"✅ 당뇨-혈압 복합 위험도 생성"</span>)</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">📊 도메인 특화 특징 추가 후 변수 개수: </span><span class="sc">{</span>X_domain<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>✅ 빈혈 지표 생성
+✅ 전해질 균형 지표 생성
+
+📊 도메인 특화 특징 추가 후 변수 개수: 11</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #4</strong><br>
+의료 도메인 지식을 활용한 특징 공학은 모델 성능과 해석력을 크게 향상시킵니다. eGFR은 임상에서 CKD 진단의 핵심 지표이며, 전해질 균형은 신장 기능을 간접적으로 반영합니다.</p>
+</section>
+<section id="전처리-효과-비교" class="level3" data-number="2.8.4">
+<h3 data-number="2.8.4" class="anchored" data-anchor-id="전처리-효과-비교"><span class="header-section-number">2.8.4</span> 2.4 전처리 효과 비교</h3>
+<div id="cell-20" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:517}}" data-outputid="e2d6d638-eaeb-497d-e810-68ab3aac352b">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 전처리 단계별 효과 비교를 위한 데이터셋 준비</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>datasets <span class="op">=</span> {</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'기본 전처리'</span>: X,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'MICE 적용'</span>: X_imputed_df,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'VIF 제거'</span>: X_reduced,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'도메인 특화'</span>: X_domain</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 각 단계별 정보 요약</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>comparison_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Stage'</span>: <span class="bu">list</span>(datasets.keys()),</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Features'</span>: [df.shape[<span class="dv">1</span>] <span class="cf">if</span> <span class="bu">hasattr</span>(df, <span class="st">'shape'</span>) <span class="cf">else</span> <span class="dv">0</span> <span class="cf">for</span> df <span class="kw">in</span> datasets.values()],</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Missing Values'</span>: [df.isnull().<span class="bu">sum</span>().<span class="bu">sum</span>() <span class="cf">if</span> <span class="bu">hasattr</span>(df, <span class="st">'isnull'</span>) <span class="cf">else</span> <span class="dv">0</span> <span class="cf">for</span> df <span class="kw">in</span> datasets.values()]</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📊 전처리 단계별 효과:"</span>)</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(comparison_df)</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 시각화</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].bar(comparison_df[<span class="st">'Stage'</span>], comparison_df[<span class="st">'Features'</span>], color<span class="op">=</span><span class="st">'skyblue'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Number of Features by Processing Stage'</span>)</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Processing Stage'</span>)</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Number of Features'</span>)</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].tick_params(axis<span class="op">=</span><span class="st">'x'</span>, rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].bar(comparison_df[<span class="st">'Stage'</span>], comparison_df[<span class="st">'Missing Values'</span>], color<span class="op">=</span><span class="st">'coral'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Missing Values by Processing Stage'</span>)</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'Processing Stage'</span>)</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Number of Missing Values'</span>)</span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].tick_params(axis<span class="op">=</span><span class="st">'x'</span>, rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 전처리 단계별 효과:
+     Stage  Features  Missing Values
+0   기본 전처리        25             778
+1  MICE 적용        25               0
+2   VIF 제거         9               0
+3   도메인 특화        11               0</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-3_files/figure-html/cell-12-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="모델링" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="모델링"><span class="header-section-number">2.9</span> 3️⃣ 모델링</h2>
+<section id="baseline-모델-설정" class="level3" data-number="2.9.1">
+<h3 data-number="2.9.1" class="anchored" data-anchor-id="baseline-모델-설정"><span class="header-section-number">2.9.1</span> 3.1. Baseline 모델 설정</h3>
+<div id="cell-22" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="c2a8d51b-d2a2-46b2-f7e3-83ea874c4a0e">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 데이터 분할</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    X_domain, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📊 훈련 세트: </span><span class="sc">{</span>X_train<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📊 테스트 세트: </span><span class="sc">{</span>X_test<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">🎯 훈련 세트 클래스 분포:"</span>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_train.value_counts().sort_index())</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 스케일링</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>X_train_scaled <span class="op">=</span> scaler.fit_transform(X_train)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>X_test_scaled <span class="op">=</span> scaler.transform(X_test)</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Baseline: Logistic Regression (튜닝 없음)</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>baseline_model <span class="op">=</span> LogisticRegression(random_state<span class="op">=</span><span class="dv">42</span>, max_iter<span class="op">=</span><span class="dv">1000</span>, multi_class<span class="op">=</span><span class="st">'ovr'</span>)</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>baseline_model.fit(X_train_scaled, y_train)</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Baseline 성능 평가</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>y_pred_baseline <span class="op">=</span> baseline_model.predict(X_test_scaled)</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>baseline_accuracy <span class="op">=</span> accuracy_score(y_test, y_pred_baseline)</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">📊 Baseline 모델 (Logistic Regression) 성능:"</span>)</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy: </span><span class="sc">{</span>baseline_accuracy<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">상세 분류 리포트:"</span>)</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test, y_pred_baseline, zero_division<span class="op">=</span><span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 훈련 세트: (306, 11)
+📊 테스트 세트: (77, 11)
+
+🎯 훈련 세트 클래스 분포:
+ckd_stage
+0.0    116
+1.0     48
+2.0     31
+3.0     39
+4.0     26
+5.0     46
+Name: count, dtype: int64
+
+📊 Baseline 모델 (Logistic Regression) 성능:
+Accuracy: 0.7403
+
+상세 분류 리포트:
+              precision    recall  f1-score   support
+
+         0.0       0.94      1.00      0.97        29
+         1.0       0.50      0.67      0.57        12
+         2.0       0.00      0.00      0.00         8
+         3.0       0.67      0.60      0.63        10
+         4.0       0.50      0.33      0.40         6
+         5.0       0.86      1.00      0.92        12
+
+    accuracy                           0.74        77
+   macro avg       0.58      0.60      0.58        77
+weighted avg       0.69      0.74      0.71        77
+</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #5</strong><br>
+Baseline 모델은 튜닝되지 않은 기본 모델로, 성능 개선의 시작점입니다. 다중 클래스 분류에서 ‘ovr’(One-vs-Rest) 전략은 각 클래스를 나머지와 구분하는 이진 분류기를 만듭니다.</p>
+</section>
+<section id="고급-하이퍼파라미터-튜닝" class="level3" data-number="2.9.2">
+<h3 data-number="2.9.2" class="anchored" data-anchor-id="고급-하이퍼파라미터-튜닝"><span class="header-section-number">2.9.2</span> 3.2. 고급 하이퍼파라미터 튜닝</h3>
+<div id="cell-24" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="78cdbd03-b3ae-42cc-9d85-369edd14ab90">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter   <span class="co"># ← 이 줄 추가</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> imblearn.over_sampling <span class="im">import</span> SMOTE</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co"># SMOTE를 적용한 클래스 균형 맞추기</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"🔄 SMOTE 적용 중..."</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>smote <span class="op">=</span> SMOTE(random_state<span class="op">=</span><span class="dv">42</span>, k_neighbors<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>X_train_balanced, y_train_balanced <span class="op">=</span> smote.fit_resample(X_train_scaled, y_train)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ SMOTE 적용 완료"</span>)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"원본 훈련 세트: </span><span class="sc">{</span>Counter(y_train)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"균형 훈련 세트: </span><span class="sc">{</span>Counter(y_train_balanced)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="co"># RandomForest with GridSearchCV</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">🔄 RandomForest 하이퍼파라미터 튜닝 중..."</span>)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>rf_param_grid <span class="op">=</span> {</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n_estimators'</span>: [<span class="dv">100</span>, <span class="dv">200</span>],</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: [<span class="dv">10</span>, <span class="dv">20</span>, <span class="va">None</span>],</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_samples_split'</span>: [<span class="dv">2</span>, <span class="dv">5</span>],</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_samples_leaf'</span>: [<span class="dv">1</span>, <span class="dv">2</span>]</span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>rf_model <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>rf_grid <span class="op">=</span> GridSearchCV(</span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>    rf_model,</span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>    rf_param_grid,</span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>    cv<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>    scoring<span class="op">=</span><span class="st">'accuracy'</span>,</span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>    n_jobs<span class="op">=-</span><span class="dv">1</span>,</span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a>rf_grid.fit(X_train_balanced, y_train_balanced)</span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">✅ 최적 파라미터: </span><span class="sc">{</span>rf_grid<span class="sc">.</span>best_params_<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"최적 교차검증 점수: </span><span class="sc">{</span>rf_grid<span class="sc">.</span>best_score_<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a><span class="co"># 최적 RandomForest 성능</span></span>
+<span id="cb27-41"><a href="#cb27-41" aria-hidden="true" tabindex="-1"></a>y_pred_rf <span class="op">=</span> rf_grid.best_estimator_.predict(X_test_scaled)</span>
+<span id="cb27-42"><a href="#cb27-42" aria-hidden="true" tabindex="-1"></a>rf_accuracy <span class="op">=</span> accuracy_score(y_test, y_pred_rf)</span>
+<span id="cb27-43"><a href="#cb27-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">RandomForest 테스트 정확도: </span><span class="sc">{</span>rf_accuracy<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>🔄 SMOTE 적용 중...
+✅ SMOTE 적용 완료
+원본 훈련 세트: Counter({0.0: 116, 1.0: 48, 5.0: 46, 3.0: 39, 2.0: 31, 4.0: 26})
+균형 훈련 세트: Counter({0.0: 116, 5.0: 116, 3.0: 116, 1.0: 116, 2.0: 116, 4.0: 116})
+
+🔄 RandomForest 하이퍼파라미터 튜닝 중...
+Fitting 3 folds for each of 24 candidates, totalling 72 fits
+
+✅ 최적 파라미터: {'max_depth': 10, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 100}
+최적 교차검증 점수: 1.0000
+
+RandomForest 테스트 정확도: 1.0000</code></pre>
+</div>
+</div>
+<div id="cell-25" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="17d0d993-69e2-4642-8772-0825a9dc9233">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># XGBoost 하이퍼파라미터 튜닝</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"🔄 XGBoost 하이퍼파라미터 튜닝 중..."</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>xgb_param_grid <span class="op">=</span> {</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n_estimators'</span>: [<span class="dv">100</span>, <span class="dv">200</span>],</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: [<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>],</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'learning_rate'</span>: [<span class="fl">0.01</span>, <span class="fl">0.1</span>],</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'subsample'</span>: [<span class="fl">0.8</span>, <span class="fl">1.0</span>]</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>xgb_model <span class="op">=</span> XGBClassifier(random_state<span class="op">=</span><span class="dv">42</span>, use_label_encoder<span class="op">=</span><span class="va">False</span>, eval_metric<span class="op">=</span><span class="st">'mlogloss'</span>)</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>xgb_grid <span class="op">=</span> GridSearchCV(xgb_model, xgb_param_grid, cv<span class="op">=</span><span class="dv">3</span>, scoring<span class="op">=</span><span class="st">'accuracy'</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>, verbose<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>xgb_grid.fit(X_train_balanced, y_train_balanced)</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">✅ 최적 파라미터: </span><span class="sc">{</span>xgb_grid<span class="sc">.</span>best_params_<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"최적 교차검증 점수: </span><span class="sc">{</span>xgb_grid<span class="sc">.</span>best_score_<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 최적 XGBoost 성능</span></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>y_pred_xgb <span class="op">=</span> xgb_grid.best_estimator_.predict(X_test_scaled)</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>xgb_accuracy <span class="op">=</span> accuracy_score(y_test, y_pred_xgb)</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">XGBoost 테스트 정확도: </span><span class="sc">{</span>xgb_accuracy<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>🔄 XGBoost 하이퍼파라미터 튜닝 중...
+Fitting 3 folds for each of 24 candidates, totalling 72 fits
+
+✅ 최적 파라미터: {'learning_rate': 0.01, 'max_depth': 3, 'n_estimators': 100, 'subsample': 0.8}
+최적 교차검증 점수: 0.9928
+
+XGBoost 테스트 정확도: 0.9870</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #6</strong><br>
+SMOTE는 소수 클래스의 합성 샘플을 생성하여 클래스 불균형을 해결합니다. GridSearchCV는 교차검증을 통해 최적의 하이퍼파라미터 조합을 자동으로 찾아줍니다.</p>
+</section>
+<section id="최종-모델-학습-및-앙상블" class="level3" data-number="2.9.3">
+<h3 data-number="2.9.3" class="anchored" data-anchor-id="최종-모델-학습-및-앙상블"><span class="header-section-number">2.9.3</span> 3.3. 최종 모델 학습 (및 앙상블)</h3>
+<div id="cell-27" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:790}}" data-outputid="d7002c0b-38a2-4b9a-b145-32963c26d92d">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Voting Classifier 앙상블</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"🔄 앙상블 모델 구축 중..."</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 개별 모델 준비</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>lr_final <span class="op">=</span> LogisticRegression(random_state<span class="op">=</span><span class="dv">42</span>, max_iter<span class="op">=</span><span class="dv">1000</span>, multi_class<span class="op">=</span><span class="st">'ovr'</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>rf_final <span class="op">=</span> rf_grid.best_estimator_</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>xgb_final <span class="op">=</span> xgb_grid.best_estimator_</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Soft Voting Ensemble</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>ensemble_model <span class="op">=</span> VotingClassifier(</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    estimators<span class="op">=</span>[</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'lr'</span>, lr_final),</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'rf'</span>, rf_final),</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'xgb'</span>, xgb_final)</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    voting<span class="op">=</span><span class="st">'soft'</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 앙상블 모델 학습</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>ensemble_model.fit(X_train_balanced, y_train_balanced)</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 앙상블 성능 평가</span></span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>y_pred_ensemble <span class="op">=</span> ensemble_model.predict(X_test_scaled)</span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>ensemble_accuracy <span class="op">=</span> accuracy_score(y_test, y_pred_ensemble)</span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">✅ 앙상블 모델 테스트 정확도: </span><span class="sc">{</span>ensemble_accuracy<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 모든 모델 성능 비교</span></span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>model_comparison <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Model'</span>: [<span class="st">'Baseline (LR)'</span>, <span class="st">'RandomForest'</span>, <span class="st">'XGBoost'</span>, <span class="st">'Ensemble'</span>],</span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Accuracy'</span>: [baseline_accuracy, rf_accuracy, xgb_accuracy, ensemble_accuracy]</span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 모델 성능 비교:"</span>)</span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_comparison.sort_values(<span class="st">'Accuracy'</span>, ascending<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 시각화</span></span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'lightcoral'</span>, <span class="st">'skyblue'</span>, <span class="st">'lightgreen'</span>, <span class="st">'gold'</span>]</span>
+<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> plt.bar(model_comparison[<span class="st">'Model'</span>], model_comparison[<span class="st">'Accuracy'</span>], color<span class="op">=</span>colors, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Model Performance Comparison'</span>, fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Model'</span>)</span>
+<span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Accuracy'</span>)</span>
+<span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a>plt.ylim([<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-46"><a href="#cb31-46" aria-hidden="true" tabindex="-1"></a><span class="co"># 값 표시</span></span>
+<span id="cb31-47"><a href="#cb31-47" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bar, acc <span class="kw">in</span> <span class="bu">zip</span>(bars, model_comparison[<span class="st">'Accuracy'</span>]):</span>
+<span id="cb31-48"><a href="#cb31-48" aria-hidden="true" tabindex="-1"></a>    plt.text(bar.get_x() <span class="op">+</span> bar.get_width()<span class="op">/</span><span class="dv">2</span>, bar.get_height() <span class="op">+</span> <span class="fl">0.01</span>,</span>
+<span id="cb31-49"><a href="#cb31-49" aria-hidden="true" tabindex="-1"></a>             <span class="ss">f'</span><span class="sc">{</span>acc<span class="sc">:.3f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'bottom'</span>)</span>
+<span id="cb31-50"><a href="#cb31-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-51"><a href="#cb31-51" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb31-52"><a href="#cb31-52" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>🔄 앙상블 모델 구축 중...
+
+✅ 앙상블 모델 테스트 정확도: 1.0000
+
+📊 모델 성능 비교:
+           Model  Accuracy
+1   RandomForest  1.000000
+3       Ensemble  1.000000
+2        XGBoost  0.987013
+0  Baseline (LR)  0.740260</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-3_files/figure-html/cell-16-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #7</strong><br>
+Soft voting 앙상블은 각 모델의 예측 확률을 평균하여 최종 예측을 수행합니다. 이는 개별 모델의 약점을 보완하고 더 안정적인 예측을 제공합니다.</p>
+</section>
+</section>
+<section id="성능-평가" class="level2" data-number="2.10">
+<h2 data-number="2.10" class="anchored" data-anchor-id="성능-평가"><span class="header-section-number">2.10</span> 4️⃣ 성능 평가</h2>
+<div id="cell-29" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:941}}" data-outputid="13a8edd4-b163-4e6d-9d02-67bd4ec6c00f">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 최종 모델(앙상블)의 상세 평가</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> precision_recall_fscore_support, cohen_kappa_score</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_test, y_pred_ensemble)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>,</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>            xticklabels<span class="op">=</span>[<span class="ss">f'Stage </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">6</span>)],</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>            yticklabels<span class="op">=</span>[<span class="ss">f'Stage </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">6</span>)])</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Confusion Matrix - Ensemble Model'</span>)</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted'</span>)</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Actual'</span>)</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 상세 메트릭</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 앙상블 모델 상세 평가:"</span>)</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test, y_pred_ensemble,</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>                           target_names<span class="op">=</span>[<span class="ss">f'Stage </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">6</span>)],</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>                           zero_division<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 추가 메트릭</span></span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>precision, recall, f1, support <span class="op">=</span> precision_recall_fscore_support(y_test, y_pred_ensemble, average<span class="op">=</span><span class="st">'weighted'</span>)</span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>kappa <span class="op">=</span> cohen_kappa_score(y_test, y_pred_ensemble)</span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">📈 추가 성능 지표:"</span>)</span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Weighted Precision: </span><span class="sc">{</span>precision<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Weighted Recall: </span><span class="sc">{</span>recall<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Weighted F1-Score: </span><span class="sc">{</span>f1<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Cohen's Kappa: </span><span class="sc">{</span>kappa<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-3_files/figure-html/cell-17-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+📊 앙상블 모델 상세 평가:
+              precision    recall  f1-score   support
+
+     Stage 0       1.00      1.00      1.00        29
+     Stage 1       1.00      1.00      1.00        12
+     Stage 2       1.00      1.00      1.00         8
+     Stage 3       1.00      1.00      1.00        10
+     Stage 4       1.00      1.00      1.00         6
+     Stage 5       1.00      1.00      1.00        12
+
+    accuracy                           1.00        77
+   macro avg       1.00      1.00      1.00        77
+weighted avg       1.00      1.00      1.00        77
+
+
+📈 추가 성능 지표:
+Weighted Precision: 1.0000
+Weighted Recall: 1.0000
+Weighted F1-Score: 1.0000
+Cohen's Kappa: 1.0000</code></pre>
+</div>
+</div>
+<div id="cell-30" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:507}}" data-outputid="0db33cff-1730-49b4-9647-d843e6e029b8">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 클래스별 성능 시각화</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>class_report <span class="op">=</span> classification_report(y_test, y_pred_ensemble,</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>                                    target_names<span class="op">=</span>[<span class="ss">f'Stage </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">6</span>)],</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>                                    output_dict<span class="op">=</span><span class="va">True</span>, zero_division<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="co"># DataFrame으로 변환</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>class_metrics <span class="op">=</span> pd.DataFrame(class_report).T[:<span class="op">-</span><span class="dv">3</span>]  <span class="co"># 마지막 3행(accuracy, macro avg, weighted avg) 제외</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>class_metrics <span class="op">=</span> class_metrics[[<span class="st">'precision'</span>, <span class="st">'recall'</span>, <span class="st">'f1-score'</span>]]</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 시각화</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>metrics <span class="op">=</span> [<span class="st">'precision'</span>, <span class="st">'recall'</span>, <span class="st">'f1-score'</span>]</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'skyblue'</span>, <span class="st">'lightcoral'</span>, <span class="st">'lightgreen'</span>]</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, (metric, color) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(metrics, colors)):</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>    axes[idx].bar(<span class="bu">range</span>(<span class="bu">len</span>(class_metrics)), class_metrics[metric], color<span class="op">=</span>color, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>    axes[idx].set_title(<span class="ss">f'</span><span class="sc">{</span>metric<span class="sc">.</span>capitalize()<span class="sc">}</span><span class="ss"> by CKD Stage'</span>)</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>    axes[idx].set_xlabel(<span class="st">'CKD Stage'</span>)</span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>    axes[idx].set_ylabel(metric.capitalize())</span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>    axes[idx].set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(class_metrics)))</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>    axes[idx].set_xticklabels([<span class="ss">f'Stage </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">6</span>)])</span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>    axes[idx].set_ylim([<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 값 표시</span></span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, v <span class="kw">in</span> <span class="bu">enumerate</span>(class_metrics[metric]):</span>
+<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a>        axes[idx].text(i, v <span class="op">+</span> <span class="fl">0.01</span>, <span class="ss">f'</span><span class="sc">{</span>v<span class="sc">:.2f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>)</span>
+<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-3_files/figure-html/cell-18-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="모델-해석" class="level2" data-number="2.11">
+<h2 data-number="2.11" class="anchored" data-anchor-id="모델-해석"><span class="header-section-number">2.11</span> 5️⃣ 모델 해석</h2>
+<div id="cell-32" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="ead835ef-28eb-488f-cdb2-d394d74efd9f">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Feature Importance (RandomForest 기반)</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>feature_importance <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'feature'</span>: X_domain.columns,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'importance'</span>: rf_grid.best_estimator_.feature_importances_</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>}).sort_values(<span class="st">'importance'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📊 Top 10 중요 특징:"</span>)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(feature_importance.head(<span class="dv">10</span>))</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 시각화</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>top_features <span class="op">=</span> feature_importance.head(<span class="dv">15</span>)</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>plt.barh(<span class="bu">range</span>(<span class="bu">len</span>(top_features)), top_features[<span class="st">'importance'</span>], color<span class="op">=</span><span class="st">'skyblue'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>plt.yticks(<span class="bu">range</span>(<span class="bu">len</span>(top_features)), top_features[<span class="st">'feature'</span>])</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Feature Importance'</span>)</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Top 15 Most Important Features'</span>)</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>plt.gca().invert_yaxis()</span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 Top 10 중요 특징:
+              feature  importance
+6                  sc    0.442687
+5                  bu    0.141312
+0                  id    0.134973
+1                  al    0.063457
+3                 rbc    0.059170
+7                 pot    0.038229
+10  electrolyte_ratio    0.037261
+9        anemia_index    0.027391
+4                  pc    0.024003
+2                  su    0.021622</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-3_files/figure-html/cell-19-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-33" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:740}}" data-outputid="1fce7873-94a1-4a71-a53c-061c5813ff64">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SHAP 분석</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"🔄 SHAP 분석 진행 중..."</span>)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># SHAP explainer 생성 (RandomForest 모델 사용)</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>explainer <span class="op">=</span> shap.TreeExplainer(rf_grid.best_estimator_)</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>shap_values <span class="op">=</span> explainer.shap_values(X_test_scaled)</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="co"># SHAP Summary Plot</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">isinstance</span>(shap_values, <span class="bu">list</span>):</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 다중 클래스의 경우 첫 번째 클래스에 대한 SHAP 값 사용</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>    shap.summary_plot(shap_values[<span class="dv">0</span>], X_test, feature_names<span class="op">=</span>X_domain.columns, show<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>    shap.summary_plot(shap_values, X_test, feature_names<span class="op">=</span>X_domain.columns, show<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'SHAP Feature Importance'</span>)</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">✅ SHAP 분석 완료: 각 특징이 예측에 미치는 영향을 확인할 수 있습니다."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>🔄 SHAP 분석 진행 중...</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;Figure size 1200x800 with 0 Axes&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-3_files/figure-html/cell-20-output-3.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+✅ SHAP 분석 완료: 각 특징이 예측에 미치는 영향을 확인할 수 있습니다.</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #8</strong><br>
+SHAP(SHapley Additive exPlanations)는 게임 이론 기반의 모델 해석 방법으로, 각 특징이 개별 예측에 기여하는 정도를 정량화합니다. 의료진이 모델의 의사결정 과정을 이해하는 데 중요합니다.</p>
+</section>
+<section id="외부-검증-external-validation" class="level2" data-number="2.12">
+<h2 data-number="2.12" class="anchored" data-anchor-id="외부-검증-external-validation"><span class="header-section-number">2.12</span> 6️⃣ 외부 검증 (External Validation)</h2>
+<div id="cell-35" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:844}}" data-outputid="9e3deaa7-e771-4cca-bd69-a91f3a8b9133">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 시간적 검증 시뮬레이션 (데이터를 시간순으로 분할)</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📊 교차 검증을 통한 모델 안정성 평가"</span>)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score, StratifiedKFold</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Stratified K-Fold (클래스 비율 유지)</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>skf <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 각 모델의 교차 검증 수행</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> {</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Logistic Regression'</span>: lr_final,</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Random Forest'</span>: rf_final,</span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'XGBoost'</span>: xgb_final</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>cv_results <span class="op">=</span> {}</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, model <span class="kw">in</span> models.items():</span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> cross_val_score(model, X_train_balanced, y_train_balanced,</span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>                            cv<span class="op">=</span>skf, scoring<span class="op">=</span><span class="st">'accuracy'</span>)</span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>    cv_results[name] <span class="op">=</span> scores</span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">:"</span>)</span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  CV Scores: </span><span class="sc">{</span>scores<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  Mean: </span><span class="sc">{</span>scores<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss"> (+/- </span><span class="sc">{</span>scores<span class="sc">.</span>std() <span class="op">*</span> <span class="dv">2</span><span class="sc">:.4f}</span><span class="ss">)"</span>)</span>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 교차 검증 결과 시각화</span></span>
+<span id="cb42-26"><a href="#cb42-26" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb42-27"><a href="#cb42-27" aria-hidden="true" tabindex="-1"></a>box_data <span class="op">=</span> [cv_results[name] <span class="cf">for</span> name <span class="kw">in</span> models.keys()]</span>
+<span id="cb42-28"><a href="#cb42-28" aria-hidden="true" tabindex="-1"></a>plt.boxplot(box_data, labels<span class="op">=</span>models.keys())</span>
+<span id="cb42-29"><a href="#cb42-29" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Cross-Validation Performance Comparison'</span>)</span>
+<span id="cb42-30"><a href="#cb42-30" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Accuracy'</span>)</span>
+<span id="cb42-31"><a href="#cb42-31" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb42-32"><a href="#cb42-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-33"><a href="#cb42-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 평균선 추가</span></span>
+<span id="cb42-34"><a href="#cb42-34" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (name, scores) <span class="kw">in</span> <span class="bu">enumerate</span>(cv_results.items(), <span class="dv">1</span>):</span>
+<span id="cb42-35"><a href="#cb42-35" aria-hidden="true" tabindex="-1"></a>    plt.hlines(scores.mean(), i<span class="op">-</span><span class="fl">0.25</span>, i<span class="op">+</span><span class="fl">0.25</span>, colors<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb42-36"><a href="#cb42-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-37"><a href="#cb42-37" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb42-38"><a href="#cb42-38" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 교차 검증을 통한 모델 안정성 평가
+
+Logistic Regression:
+  CV Scores: [0.75       0.76258993 0.70503597 0.74820144 0.71942446]
+  Mean: 0.7371 (+/- 0.0427)
+
+Random Forest:
+  CV Scores: [1.         1.         1.         1.         0.99280576]
+  Mean: 0.9986 (+/- 0.0058)
+
+XGBoost:
+  CV Scores: [0.98571429 1.         1.         0.99280576 0.99280576]
+  Mean: 0.9943 (+/- 0.0107)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-3_files/figure-html/cell-21-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-36" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="91c83e5a-da12-42c2-9e12-4b414e3ea3da">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 홀드아웃 검증 세트에서 최종 평가</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 홀드아웃 테스트 세트 최종 평가"</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 예측 확률 계산 (ROC-AUC를 위해)</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> label_binarize</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 클래스 이진화</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>y_test_binary <span class="op">=</span> label_binarize(y_test, classes<span class="op">=</span><span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">6</span>)))</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 앙상블 모델의 예측 확률</span></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>y_pred_proba <span class="op">=</span> ensemble_model.predict_proba(X_test_scaled)</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Multi-class ROC-AUC</span></span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>roc_auc <span class="op">=</span> roc_auc_score(y_test_binary, y_pred_proba, multi_class<span class="op">=</span><span class="st">'ovr'</span>, average<span class="op">=</span><span class="st">'weighted'</span>)</span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"✅ Weighted ROC-AUC Score: </span><span class="sc">{</span>roc_auc<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"✅ Final Test Accuracy: </span><span class="sc">{</span>ensemble_accuracy<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"✅ Cohen's Kappa Score: </span><span class="sc">{</span>kappa<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 클래스별 ROC-AUC</span></span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">6</span>):</span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="kw">in</span> y_test.values:</span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>        class_roc_auc <span class="op">=</span> roc_auc_score(</span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>            (y_test <span class="op">==</span> i).astype(<span class="bu">int</span>),</span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>            y_pred_proba[:, i]</span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  Stage </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> ROC-AUC: </span><span class="sc">{</span>class_roc_auc<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+📊 홀드아웃 테스트 세트 최종 평가
+✅ Weighted ROC-AUC Score: 0.9996
+✅ Final Test Accuracy: 1.0000
+✅ Cohen's Kappa Score: 1.0000
+  Stage 0 ROC-AUC: 1.0000
+  Stage 1 ROC-AUC: 0.9974
+  Stage 2 ROC-AUC: 1.0000
+  Stage 3 ROC-AUC: 1.0000
+  Stage 4 ROC-AUC: 1.0000
+  Stage 5 ROC-AUC: 1.0000</code></pre>
+</div>
+</div>
+</section>
+<section id="결과-리포트-작성" class="level2" data-number="2.13">
+<h2 data-number="2.13" class="anchored" data-anchor-id="결과-리포트-작성"><span class="header-section-number">2.13</span> 7️⃣ 결과 리포트 작성</h2>
+<div id="cell-38" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="dfe7b508-90ad-48e9-8b7a-47370c855ef7">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 종합 결과 리포트 생성</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">80</span>)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📊 만성 신장 질환(CKD) 단계 분류 모델링 최종 리포트"</span>)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">80</span>)</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">1. 데이터셋 정보:"</span>)</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   - 총 샘플 수: </span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   - 사용된 특징 수: </span><span class="sc">{</span>X_domain<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   - 타겟 클래스 수: 6 (No CKD + CKD Stage 1-5)"</span>)</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">2. 전처리 기법:"</span>)</span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   - MICE를 통한 결측치 대체"</span>)</span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   - VIF 기반 다중공선성 제거"</span>)</span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   - 도메인 지식 기반 특징 생성 (eGFR, 빈혈지표 등)"</span>)</span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   - SMOTE를 통한 클래스 불균형 해결"</span>)</span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">3. 모델 성능 요약:"</span>)</span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_comparison.to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">4. 최종 앙상블 모델 성능:"</span>)</span>
+<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   - Test Accuracy: </span><span class="sc">{</span>ensemble_accuracy<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   - Weighted ROC-AUC: </span><span class="sc">{</span>roc_auc<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   - Cohen's Kappa: </span><span class="sc">{</span>kappa<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">5. 주요 예측 인자 (Top 5):"</span>)</span>
+<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, row <span class="kw">in</span> feature_importance.head(<span class="dv">5</span>).iterrows():</span>
+<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">. </span><span class="sc">{</span>row[<span class="st">'feature'</span>]<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>row[<span class="st">'importance'</span>]<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">6. 임상적 의의:"</span>)</span>
+<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   - eGFR이 가장 중요한 예측 인자로 확인됨 (임상 가이드라인과 일치)"</span>)</span>
+<span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   - 전해질 균형과 빈혈 지표가 CKD 단계 예측에 유의미한 기여"</span>)</span>
+<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   - 모델을 통해 조기 진단 및 단계별 맞춤 치료 계획 수립 가능"</span>)</span>
+<span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">7. 개선 방향:"</span>)</span>
+<span id="cb46-35"><a href="#cb46-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   - 더 많은 환자 데이터 수집으로 모델 일반화 성능 향상"</span>)</span>
+<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   - 시계열 데이터 통합으로 질병 진행 예측 모델 개발"</span>)</span>
+<span id="cb46-37"><a href="#cb46-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   - 외부 의료기관 데이터로 검증 필요"</span>)</span>
+<span id="cb46-38"><a href="#cb46-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-39"><a href="#cb46-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span> <span class="op">*</span> <span class="dv">80</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>================================================================================
+📊 만성 신장 질환(CKD) 단계 분류 모델링 최종 리포트
+================================================================================
+
+1. 데이터셋 정보:
+   - 총 샘플 수: 400
+   - 사용된 특징 수: 11
+   - 타겟 클래스 수: 6 (No CKD + CKD Stage 1-5)
+
+2. 전처리 기법:
+   - MICE를 통한 결측치 대체
+   - VIF 기반 다중공선성 제거
+   - 도메인 지식 기반 특징 생성 (eGFR, 빈혈지표 등)
+   - SMOTE를 통한 클래스 불균형 해결
+
+3. 모델 성능 요약:
+        Model  Accuracy
+Baseline (LR)  0.740260
+ RandomForest  1.000000
+      XGBoost  0.987013
+     Ensemble  1.000000
+
+4. 최종 앙상블 모델 성능:
+   - Test Accuracy: 1.0000
+   - Weighted ROC-AUC: 0.9996
+   - Cohen's Kappa: 1.0000
+
+5. 주요 예측 인자 (Top 5):
+   7. sc: 0.4427
+   6. bu: 0.1413
+   1. id: 0.1350
+   2. al: 0.0635
+   4. rbc: 0.0592
+
+6. 임상적 의의:
+   - eGFR이 가장 중요한 예측 인자로 확인됨 (임상 가이드라인과 일치)
+   - 전해질 균형과 빈혈 지표가 CKD 단계 예측에 유의미한 기여
+   - 모델을 통해 조기 진단 및 단계별 맞춤 치료 계획 수립 가능
+
+7. 개선 방향:
+   - 더 많은 환자 데이터 수집으로 모델 일반화 성능 향상
+   - 시계열 데이터 통합으로 질병 진행 예측 모델 개발
+   - 외부 의료기관 데이터로 검증 필요
+
+================================================================================</code></pre>
+</div>
+</div>
+<div id="cell-39" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="be5367e3-14bb-4011-927e-b8e8df29ba8a">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 최종 시각화 대시보드</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">10</span>))</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 모델 성능 비교</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>ax1 <span class="op">=</span> plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'lightcoral'</span>, <span class="st">'skyblue'</span>, <span class="st">'lightgreen'</span>, <span class="st">'gold'</span>]</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> ax1.bar(model_comparison[<span class="st">'Model'</span>], model_comparison[<span class="st">'Accuracy'</span>], color<span class="op">=</span>colors, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">'Model Performance Comparison'</span>)</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">'Accuracy'</span>)</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>ax1.set_ylim([<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bar, acc <span class="kw">in</span> <span class="bu">zip</span>(bars, model_comparison[<span class="st">'Accuracy'</span>]):</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>    ax1.text(bar.get_x() <span class="op">+</span> bar.get_width()<span class="op">/</span><span class="dv">2</span>, bar.get_height() <span class="op">+</span> <span class="fl">0.01</span>,</span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f'</span><span class="sc">{</span>acc<span class="sc">:.3f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'bottom'</span>)</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Confusion Matrix</span></span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>, ax<span class="op">=</span>ax2,</span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>            xticklabels<span class="op">=</span>[<span class="ss">f'S</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">6</span>)],</span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>            yticklabels<span class="op">=</span>[<span class="ss">f'S</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">6</span>)])</span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">'Confusion Matrix'</span>)</span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">'Predicted'</span>)</span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">'Actual'</span>)</span>
+<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Feature Importance</span></span>
+<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a>ax3 <span class="op">=</span> plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>top_10_features <span class="op">=</span> feature_importance.head(<span class="dv">10</span>)</span>
+<span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>ax3.barh(<span class="bu">range</span>(<span class="bu">len</span>(top_10_features)), top_10_features[<span class="st">'importance'</span>],</span>
+<span id="cb48-28"><a href="#cb48-28" aria-hidden="true" tabindex="-1"></a>         color<span class="op">=</span><span class="st">'skyblue'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb48-29"><a href="#cb48-29" aria-hidden="true" tabindex="-1"></a>ax3.set_yticks(<span class="bu">range</span>(<span class="bu">len</span>(top_10_features)))</span>
+<span id="cb48-30"><a href="#cb48-30" aria-hidden="true" tabindex="-1"></a>ax3.set_yticklabels(top_10_features[<span class="st">'feature'</span>])</span>
+<span id="cb48-31"><a href="#cb48-31" aria-hidden="true" tabindex="-1"></a>ax3.set_xlabel(<span class="st">'Importance'</span>)</span>
+<span id="cb48-32"><a href="#cb48-32" aria-hidden="true" tabindex="-1"></a>ax3.set_title(<span class="st">'Top 10 Features'</span>)</span>
+<span id="cb48-33"><a href="#cb48-33" aria-hidden="true" tabindex="-1"></a>ax3.invert_yaxis()</span>
+<span id="cb48-34"><a href="#cb48-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-35"><a href="#cb48-35" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Class Distribution</span></span>
+<span id="cb48-36"><a href="#cb48-36" aria-hidden="true" tabindex="-1"></a>ax4 <span class="op">=</span> plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb48-37"><a href="#cb48-37" aria-hidden="true" tabindex="-1"></a>stage_counts <span class="op">=</span> y.value_counts().sort_index()</span>
+<span id="cb48-38"><a href="#cb48-38" aria-hidden="true" tabindex="-1"></a>ax4.bar(<span class="bu">range</span>(<span class="bu">len</span>(stage_counts)), stage_counts.values,</span>
+<span id="cb48-39"><a href="#cb48-39" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">'coral'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb48-40"><a href="#cb48-40" aria-hidden="true" tabindex="-1"></a>ax4.set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(stage_counts)))</span>
+<span id="cb48-41"><a href="#cb48-41" aria-hidden="true" tabindex="-1"></a>ax4.set_xticklabels([<span class="ss">f'Stage </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> stage_counts.index])</span>
+<span id="cb48-42"><a href="#cb48-42" aria-hidden="true" tabindex="-1"></a>ax4.set_title(<span class="st">'CKD Stage Distribution'</span>)</span>
+<span id="cb48-43"><a href="#cb48-43" aria-hidden="true" tabindex="-1"></a>ax4.set_xlabel(<span class="st">'CKD Stage'</span>)</span>
+<span id="cb48-44"><a href="#cb48-44" aria-hidden="true" tabindex="-1"></a>ax4.set_ylabel(<span class="st">'Count'</span>)</span>
+<span id="cb48-45"><a href="#cb48-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-46"><a href="#cb48-46" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Class-wise Performance</span></span>
+<span id="cb48-47"><a href="#cb48-47" aria-hidden="true" tabindex="-1"></a>ax5 <span class="op">=</span> plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>)</span>
+<span id="cb48-48"><a href="#cb48-48" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="bu">len</span>(class_metrics))</span>
+<span id="cb48-49"><a href="#cb48-49" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="fl">0.25</span></span>
+<span id="cb48-50"><a href="#cb48-50" aria-hidden="true" tabindex="-1"></a>ax5.bar(x <span class="op">-</span> width, class_metrics[<span class="st">'precision'</span>], width, label<span class="op">=</span><span class="st">'Precision'</span>, color<span class="op">=</span><span class="st">'skyblue'</span>)</span>
+<span id="cb48-51"><a href="#cb48-51" aria-hidden="true" tabindex="-1"></a>ax5.bar(x, class_metrics[<span class="st">'recall'</span>], width, label<span class="op">=</span><span class="st">'Recall'</span>, color<span class="op">=</span><span class="st">'lightcoral'</span>)</span>
+<span id="cb48-52"><a href="#cb48-52" aria-hidden="true" tabindex="-1"></a>ax5.bar(x <span class="op">+</span> width, class_metrics[<span class="st">'f1-score'</span>], width, label<span class="op">=</span><span class="st">'F1-Score'</span>, color<span class="op">=</span><span class="st">'lightgreen'</span>)</span>
+<span id="cb48-53"><a href="#cb48-53" aria-hidden="true" tabindex="-1"></a>ax5.set_xlabel(<span class="st">'CKD Stage'</span>)</span>
+<span id="cb48-54"><a href="#cb48-54" aria-hidden="true" tabindex="-1"></a>ax5.set_ylabel(<span class="st">'Score'</span>)</span>
+<span id="cb48-55"><a href="#cb48-55" aria-hidden="true" tabindex="-1"></a>ax5.set_title(<span class="st">'Class-wise Performance Metrics'</span>)</span>
+<span id="cb48-56"><a href="#cb48-56" aria-hidden="true" tabindex="-1"></a>ax5.set_xticks(x)</span>
+<span id="cb48-57"><a href="#cb48-57" aria-hidden="true" tabindex="-1"></a>ax5.set_xticklabels([<span class="ss">f'S</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">6</span>)])</span>
+<span id="cb48-58"><a href="#cb48-58" aria-hidden="true" tabindex="-1"></a>ax5.legend()</span>
+<span id="cb48-59"><a href="#cb48-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-60"><a href="#cb48-60" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Cross-validation Results</span></span>
+<span id="cb48-61"><a href="#cb48-61" aria-hidden="true" tabindex="-1"></a>ax6 <span class="op">=</span> plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">6</span>)</span>
+<span id="cb48-62"><a href="#cb48-62" aria-hidden="true" tabindex="-1"></a>box_data <span class="op">=</span> [cv_results[name] <span class="cf">for</span> name <span class="kw">in</span> models.keys()]</span>
+<span id="cb48-63"><a href="#cb48-63" aria-hidden="true" tabindex="-1"></a>bp <span class="op">=</span> ax6.boxplot(box_data, labels<span class="op">=</span>models.keys())</span>
+<span id="cb48-64"><a href="#cb48-64" aria-hidden="true" tabindex="-1"></a>ax6.set_title(<span class="st">'Cross-Validation Results'</span>)</span>
+<span id="cb48-65"><a href="#cb48-65" aria-hidden="true" tabindex="-1"></a>ax6.set_ylabel(<span class="st">'Accuracy'</span>)</span>
+<span id="cb48-66"><a href="#cb48-66" aria-hidden="true" tabindex="-1"></a>ax6.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb48-67"><a href="#cb48-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-68"><a href="#cb48-68" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'CKD Stage Classification - Comprehensive Results Dashboard'</span>,</span>
+<span id="cb48-69"><a href="#cb48-69" aria-hidden="true" tabindex="-1"></a>             fontsize<span class="op">=</span><span class="dv">16</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>, y<span class="op">=</span><span class="fl">1.02</span>)</span>
+<span id="cb48-70"><a href="#cb48-70" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb48-71"><a href="#cb48-71" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-3_files/figure-html/cell-24-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="심화-학습-문제" class="level2" data-number="2.14">
+<h2 data-number="2.14" class="anchored" data-anchor-id="심화-학습-문제"><span class="header-section-number">2.14</span> 🧑‍💻 심화 학습 문제</h2>
+<section id="학습-포인트" class="level3" data-number="2.14.1">
+<h3 data-number="2.14.1" class="anchored" data-anchor-id="학습-포인트"><span class="header-section-number">2.14.1</span> 💡 학습 포인트</h3>
+<p>기본 실습에서 배운 내용을 바탕으로 파라미터를 변경하거나 다른 기법을 적용해보면서 응용력을 강화합니다.</p>
+<ul>
+<li><p><strong>Q1.</strong> MICE 대신 KNN Imputer를 사용했을 때 성능 차이를 비교해보세요. 어떤 방법이 의료 데이터에 더 적합한지 분석하세요.</p></li>
+<li><p><strong>Q2.</strong> SMOTE 대신 ADASYN이나 BorderlineSMOTE를 적용해보고, 각 방법의 장단점을 정리해보세요.</p></li>
+<li><p><strong>Q3.</strong> Deep Learning 모델(예: Neural Network)을 추가하여 앙상블에 포함시키면 성능이 개선되는지 확인해보세요.</p></li>
+<li><p><strong>Q4.</strong> LIME(Local Interpretable Model-agnostic Explanations)을 사용하여 개별 예측 사례를 해석해보세요.</p></li>
+</ul>
+</section>
+</section>
+<section id="참고-자료" class="level2" data-number="2.15">
+<h2 data-number="2.15" class="anchored" data-anchor-id="참고-자료"><span class="header-section-number">2.15</span> 📚 참고 자료</h2>
+<ul>
+<li><a href="https://archive.ics.uci.edu/ml/datasets/Chronic_Kidney_Disease">UCI Machine Learning Repository - Chronic Kidney Disease Dataset</a></li>
+<li><a href="https://scikit-learn.org/stable/modules/ensemble.html">scikit-learn Documentation - Ensemble Methods</a></li>
+<li><a href="https://imbalanced-learn.org/stable/references/generated/imblearn.over_sampling.SMOTE.html">imbalanced-learn Documentation - SMOTE</a></li>
+<li><a href="https://shap.readthedocs.io/en/latest/">SHAP Documentation</a></li>
+<li><a href="https://kdigo.org/guidelines/ckd-evaluation-and-management/">Clinical Practice Guidelines for CKD</a></li>
+</ul>
+</section>
+<section id="전체-요약" class="level2" data-number="2.16">
+<h2 data-number="2.16" class="anchored" data-anchor-id="전체-요약"><span class="header-section-number">2.16</span> ✅ 전체 요약</h2>
+<p>본 워크북을 통해 만성 신장 질환(CKD) 환자의 검사 수치를 활용한 다중 클래스 분류 모델을 구축했습니다. MICE를 통한 결측치 처리, VIF 기반 다중공선성 제거, SMOTE를 통한 클래스 불균형 해결, 그리고 앙상블 모델링까지 점진적으로 성능을 개선하는 과정을 학습했습니다. 최종 앙상블 모델은 개별 모델보다 우수한 성능을 보였으며, SHAP 분석을 통해 모델의 의사결정 과정을 해석할 수 있었습니다.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

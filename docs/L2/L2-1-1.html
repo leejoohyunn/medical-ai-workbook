@@ -1,0 +1,2190 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="장수미">
+<meta name="dcterms.date" content="2025-11-17">
+
+<title>📊 L2-1 EHR 데이터 고급 분석 – Medical AI Workbook</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a96cfa603fdcdc54a5c20544cb7340f7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Medical AI Workbook</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-level-2" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Level 2</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-level-2">    
+        <li>
+    <a class="dropdown-item" href="../L2/L2-1-1.html">
+ <span class="dropdown-text">L2-1-1: 심장질환 예측</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-1-2.html">
+ <span class="dropdown-text">L2-1-2: 당뇨병 합병증</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-1-3.html">
+ <span class="dropdown-text">L2-1-3: 만성 신장 질환</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-1-4.html">
+ <span class="dropdown-text">L2-1-4: 응급실 재방문</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L2/L2-2-1.html">
+ <span class="dropdown-text">L2-2-1: ECG 신호 처리</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-2-2.html">
+ <span class="dropdown-text">L2-2-2: 수면 무호흡 탐지</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-2-3.html">
+ <span class="dropdown-text">L2-2-3: EMG 근육 피로도</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-2-4.html">
+ <span class="dropdown-text">L2-2-4: PPG 혈압 추정</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L2/L2-3-1.html">
+ <span class="dropdown-text">L2-3-1: 유방암 조직병리</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-3-2.html">
+ <span class="dropdown-text">L2-3-2: 당뇨망막병증</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-3-3.html">
+ <span class="dropdown-text">L2-3-3: 흉부 X-ray 폐렴</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-3-4.html">
+ <span class="dropdown-text">L2-3-4: 피부 병변 흑색종</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L2/L2-4-1.html">
+ <span class="dropdown-text">L2-4-1: 의료 텍스트 분류</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-4-2.html">
+ <span class="dropdown-text">L2-4-2: 임상 노트 증상 분류</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-4-3.html">
+ <span class="dropdown-text">L2-4-3: 의료 개체명 인식</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-4-4.html">
+ <span class="dropdown-text">L2-4-4: 텍스트 감성 분석</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L2/L2-5-1.html">
+ <span class="dropdown-text">L2-5-1: ECG + 환자 속성</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-5-2.html">
+ <span class="dropdown-text">L2-5-2: 뇌 MRI + 임상 정보</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-5-3.html">
+ <span class="dropdown-text">L2-5-3: 안저 + 당뇨 지표</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L2/L2-5-4.html">
+ <span class="dropdown-text">L2-5-4: X-ray + 임상 변수</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-level-3" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Level 3</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-level-3">    
+        <li>
+    <a class="dropdown-item" href="../L3/L3-1-1.html">
+ <span class="dropdown-text">L3-1-1: 암 환자 생존 분석</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L3/L3-1-2.html">
+ <span class="dropdown-text">L3-1-2: 패혈증 조기 예측</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L3/L3-2-1.html">
+ <span class="dropdown-text">L3-2-1: EEG 발작 예측</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L3/L3-2-2.html">
+ <span class="dropdown-text">L3-2-2: 혈압 파형 분석</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L3/L3-3-1.html">
+ <span class="dropdown-text">L3-3-1: 뇌종양 MRI 세그멘테이션</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L3/L3-3-2.html">
+ <span class="dropdown-text">L3-3-2: 흉부 X-ray 질환 분류</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L3/L3-4-1.html">
+ <span class="dropdown-text">L3-4-1: BioBERT 텍스트 분류</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L3/L3-4-2.html">
+ <span class="dropdown-text">L3-4-2: BioBERT NER</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="../L3/L3-5-1.html">
+ <span class="dropdown-text">L3-5-1: ECG + 임상 정보</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../L3/L3-5-2.html">
+ <span class="dropdown-text">L3-5-2: X-ray + 판독문</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#l2-1-ehr-데이터-고급-분석" id="toc-l2-1-ehr-데이터-고급-분석" class="nav-link active" data-scroll-target="#l2-1-ehr-데이터-고급-분석"><span class="header-section-number">1</span> 📊 L2-1 EHR 데이터 고급 분석</a></li>
+  <li><a href="#l2-1-ehr-데이터-고급-분석-1" id="toc-l2-1-ehr-데이터-고급-분석-1" class="nav-link" data-scroll-target="#l2-1-ehr-데이터-고급-분석-1"><span class="header-section-number">2</span> 🧬 L2-1 EHR 데이터 고급 분석</a>
+  <ul class="collapse">
+  <li><a href="#학습-목표-learning-outcomes" id="toc-학습-목표-learning-outcomes" class="nav-link" data-scroll-target="#학습-목표-learning-outcomes"><span class="header-section-number">2.1</span> 🧭 학습 목표 (Learning Outcomes)</a></li>
+  <li><a href="#실습-개요" id="toc-실습-개요" class="nav-link" data-scroll-target="#실습-개요"><span class="header-section-number">2.2</span> 🧩 실습 개요</a></li>
+  <li><a href="#전체-실습-흐름" id="toc-전체-실습-흐름" class="nav-link" data-scroll-target="#전체-실습-흐름"><span class="header-section-number">2.3</span> 🔄 전체 실습 흐름</a></li>
+  <li><a href="#사전-필요-지식" id="toc-사전-필요-지식" class="nav-link" data-scroll-target="#사전-필요-지식"><span class="header-section-number">2.4</span> 📝 사전 필요 지식</a></li>
+  <li><a href="#사용-데이터-설명" id="toc-사용-데이터-설명" class="nav-link" data-scroll-target="#사용-데이터-설명"><span class="header-section-number">2.5</span> 🗂 사용 데이터 설명</a></li>
+  </ul></li>
+  <li><a href="#라이브러리-불러오기" id="toc-라이브러리-불러오기" class="nav-link" data-scroll-target="#라이브러리-불러오기"><span class="header-section-number">3</span> 📦 라이브러리 불러오기</a>
+  <ul class="collapse">
+  <li><a href="#데이터-로드-및-탐색" id="toc-데이터-로드-및-탐색" class="nav-link" data-scroll-target="#데이터-로드-및-탐색"><span class="header-section-number">3.1</span> 1️⃣ 데이터 로드 및 탐색</a></li>
+  <li><a href="#데이터-전처리" id="toc-데이터-전처리" class="nav-link" data-scroll-target="#데이터-전처리"><span class="header-section-number">3.2</span> 2️⃣ 데이터 전처리</a>
+  <ul class="collapse">
+  <li><a href="#긴-호흡-적용-단순-제거-mice-대체-vif-기반-변수-선택" id="toc-긴-호흡-적용-단순-제거-mice-대체-vif-기반-변수-선택" class="nav-link" data-scroll-target="#긴-호흡-적용-단순-제거-mice-대체-vif-기반-변수-선택"><span class="header-section-number">3.2.1</span> 긴 호흡 적용: 단순 제거 → MICE 대체 → VIF 기반 변수 선택</a></li>
+  </ul></li>
+  <li><a href="#모델링" id="toc-모델링" class="nav-link" data-scroll-target="#모델링"><span class="header-section-number">3.3</span> 3️⃣ 모델링</a>
+  <ul class="collapse">
+  <li><a href="#긴-호흡-적용-baseline-하이퍼파라미터-튜닝-앙상블" id="toc-긴-호흡-적용-baseline-하이퍼파라미터-튜닝-앙상블" class="nav-link" data-scroll-target="#긴-호흡-적용-baseline-하이퍼파라미터-튜닝-앙상블"><span class="header-section-number">3.3.1</span> 긴 호흡 적용: Baseline → 하이퍼파라미터 튜닝 → 앙상블</a></li>
+  </ul></li>
+  <li><a href="#성능-평가" id="toc-성능-평가" class="nav-link" data-scroll-target="#성능-평가"><span class="header-section-number">3.4</span> 4️⃣ 성능 평가</a>
+  <ul class="collapse">
+  <li><a href="#긴-호흡-적용-기본-메트릭-도메인-특화-메트릭-임상적-의미-해석" id="toc-긴-호흡-적용-기본-메트릭-도메인-특화-메트릭-임상적-의미-해석" class="nav-link" data-scroll-target="#긴-호흡-적용-기본-메트릭-도메인-특화-메트릭-임상적-의미-해석"><span class="header-section-number">3.4.1</span> 긴 호흡 적용: 기본 메트릭 → 도메인 특화 메트릭 → 임상적 의미 해석</a></li>
+  </ul></li>
+  <li><a href="#모델-해석" id="toc-모델-해석" class="nav-link" data-scroll-target="#모델-해석"><span class="header-section-number">3.5</span> 5️⃣ 모델 해석</a>
+  <ul class="collapse">
+  <li><a href="#긴-호흡-적용-coefficient-feature-importance-shap" id="toc-긴-호흡-적용-coefficient-feature-importance-shap" class="nav-link" data-scroll-target="#긴-호흡-적용-coefficient-feature-importance-shap"><span class="header-section-number">3.5.1</span> 긴 호흡 적용: Coefficient → Feature Importance → SHAP</a></li>
+  </ul></li>
+  <li><a href="#외부-검증-external-validation" id="toc-외부-검증-external-validation" class="nav-link" data-scroll-target="#외부-검증-external-validation"><span class="header-section-number">3.6</span> 6️⃣ 외부 검증 (External Validation)</a>
+  <ul class="collapse">
+  <li><a href="#모델-일반화-성능-평가" id="toc-모델-일반화-성능-평가" class="nav-link" data-scroll-target="#모델-일반화-성능-평가"><span class="header-section-number">3.6.1</span> 모델 일반화 성능 평가</a></li>
+  </ul></li>
+  <li><a href="#결과-리포트-작성" id="toc-결과-리포트-작성" class="nav-link" data-scroll-target="#결과-리포트-작성"><span class="header-section-number">3.7</span> 7️⃣ 결과 리포트 작성</a></li>
+  <li><a href="#심화-학습-문제" id="toc-심화-학습-문제" class="nav-link" data-scroll-target="#심화-학습-문제"><span class="header-section-number">3.8</span> 🧑‍💻 심화 학습 문제</a>
+  <ul class="collapse">
+  <li><a href="#학습-포인트" id="toc-학습-포인트" class="nav-link" data-scroll-target="#학습-포인트"><span class="header-section-number">3.8.1</span> 💡 학습 포인트</a></li>
+  </ul></li>
+  <li><a href="#참고-자료" id="toc-참고-자료" class="nav-link" data-scroll-target="#참고-자료"><span class="header-section-number">3.9</span> 📚 참고 자료</a></li>
+  <li><a href="#전체-요약" id="toc-전체-요약" class="nav-link" data-scroll-target="#전체-요약"><span class="header-section-number">3.10</span> ✅ 전체 요약</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">📊 L2-1 EHR 데이터 고급 분석</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>장수미 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 17, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="l2-1-ehr-데이터-고급-분석" class="level1 header" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> 📊 L2-1 EHR 데이터 고급 분석</h1>
+<p>본 워크북은 EHR 데이터에 대한 고급 전처리 기법과 머신러닝 모델링을 포함합니다. 이론적 기반과 실무 문제 해결 능력을 동시에 강화할 수 있도록 설계되었습니다. 분석가는 MICE 대체, VIF 기반 변수 선택, 앙상블 모델링을 고려해야 합니다.</p>
+<p><strong>진행률:</strong> <code>0% (분석 시작)</code> 🔄 <strong>활용도:</strong> 학부 4학년 전공 실습</p>
+</section>
+<section id="l2-1-ehr-데이터-고급-분석-1" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> 🧬 L2-1 EHR 데이터 고급 분석</h1>
+<section id="학습-목표-learning-outcomes" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="학습-목표-learning-outcomes"><span class="header-section-number">2.1</span> 🧭 학습 목표 (Learning Outcomes)</h2>
+<p>이 워크북을 통해 학습자는 다음을 실습하게 됩니다: - 고급 결측치 처리 기법 (MICE)를 활용한 데이터 품질 개선 - VIF 기반 다중공선성 제거 및 특징 선택 - 머신러닝 모델의 하이퍼파라미터 튜닝 및 앙상블 기법 적용</p>
+</section>
+<section id="실습-개요" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="실습-개요"><span class="header-section-number">2.2</span> 🧩 실습 개요</h2>
+<ul>
+<li><strong>데이터</strong>: UCI Heart Disease 데이터셋</li>
+<li><strong>목표</strong>: 심장질환 예측 정확도 향상 (긴 호흡 접근)</li>
+<li><strong>사용 기술</strong>: pandas, scikit-learn, XGBoost, Optuna, SHAP</li>
+<li><strong>제약 조건</strong>: (L2 난이도)
+<ol type="1">
+<li>모델 성능을 baseline 대비 15% 이상 향상</li>
+<li>세 가지 이상의 전처리 기법 비교 필수</li>
+</ol></li>
+</ul>
+</section>
+<section id="전체-실습-흐름" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="전체-실습-흐름"><span class="header-section-number">2.3</span> 🔄 전체 실습 흐름</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>단계</th>
+<th>주요 작업 내용</th>
+<th>주요 도구/스킬</th>
+<th>결과물</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1단계</td>
+<td>데이터 로드 및 탐색</td>
+<td>pandas, seaborn</td>
+<td>EDA 리포트</td>
+</tr>
+<tr class="even">
+<td>2단계</td>
+<td>고급 전처리 (긴 호흡)</td>
+<td>MICE, VIF</td>
+<td>전처리된 데이터</td>
+</tr>
+<tr class="odd">
+<td>3단계</td>
+<td>모델링 (긴 호흡)</td>
+<td>RandomForest, XGBoost</td>
+<td>최적화된 모델</td>
+</tr>
+<tr class="even">
+<td>4단계</td>
+<td>성능 평가</td>
+<td>AUROC, NNT</td>
+<td>성능 메트릭</td>
+</tr>
+<tr class="odd">
+<td>5단계</td>
+<td>모델 해석</td>
+<td>SHAP, Feature Importance</td>
+<td>해석 가능한 결과</td>
+</tr>
+<tr class="even">
+<td>6단계</td>
+<td>외부 검증</td>
+<td>Cross-validation</td>
+<td>검증 결과</td>
+</tr>
+<tr class="odd">
+<td>7단계</td>
+<td>결과 리포트 작성</td>
+<td>matplotlib</td>
+<td>최종 보고서</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="사전-필요-지식" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="사전-필요-지식"><span class="header-section-number">2.4</span> 📝 사전 필요 지식</h2>
+<p>이 워크북은 다음 기술/개념을 선행 학습한 학습자를 대상으로 합니다: - 기초 통계 및 확률론 - Python 중급 프로그래밍 - scikit-learn 기본 사용법</p>
+</section>
+<section id="사용-데이터-설명" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="사용-데이터-설명"><span class="header-section-number">2.5</span> 🗂 사용 데이터 설명</h2>
+<blockquote class="blockquote">
+<p>📌 <strong>데이터셋</strong>: UCI Heart Disease Dataset 📌 <strong>출처</strong>: <a href="https://archive.ics.uci.edu/ml/datasets/heart+disease">https://archive.ics.uci.edu/ml/datasets/heart+disease</a> 📌 <strong>배경</strong>: 클리블랜드 심장질환 데이터로 303명 환자의 14개 특징을 포함</p>
+</blockquote>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>변수명</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>age</td>
+<td>연령 (years)</td>
+</tr>
+<tr class="even">
+<td>sex</td>
+<td>성별 (1=남성, 0=여성)</td>
+</tr>
+<tr class="odd">
+<td>cp</td>
+<td>흉통 유형 (0-3)</td>
+</tr>
+<tr class="even">
+<td>trestbps</td>
+<td>안정시 혈압 (mm Hg)</td>
+</tr>
+<tr class="odd">
+<td>chol</td>
+<td>혈청 콜레스테롤 (mg/dl)</td>
+</tr>
+<tr class="even">
+<td>fbs</td>
+<td>공복 혈당 &gt; 120 mg/dl (1=true)</td>
+</tr>
+<tr class="odd">
+<td>restecg</td>
+<td>안정시 심전도 결과 (0-2)</td>
+</tr>
+<tr class="even">
+<td>thalach</td>
+<td>최대 심박수</td>
+</tr>
+<tr class="odd">
+<td>exang</td>
+<td>운동 유발 협심증 (1=yes)</td>
+</tr>
+<tr class="even">
+<td>oldpeak</td>
+<td>운동 대비 ST depression</td>
+</tr>
+<tr class="odd">
+<td>slope</td>
+<td>peak exercise ST segment 기울기</td>
+</tr>
+<tr class="even">
+<td>ca</td>
+<td>주요 혈관 수 (0-3)</td>
+</tr>
+<tr class="odd">
+<td>thal</td>
+<td>탈라세미아 (3=정상, 6=고정, 7=가역)</td>
+</tr>
+<tr class="even">
+<td>target</td>
+<td>심장질환 여부 (1=질환, 0=정상)</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="라이브러리-불러오기" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> 📦 라이브러리 불러오기</h1>
+<div id="cell-4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="d7d598a2-84d4-46ab-c17e-d63f03840624">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 전처리 라이브러리</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler, LabelEncoder</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.experimental <span class="im">import</span> enable_iterative_imputer</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> IterativeImputer  <span class="co"># MICE</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.outliers_influence <span class="im">import</span> variance_inflation_factor</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 모델링 라이브러리</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split, cross_val_score, GridSearchCV</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier, VotingClassifier</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score, roc_auc_score, confusion_matrix, classification_report</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 하이퍼파라미터 튜닝</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install optuna <span class="op">-</span>q</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> optuna</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 모델 해석</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install shap <span class="op">-</span>q</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> shap</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 시각화 설정</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'seaborn-v0_8-darkgrid'</span>)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>sns.set_palette(<span class="st">"husl"</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'figure.figsize'</span>] <span class="op">=</span> (<span class="dv">12</span>, <span class="dv">6</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'font.size'</span>] <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ 모든 라이브러리가 성공적으로 로드되었습니다."</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"pandas 버전: </span><span class="sc">{</span>pd<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"scikit-learn 버전: </span><span class="sc">{</span>sklearn<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>✅ 모든 라이브러리가 성공적으로 로드되었습니다.
+pandas 버전: 2.2.2
+scikit-learn 버전: 1.6.1</code></pre>
+</div>
+</div>
+<section id="데이터-로드-및-탐색" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="데이터-로드-및-탐색"><span class="header-section-number">3.1</span> 1️⃣ 데이터 로드 및 탐색</h2>
+<div id="cell-6" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="ba345124-9d53-42e8-fe98-1f62c2905960">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 데이터 로드</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/processed.cleveland.data"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>column_names <span class="op">=</span> [<span class="st">'age'</span>, <span class="st">'sex'</span>, <span class="st">'cp'</span>, <span class="st">'trestbps'</span>, <span class="st">'chol'</span>, <span class="st">'fbs'</span>, <span class="st">'restecg'</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                <span class="st">'thalach'</span>, <span class="st">'exang'</span>, <span class="st">'oldpeak'</span>, <span class="st">'slope'</span>, <span class="st">'ca'</span>, <span class="st">'thal'</span>, <span class="st">'target'</span>]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 데이터 불러오기</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(url, names<span class="op">=</span>column_names, na_values<span class="op">=</span><span class="st">'?'</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># target 변수 이진화 (0: 정상, 1-4: 질환 → 0: 정상, 1: 질환)</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'target'</span>] <span class="op">=</span> (df[<span class="st">'target'</span>] <span class="op">&gt;</span> <span class="dv">0</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📊 데이터셋 크기: </span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"✅ 데이터가 성공적으로 로드되었습니다."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 데이터셋 크기: (303, 14)
+✅ 데이터가 성공적으로 로드되었습니다.</code></pre>
+</div>
+</div>
+<div id="cell-7" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="d92498db-ae58-4cbd-b1fb-510cc83582de">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1.1 기본 탐색</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📊 데이터 기본 정보"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>df.info()</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📈 기술통계량"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.describe())</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 1.2 결측치 탐지 (긴 호흡)</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"🔍 결측치 분석"</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>missing_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Column'</span>: df.columns,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Missing_Count'</span>: df.isnull().<span class="bu">sum</span>(),</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Missing_Percent'</span>: (df.isnull().<span class="bu">sum</span>() <span class="op">/</span> <span class="bu">len</span>(df)) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>missing_df <span class="op">=</span> missing_df[missing_df[<span class="st">'Missing_Count'</span>] <span class="op">&gt;</span> <span class="dv">0</span>].sort_values(<span class="st">'Missing_Percent'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(missing_df)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 1.3 타겟 변수 분포</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"🎯 타겟 변수 분포"</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>target_dist <span class="op">=</span> df[<span class="st">'target'</span>].value_counts()</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"정상: </span><span class="sc">{</span>target_dist[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>target_dist[<span class="dv">0</span>]<span class="op">/</span><span class="bu">len</span>(df)<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"질환: </span><span class="sc">{</span>target_dist[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>target_dist[<span class="dv">1</span>]<span class="op">/</span><span class="bu">len</span>(df)<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co"># 시각화</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">10</span>))</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="co"># 타겟 분포</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">0</span>].pie(target_dist, labels<span class="op">=</span>[<span class="st">'정상'</span>, <span class="st">'질환'</span>], autopct<span class="op">=</span><span class="st">'</span><span class="sc">%1.1f%%</span><span class="st">'</span>, startangle<span class="op">=</span><span class="dv">90</span>)</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">0</span>].set_title(<span class="st">'심장질환 분포'</span>)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="co"># 연령 분포</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">1</span>].hist(df[<span class="st">'age'</span>], bins<span class="op">=</span><span class="dv">20</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">1</span>].set_xlabel(<span class="st">'연령'</span>)</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">1</span>].set_ylabel(<span class="st">'빈도'</span>)</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">1</span>].set_title(<span class="st">'연령 분포'</span>)</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="co"># 성별에 따른 질환 분포</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>pd.crosstab(df[<span class="st">'sex'</span>], df[<span class="st">'target'</span>], normalize<span class="op">=</span><span class="st">'index'</span>).plot(kind<span class="op">=</span><span class="st">'bar'</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>, <span class="dv">0</span>])</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">0</span>].set_xlabel(<span class="st">'성별 (0:여성, 1:남성)'</span>)</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">0</span>].set_ylabel(<span class="st">'비율'</span>)</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">0</span>].set_title(<span class="st">'성별에 따른 심장질환 분포'</span>)</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">0</span>].legend([<span class="st">'정상'</span>, <span class="st">'질환'</span>])</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a><span class="co"># 상관관계 히트맵</span></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>numeric_cols <span class="op">=</span> df.select_dtypes(include<span class="op">=</span>[np.number]).columns</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>corr_matrix <span class="op">=</span> df[numeric_cols].corr()</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>sns.heatmap(corr_matrix, annot<span class="op">=</span><span class="va">False</span>, cmap<span class="op">=</span><span class="st">'coolwarm'</span>, center<span class="op">=</span><span class="dv">0</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>, <span class="dv">1</span>].set_title(<span class="st">'변수 간 상관관계'</span>)</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">🔍 **학습 포인트 #1**: 데이터 탐색 단계에서 결측치 패턴과 변수 분포를 파악하는 것이 중요합니다."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>==================================================
+📊 데이터 기본 정보
+==================================================
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 303 entries, 0 to 302
+Data columns (total 14 columns):
+ #   Column    Non-Null Count  Dtype  
+---  ------    --------------  -----  
+ 0   age       303 non-null    float64
+ 1   sex       303 non-null    float64
+ 2   cp        303 non-null    float64
+ 3   trestbps  303 non-null    float64
+ 4   chol      303 non-null    float64
+ 5   fbs       303 non-null    float64
+ 6   restecg   303 non-null    float64
+ 7   thalach   303 non-null    float64
+ 8   exang     303 non-null    float64
+ 9   oldpeak   303 non-null    float64
+ 10  slope     303 non-null    float64
+ 11  ca        299 non-null    float64
+ 12  thal      301 non-null    float64
+ 13  target    303 non-null    int64  
+dtypes: float64(13), int64(1)
+memory usage: 33.3 KB
+
+==================================================
+📈 기술통계량
+==================================================
+              age         sex          cp    trestbps        chol         fbs  \
+count  303.000000  303.000000  303.000000  303.000000  303.000000  303.000000   
+mean    54.438944    0.679868    3.158416  131.689769  246.693069    0.148515   
+std      9.038662    0.467299    0.960126   17.599748   51.776918    0.356198   
+min     29.000000    0.000000    1.000000   94.000000  126.000000    0.000000   
+25%     48.000000    0.000000    3.000000  120.000000  211.000000    0.000000   
+50%     56.000000    1.000000    3.000000  130.000000  241.000000    0.000000   
+75%     61.000000    1.000000    4.000000  140.000000  275.000000    0.000000   
+max     77.000000    1.000000    4.000000  200.000000  564.000000    1.000000   
+
+          restecg     thalach       exang     oldpeak       slope          ca  \
+count  303.000000  303.000000  303.000000  303.000000  303.000000  299.000000   
+mean     0.990099  149.607261    0.326733    1.039604    1.600660    0.672241   
+std      0.994971   22.875003    0.469794    1.161075    0.616226    0.937438   
+min      0.000000   71.000000    0.000000    0.000000    1.000000    0.000000   
+25%      0.000000  133.500000    0.000000    0.000000    1.000000    0.000000   
+50%      1.000000  153.000000    0.000000    0.800000    2.000000    0.000000   
+75%      2.000000  166.000000    1.000000    1.600000    2.000000    1.000000   
+max      2.000000  202.000000    1.000000    6.200000    3.000000    3.000000   
+
+             thal      target  
+count  301.000000  303.000000  
+mean     4.734219    0.458746  
+std      1.939706    0.499120  
+min      3.000000    0.000000  
+25%      3.000000    0.000000  
+50%      3.000000    0.000000  
+75%      7.000000    1.000000  
+max      7.000000    1.000000  
+
+==================================================
+🔍 결측치 분석
+==================================================
+     Column  Missing_Count  Missing_Percent
+ca       ca              4         1.320132
+thal   thal              2         0.660066
+
+==================================================
+🎯 타겟 변수 분포
+==================================================
+정상: 164 (54.1%)
+질환: 139 (45.9%)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-1_files/figure-html/cell-4-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+🔍 **학습 포인트 #1**: 데이터 탐색 단계에서 결측치 패턴과 변수 분포를 파악하는 것이 중요합니다.</code></pre>
+</div>
+</div>
+</section>
+<section id="데이터-전처리" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="데이터-전처리"><span class="header-section-number">3.2</span> 2️⃣ 데이터 전처리</h2>
+<section id="긴-호흡-적용-단순-제거-mice-대체-vif-기반-변수-선택" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="긴-호흡-적용-단순-제거-mice-대체-vif-기반-변수-선택"><span class="header-section-number">3.2.1</span> 긴 호흡 적용: 단순 제거 → MICE 대체 → VIF 기반 변수 선택</h3>
+<div id="cell-9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="1bec3df9-33d7-4ee7-ccf4-3c050d32a5ee">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">## 2.1 기본 전처리</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"### 2.1 기본 전처리 - 단순 결측치 제거"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 데이터 복사</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>df_basic <span class="op">=</span> df.copy()</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 단순 결측치 제거</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>df_basic_cleaned <span class="op">=</span> df_basic.dropna()</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"원본 데이터: </span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">}</span><span class="ss"> rows"</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"결측치 제거 후: </span><span class="sc">{</span><span class="bu">len</span>(df_basic_cleaned)<span class="sc">}</span><span class="ss"> rows"</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"손실된 데이터: </span><span class="sc">{</span><span class="bu">len</span>(df) <span class="op">-</span> <span class="bu">len</span>(df_basic_cleaned)<span class="sc">}</span><span class="ss"> rows (</span><span class="sc">{</span>(<span class="bu">len</span>(df) <span class="op">-</span> <span class="bu">len</span>(df_basic_cleaned))<span class="op">/</span><span class="bu">len</span>(df)<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 기본 전처리된 데이터로 baseline 성능 측정</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>X_basic <span class="op">=</span> df_basic_cleaned.drop(<span class="st">'target'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>y_basic <span class="op">=</span> df_basic_cleaned[<span class="st">'target'</span>]</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>X_train_basic, X_test_basic, y_train_basic, y_test_basic <span class="op">=</span> train_test_split(</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    X_basic, y_basic, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y_basic</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co"># StandardScaler 적용</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>scaler_basic <span class="op">=</span> StandardScaler()</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>X_train_basic_scaled <span class="op">=</span> scaler_basic.fit_transform(X_train_basic)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>X_test_basic_scaled <span class="op">=</span> scaler_basic.transform(X_test_basic)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Baseline 모델</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>lr_basic <span class="op">=</span> LogisticRegression(random_state<span class="op">=</span><span class="dv">42</span>, max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>lr_basic.fit(X_train_basic_scaled, y_train_basic)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>y_pred_basic <span class="op">=</span> lr_basic.predict(X_test_basic_scaled)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>basic_accuracy <span class="op">=</span> accuracy_score(y_test_basic, y_pred_basic)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>basic_auroc <span class="op">=</span> roc_auc_score(y_test_basic, lr_basic.predict_proba(X_test_basic_scaled)[:, <span class="dv">1</span>])</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">📊 기본 전처리 성능:"</span>)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy: </span><span class="sc">{</span>basic_accuracy<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"AUROC: </span><span class="sc">{</span>basic_auroc<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">🔍 **학습 포인트 #2**: 단순 결측치 제거는 데이터 손실이 크며, 편향된 결과를 초래할 수 있습니다."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>### 2.1 기본 전처리 - 단순 결측치 제거
+==================================================
+원본 데이터: 303 rows
+결측치 제거 후: 297 rows
+손실된 데이터: 6 rows (2.0%)
+
+📊 기본 전처리 성능:
+Accuracy: 0.8333
+AUROC: 0.9498
+
+🔍 **학습 포인트 #2**: 단순 결측치 제거는 데이터 손실이 크며, 편향된 결과를 초래할 수 있습니다.</code></pre>
+</div>
+</div>
+<div id="cell-10" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="8dbc82ba-cef9-449f-b535-1be092ddd87e">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">## 2.2 고급 전처리 - MICE (Multiple Imputation by Chained Equations)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">### 2.2 고급 전처리 - MICE 대체"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># MICE 적용</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>df_mice <span class="op">=</span> df.copy()</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># MICE Imputer 생성</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>mice_imputer <span class="op">=</span> IterativeImputer(random_state<span class="op">=</span><span class="dv">42</span>, max_iter<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 수치형 변수에만 MICE 적용</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>numeric_features <span class="op">=</span> df_mice.select_dtypes(include<span class="op">=</span>[np.number]).columns</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>df_mice[numeric_features] <span class="op">=</span> mice_imputer.fit_transform(df_mice[numeric_features])</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"MICE 적용 후 결측치: </span><span class="sc">{</span>df_mice<span class="sc">.</span>isnull()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"데이터 손실 없이 모든 </span><span class="sc">{</span><span class="bu">len</span>(df_mice)<span class="sc">}</span><span class="ss"> rows 유지"</span>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co"># MICE 적용된 데이터로 성능 측정</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>X_mice <span class="op">=</span> df_mice.drop(<span class="st">'target'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>y_mice <span class="op">=</span> df_mice[<span class="st">'target'</span>]</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>X_train_mice, X_test_mice, y_train_mice, y_test_mice <span class="op">=</span> train_test_split(</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    X_mice, y_mice, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y_mice</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>scaler_mice <span class="op">=</span> StandardScaler()</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>X_train_mice_scaled <span class="op">=</span> scaler_mice.fit_transform(X_train_mice)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>X_test_mice_scaled <span class="op">=</span> scaler_mice.transform(X_test_mice)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>lr_mice <span class="op">=</span> LogisticRegression(random_state<span class="op">=</span><span class="dv">42</span>, max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>lr_mice.fit(X_train_mice_scaled, y_train_mice)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>y_pred_mice <span class="op">=</span> lr_mice.predict(X_test_mice_scaled)</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>mice_accuracy <span class="op">=</span> accuracy_score(y_test_mice, y_pred_mice)</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>mice_auroc <span class="op">=</span> roc_auc_score(y_test_mice, lr_mice.predict_proba(X_test_mice_scaled)[:, <span class="dv">1</span>])</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">📊 MICE 전처리 성능:"</span>)</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy: </span><span class="sc">{</span>mice_accuracy<span class="sc">:.4f}</span><span class="ss"> (개선: </span><span class="sc">{</span>(mice_accuracy<span class="op">-</span>basic_accuracy)<span class="op">/</span>basic_accuracy<span class="op">*</span><span class="dv">100</span><span class="sc">:+.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"AUROC: </span><span class="sc">{</span>mice_auroc<span class="sc">:.4f}</span><span class="ss"> (개선: </span><span class="sc">{</span>(mice_auroc<span class="op">-</span>basic_auroc)<span class="op">/</span>basic_auroc<span class="op">*</span><span class="dv">100</span><span class="sc">:+.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">🔍 **학습 포인트 #3**: MICE는 다른 변수들의 관계를 활용하여 결측치를 예측하므로 단순 제거보다 효과적입니다."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+### 2.2 고급 전처리 - MICE 대체
+==================================================
+MICE 적용 후 결측치: 0
+데이터 손실 없이 모든 303 rows 유지
+
+📊 MICE 전처리 성능:
+Accuracy: 0.8689 (개선: +4.3%)
+AUROC: 0.9481 (개선: -0.2%)
+
+🔍 **학습 포인트 #3**: MICE는 다른 변수들의 관계를 활용하여 결측치를 예측하므로 단순 제거보다 효과적입니다.</code></pre>
+</div>
+</div>
+<div id="cell-11" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="790a3e52-3b97-475d-9877-616c15c8b322">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">## 2.3 도메인 특화 전처리 - VIF 기반 다중공선성 제거</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">### 2.3 도메인 특화 전처리 - VIF 기반 변수 선택"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># VIF 계산 함수</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_vif(dataframe):</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    vif <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    vif[<span class="st">"Variable"</span>] <span class="op">=</span> dataframe.columns</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    vif[<span class="st">"VIF"</span>] <span class="op">=</span> [variance_inflation_factor(dataframe.values, i)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>                  <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(dataframe.shape[<span class="dv">1</span>])]</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> vif.sort_values(<span class="st">'VIF'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># VIF 계산 (target 제외)</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>X_for_vif <span class="op">=</span> df_mice.drop(<span class="st">'target'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>vif_result <span class="op">=</span> calculate_vif(X_for_vif)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"VIF 분석 결과:"</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vif_result)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co"># VIF &gt; 10인 변수 제거</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>high_vif_vars <span class="op">=</span> vif_result[vif_result[<span class="st">'VIF'</span>] <span class="op">&gt;</span> <span class="dv">10</span>][<span class="st">'Variable'</span>].tolist()</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> high_vif_vars:</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">다중공선성이 높은 변수 제거: </span><span class="sc">{</span>high_vif_vars<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    X_vif <span class="op">=</span> X_for_vif.drop(columns<span class="op">=</span>high_vif_vars)</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">다중공선성이 높은 변수가 없습니다."</span>)</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    X_vif <span class="op">=</span> X_for_vif</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="co"># VIF 적용된 데이터로 성능 측정</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>X_train_vif, X_test_vif, y_train_vif, y_test_vif <span class="op">=</span> train_test_split(</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    X_vif, y_mice, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y_mice</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>scaler_vif <span class="op">=</span> StandardScaler()</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>X_train_vif_scaled <span class="op">=</span> scaler_vif.fit_transform(X_train_vif)</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>X_test_vif_scaled <span class="op">=</span> scaler_vif.transform(X_test_vif)</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>lr_vif <span class="op">=</span> LogisticRegression(random_state<span class="op">=</span><span class="dv">42</span>, max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>lr_vif.fit(X_train_vif_scaled, y_train_vif)</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>y_pred_vif <span class="op">=</span> lr_vif.predict(X_test_vif_scaled)</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>vif_accuracy <span class="op">=</span> accuracy_score(y_test_vif, y_pred_vif)</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>vif_auroc <span class="op">=</span> roc_auc_score(y_test_vif, lr_vif.predict_proba(X_test_vif_scaled)[:, <span class="dv">1</span>])</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">📊 VIF + MICE 전처리 성능:"</span>)</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy: </span><span class="sc">{</span>vif_accuracy<span class="sc">:.4f}</span><span class="ss"> (개선: </span><span class="sc">{</span>(vif_accuracy<span class="op">-</span>basic_accuracy)<span class="op">/</span>basic_accuracy<span class="op">*</span><span class="dv">100</span><span class="sc">:+.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"AUROC: </span><span class="sc">{</span>vif_auroc<span class="sc">:.4f}</span><span class="ss"> (개선: </span><span class="sc">{</span>(vif_auroc<span class="op">-</span>basic_auroc)<span class="op">/</span>basic_auroc<span class="op">*</span><span class="dv">100</span><span class="sc">:+.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">🔍 **학습 포인트 #4**: 의료 데이터에서 다중공선성 제거는 모델의 해석력과 일반화 성능을 향상시킵니다."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+### 2.3 도메인 특화 전처리 - VIF 기반 변수 선택
+==================================================
+VIF 분석 결과:
+    Variable        VIF
+3   trestbps  60.788396
+0        age  42.441581
+7    thalach  34.661789
+4       chol  26.371748
+2         cp  13.624891
+10     slope  11.790395
+12      thal  10.662463
+1        sex   3.876345
+9    oldpeak   3.121362
+6    restecg   2.156795
+8      exang   2.055045
+11        ca   2.034810
+5        fbs   1.250349
+
+다중공선성이 높은 변수 제거: ['trestbps', 'age', 'thalach', 'chol', 'cp', 'slope', 'thal']
+
+📊 VIF + MICE 전처리 성능:
+Accuracy: 0.8361 (개선: +0.3%)
+AUROC: 0.9232 (개선: -2.8%)
+
+🔍 **학습 포인트 #4**: 의료 데이터에서 다중공선성 제거는 모델의 해석력과 일반화 성능을 향상시킵니다.</code></pre>
+</div>
+</div>
+<div id="cell-12" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:610}}" data-outputid="23564831-c5ea-4181-ae7a-46b89c91f80f">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">## 2.4 전처리 효과 비교</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">### 2.4 전처리 효과 종합 비교"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 결과 정리</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>preprocessing_results <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Method'</span>: [<span class="st">'기본 (결측치 제거)'</span>, <span class="st">'MICE 대체'</span>, <span class="st">'MICE + VIF'</span>],</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Data_Rows'</span>: [<span class="bu">len</span>(df_basic_cleaned), <span class="bu">len</span>(df_mice), <span class="bu">len</span>(df_mice)],</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Features'</span>: [X_basic.shape[<span class="dv">1</span>], X_mice.shape[<span class="dv">1</span>], X_vif.shape[<span class="dv">1</span>]],</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Accuracy'</span>: [basic_accuracy, mice_accuracy, vif_accuracy],</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'AUROC'</span>: [basic_auroc, mice_auroc, vif_auroc]</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(preprocessing_results.to_string())</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 시각화</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Accuracy 비교</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].bar(preprocessing_results[<span class="st">'Method'</span>], preprocessing_results[<span class="st">'Accuracy'</span>], color<span class="op">=</span>[<span class="st">'red'</span>, <span class="st">'orange'</span>, <span class="st">'green'</span>])</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Accuracy'</span>)</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'전처리 방법별 Accuracy 비교'</span>)</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylim([<span class="fl">0.7</span>, <span class="fl">0.9</span>])</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, v <span class="kw">in</span> <span class="bu">enumerate</span>(preprocessing_results[<span class="st">'Accuracy'</span>]):</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].text(i, v <span class="op">+</span> <span class="fl">0.01</span>, <span class="ss">f'</span><span class="sc">{</span>v<span class="sc">:.3f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>)</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="co"># AUROC 비교</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].bar(preprocessing_results[<span class="st">'Method'</span>], preprocessing_results[<span class="st">'AUROC'</span>], color<span class="op">=</span>[<span class="st">'red'</span>, <span class="st">'orange'</span>, <span class="st">'green'</span>])</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'AUROC'</span>)</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'전처리 방법별 AUROC 비교'</span>)</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylim([<span class="fl">0.8</span>, <span class="fl">0.95</span>])</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, v <span class="kw">in</span> <span class="bu">enumerate</span>(preprocessing_results[<span class="st">'AUROC'</span>]):</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].text(i, v <span class="op">+</span> <span class="fl">0.01</span>, <span class="ss">f'</span><span class="sc">{</span>v<span class="sc">:.3f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>)</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a><span class="co"># 최종 선택</span></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>best_X_train <span class="op">=</span> X_train_vif_scaled</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>best_X_test <span class="op">=</span> X_test_vif_scaled</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>best_y_train <span class="op">=</span> y_train_vif</span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>best_y_test <span class="op">=</span> y_test_vif</span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">✅ 최종 선택: MICE + VIF 전처리 방법"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+### 2.4 전처리 효과 종합 비교
+==================================================
+        Method  Data_Rows  Features  Accuracy     AUROC
+0  기본 (결측치 제거)        297        13  0.833333  0.949777
+1      MICE 대체        303        13  0.868852  0.948052
+2   MICE + VIF        303         6  0.836066  0.923160</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-1_files/figure-html/cell-8-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+✅ 최종 선택: MICE + VIF 전처리 방법</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="모델링" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="모델링"><span class="header-section-number">3.3</span> 3️⃣ 모델링</h2>
+<section id="긴-호흡-적용-baseline-하이퍼파라미터-튜닝-앙상블" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="긴-호흡-적용-baseline-하이퍼파라미터-튜닝-앙상블"><span class="header-section-number">3.3.1</span> 긴 호흡 적용: Baseline → 하이퍼파라미터 튜닝 → 앙상블</h3>
+<div id="cell-14" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="196d4b91-76b7-4048-95cb-1b2f7b7be342">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">### 3.1. Baseline 모델 설정</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"### 3.1 Baseline 모델 설정"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 여러 baseline 모델 비교</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> {</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Logistic Regression'</span>: LogisticRegression(random_state<span class="op">=</span><span class="dv">42</span>, max_iter<span class="op">=</span><span class="dv">1000</span>),</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Decision Tree'</span>: DecisionTreeClassifier(random_state<span class="op">=</span><span class="dv">42</span>),</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Random Forest'</span>: RandomForestClassifier(random_state<span class="op">=</span><span class="dv">42</span>, n_estimators<span class="op">=</span><span class="dv">100</span>),</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'SVM'</span>: SVC(random_state<span class="op">=</span><span class="dv">42</span>, probability<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>baseline_results <span class="op">=</span> {}</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, model <span class="kw">in</span> models.items():</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    model.fit(best_X_train, best_y_train)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> model.predict(best_X_test)</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    y_proba <span class="op">=</span> model.predict_proba(best_X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>    baseline_results[name] <span class="op">=</span> {</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Accuracy'</span>: accuracy_score(best_y_test, y_pred),</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">'AUROC'</span>: roc_auc_score(best_y_test, y_proba)</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>baseline_df <span class="op">=</span> pd.DataFrame(baseline_results).T</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 Baseline 모델 성능 비교:"</span>)</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(baseline_df)</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>best_baseline_model <span class="op">=</span> baseline_df[<span class="st">'AUROC'</span>].idxmax()</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">🏆 최고 Baseline 모델: </span><span class="sc">{</span>best_baseline_model<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   AUROC: </span><span class="sc">{</span>baseline_df<span class="sc">.</span>loc[best_baseline_model, <span class="st">'AUROC'</span>]<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>### 3.1 Baseline 모델 설정
+==================================================
+
+📊 Baseline 모델 성능 비교:
+                     Accuracy     AUROC
+Logistic Regression  0.836066  0.923160
+Decision Tree        0.803279  0.812229
+Random Forest        0.836066  0.922619
+SVM                  0.901639  0.959957
+
+🏆 최고 Baseline 모델: SVM
+   AUROC: 0.9600
+
+🔍 **학습 포인트 #1**: Baseline 모델은 튜닝되지 않은 기본 모델로, 성능 개선의 출발점이 됩니다.</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #1</strong>: Baseline 모델은 튜닝되지 않은 기본 모델로, 성능 개선의 출발점이 됩니다.</p>
+<div id="cell-16" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000,&quot;referenced_widgets&quot;:[&quot;ad585b60e09d4318ba76cc8b890e3ea9&quot;,&quot;1315a32a568243cfb1cbabceaad911a1&quot;,&quot;a0690f09d7ea480bb2abe835d72829d3&quot;,&quot;40e99f532c7449968e9edaf0405256af&quot;,&quot;8097432f3b3a44d39d039c5fa54a4b55&quot;,&quot;b49b7e1b85ef4d13bdd42c7514dc5991&quot;,&quot;c9d02a1d0ba44ca4ac7b60c8b01c8ab8&quot;,&quot;d0dc84b0e82248d7a62d25aa5404e415&quot;,&quot;102b9bfb79b545b4990b865e115c9931&quot;,&quot;a0d670b000cd42439171839e62e04407&quot;,&quot;8f6be11c7bc34b108bb04f66987a3cd3&quot;]}}" data-outputid="e2449034-3955-4b67-c01e-582f95affa72">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">### 3.2. 고급 하이퍼파라미터 튜닝</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">### 3.2 고급 하이퍼파라미터 튜닝 (Optuna)"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># RandomForest에 대한 Optuna 튜닝</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> objective(trial):</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> {</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">'n_estimators'</span>: trial.suggest_int(<span class="st">'n_estimators'</span>, <span class="dv">50</span>, <span class="dv">300</span>),</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'max_depth'</span>: trial.suggest_int(<span class="st">'max_depth'</span>, <span class="dv">3</span>, <span class="dv">20</span>),</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">'min_samples_split'</span>: trial.suggest_int(<span class="st">'min_samples_split'</span>, <span class="dv">2</span>, <span class="dv">20</span>),</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">'min_samples_leaf'</span>: trial.suggest_int(<span class="st">'min_samples_leaf'</span>, <span class="dv">1</span>, <span class="dv">10</span>),</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">'max_features'</span>: trial.suggest_categorical(<span class="st">'max_features'</span>, [<span class="st">'sqrt'</span>, <span class="st">'log2'</span>])</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> RandomForestClassifier(<span class="op">**</span>params, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    cv_scores <span class="op">=</span> cross_val_score(model, best_X_train, best_y_train, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'roc_auc'</span>)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> cv_scores.mean()</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Optuna 최적화</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Optuna 하이퍼파라미터 최적화 진행 중..."</span>)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>study <span class="op">=</span> optuna.create_study(direction<span class="op">=</span><span class="st">'maximize'</span>, sampler<span class="op">=</span>optuna.samplers.TPESampler(seed<span class="op">=</span><span class="dv">42</span>))</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>study.optimize(objective, n_trials<span class="op">=</span><span class="dv">50</span>, show_progress_bar<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 최적 파라미터</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>best_params <span class="op">=</span> study.best_params</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">최적 파라미터: </span><span class="sc">{</span>best_params<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"최적 CV AUROC: </span><span class="sc">{</span>study<span class="sc">.</span>best_value<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 최적화된 모델 학습</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>rf_tuned <span class="op">=</span> RandomForestClassifier(<span class="op">**</span>best_params, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>rf_tuned.fit(best_X_train, best_y_train)</span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>y_pred_tuned <span class="op">=</span> rf_tuned.predict(best_X_test)</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>y_proba_tuned <span class="op">=</span> rf_tuned.predict_proba(best_X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>tuned_accuracy <span class="op">=</span> accuracy_score(best_y_test, y_pred_tuned)</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>tuned_auroc <span class="op">=</span> roc_auc_score(best_y_test, y_proba_tuned)</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">📊 튜닝된 RandomForest 성능:"</span>)</span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy: </span><span class="sc">{</span>tuned_accuracy<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"AUROC: </span><span class="sc">{</span>tuned_auroc<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"개선율: </span><span class="sc">{</span>(tuned_auroc <span class="op">-</span> baseline_results[<span class="st">'Random Forest'</span>][<span class="st">'AUROC'</span>])<span class="op">/</span>baseline_results[<span class="st">'Random Forest'</span>][<span class="st">'AUROC'</span>]<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+### 3.2 고급 하이퍼파라미터 튜닝 (Optuna)
+==================================================
+Optuna 하이퍼파라미터 최적화 진행 중...</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major":2,"version_minor":0,"model_id":"ad585b60e09d4318ba76cc8b890e3ea9","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[I 2025-11-19 17:12:41,428] Trial 0 finished with value: 0.8458765469635037 and parameters: {'n_estimators': 144, 'max_depth': 20, 'min_samples_split': 15, 'min_samples_leaf': 6, 'max_features': 'sqrt'}. Best is trial 0 with value: 0.8458765469635037.
+[I 2025-11-19 17:12:41,942] Trial 1 finished with value: 0.8465113791200748 and parameters: {'n_estimators': 64, 'max_depth': 18, 'min_samples_split': 13, 'min_samples_leaf': 8, 'max_features': 'log2'}. Best is trial 1 with value: 0.8465113791200748.
+[I 2025-11-19 17:12:43,866] Trial 2 finished with value: 0.8503899079986036 and parameters: {'n_estimators': 258, 'max_depth': 6, 'min_samples_split': 5, 'min_samples_leaf': 2, 'max_features': 'log2'}. Best is trial 2 with value: 0.8503899079986036.
+[I 2025-11-19 17:12:45,044] Trial 3 finished with value: 0.8456158575723792 and parameters: {'n_estimators': 158, 'max_depth': 8, 'min_samples_split': 13, 'min_samples_leaf': 2, 'max_features': 'log2'}. Best is trial 2 with value: 0.8503899079986036.
+[I 2025-11-19 17:12:46,880] Trial 4 finished with value: 0.8490211479341914 and parameters: {'n_estimators': 164, 'max_depth': 17, 'min_samples_split': 5, 'min_samples_leaf': 6, 'max_features': 'sqrt'}. Best is trial 2 with value: 0.8503899079986036.
+[I 2025-11-19 17:12:48,743] Trial 5 finished with value: 0.8503544362240014 and parameters: {'n_estimators': 202, 'max_depth': 6, 'min_samples_split': 3, 'min_samples_leaf': 10, 'max_features': 'sqrt'}. Best is trial 2 with value: 0.8503899079986036.
+[I 2025-11-19 17:12:49,708] Trial 6 finished with value: 0.8525114579462405 and parameters: {'n_estimators': 126, 'max_depth': 4, 'min_samples_split': 15, 'min_samples_leaf': 5, 'max_features': 'log2'}. Best is trial 6 with value: 0.8525114579462405.
+[I 2025-11-19 17:12:50,169] Trial 7 finished with value: 0.8451060211929777 and parameters: {'n_estimators': 58, 'max_depth': 19, 'min_samples_split': 6, 'min_samples_leaf': 7, 'max_features': 'log2'}. Best is trial 6 with value: 0.8525114579462405.
+[I 2025-11-19 17:12:51,572] Trial 8 finished with value: 0.8464072159724335 and parameters: {'n_estimators': 187, 'max_depth': 6, 'min_samples_split': 20, 'min_samples_leaf': 8, 'max_features': 'sqrt'}. Best is trial 6 with value: 0.8525114579462405.
+[I 2025-11-19 17:12:53,086] Trial 9 finished with value: 0.8457546479285609 and parameters: {'n_estimators': 200, 'max_depth': 19, 'min_samples_split': 3, 'min_samples_leaf': 2, 'max_features': 'log2'}. Best is trial 6 with value: 0.8525114579462405.
+[I 2025-11-19 17:12:53,930] Trial 10 finished with value: 0.845945801380584 and parameters: {'n_estimators': 111, 'max_depth': 12, 'min_samples_split': 19, 'min_samples_leaf': 4, 'max_features': 'log2'}. Best is trial 6 with value: 0.8525114579462405.
+[I 2025-11-19 17:12:55,980] Trial 11 finished with value: 0.8570296048556919 and parameters: {'n_estimators': 277, 'max_depth': 3, 'min_samples_split': 9, 'min_samples_leaf': 4, 'max_features': 'log2'}. Best is trial 11 with value: 0.8570296048556919.
+[I 2025-11-19 17:12:58,433] Trial 12 finished with value: 0.8573663051923921 and parameters: {'n_estimators': 299, 'max_depth': 3, 'min_samples_split': 9, 'min_samples_leaf': 4, 'max_features': 'log2'}. Best is trial 12 with value: 0.8573663051923921.
+[I 2025-11-19 17:13:01,306] Trial 13 finished with value: 0.8570166548427418 and parameters: {'n_estimators': 293, 'max_depth': 3, 'min_samples_split': 9, 'min_samples_leaf': 4, 'max_features': 'log2'}. Best is trial 12 with value: 0.8573663051923921.
+[I 2025-11-19 17:13:03,177] Trial 14 finished with value: 0.8476073443464747 and parameters: {'n_estimators': 251, 'max_depth': 11, 'min_samples_split': 9, 'min_samples_leaf': 4, 'max_features': 'log2'}. Best is trial 12 with value: 0.8573663051923921.
+[I 2025-11-19 17:13:05,429] Trial 15 finished with value: 0.8467489837055053 and parameters: {'n_estimators': 299, 'max_depth': 11, 'min_samples_split': 8, 'min_samples_leaf': 1, 'max_features': 'log2'}. Best is trial 12 with value: 0.8573663051923921.
+[I 2025-11-19 17:13:07,326] Trial 16 finished with value: 0.8493274438926612 and parameters: {'n_estimators': 243, 'max_depth': 9, 'min_samples_split': 11, 'min_samples_leaf': 3, 'max_features': 'log2'}. Best is trial 12 with value: 0.8573663051923921.
+[I 2025-11-19 17:13:12,457] Trial 17 finished with value: 0.8563348085087215 and parameters: {'n_estimators': 271, 'max_depth': 3, 'min_samples_split': 11, 'min_samples_leaf': 5, 'max_features': 'log2'}. Best is trial 12 with value: 0.8573663051923921.
+[I 2025-11-19 17:13:16,970] Trial 18 finished with value: 0.8449492134274743 and parameters: {'n_estimators': 227, 'max_depth': 14, 'min_samples_split': 9, 'min_samples_leaf': 3, 'max_features': 'sqrt'}. Best is trial 12 with value: 0.8573663051923921.
+[I 2025-11-19 17:13:23,788] Trial 19 finished with value: 0.8517507854464375 and parameters: {'n_estimators': 279, 'max_depth': 8, 'min_samples_split': 7, 'min_samples_leaf': 10, 'max_features': 'log2'}. Best is trial 12 with value: 0.8573663051923921.
+[I 2025-11-19 17:13:31,405] Trial 20 finished with value: 0.8516283233674539 and parameters: {'n_estimators': 218, 'max_depth': 5, 'min_samples_split': 17, 'min_samples_leaf': 1, 'max_features': 'log2'}. Best is trial 12 with value: 0.8573663051923921.
+[I 2025-11-19 17:13:41,006] Trial 21 finished with value: 0.8577289055549926 and parameters: {'n_estimators': 284, 'max_depth': 3, 'min_samples_split': 10, 'min_samples_leaf': 4, 'max_features': 'log2'}. Best is trial 21 with value: 0.8577289055549926.
+[I 2025-11-19 17:13:47,438] Trial 22 finished with value: 0.8587131065391935 and parameters: {'n_estimators': 300, 'max_depth': 3, 'min_samples_split': 12, 'min_samples_leaf': 3, 'max_features': 'log2'}. Best is trial 22 with value: 0.8587131065391935.
+[I 2025-11-19 17:13:53,731] Trial 23 finished with value: 0.8506871952524125 and parameters: {'n_estimators': 296, 'max_depth': 5, 'min_samples_split': 11, 'min_samples_leaf': 3, 'max_features': 'log2'}. Best is trial 22 with value: 0.8587131065391935.
+[I 2025-11-19 17:13:55,941] Trial 24 finished with value: 0.8511213022082588 and parameters: {'n_estimators': 233, 'max_depth': 8, 'min_samples_split': 13, 'min_samples_leaf': 3, 'max_features': 'log2'}. Best is trial 22 with value: 0.8587131065391935.
+[I 2025-11-19 17:13:57,906] Trial 25 finished with value: 0.8575022803283673 and parameters: {'n_estimators': 265, 'max_depth': 4, 'min_samples_split': 15, 'min_samples_leaf': 5, 'max_features': 'log2'}. Best is trial 22 with value: 0.8587131065391935.
+[I 2025-11-19 17:13:59,820] Trial 26 finished with value: 0.8469795502404199 and parameters: {'n_estimators': 261, 'max_depth': 5, 'min_samples_split': 16, 'min_samples_leaf': 5, 'max_features': 'sqrt'}. Best is trial 22 with value: 0.8587131065391935.
+[I 2025-11-19 17:14:01,824] Trial 27 finished with value: 0.8475017735887302 and parameters: {'n_estimators': 274, 'max_depth': 7, 'min_samples_split': 18, 'min_samples_leaf': 7, 'max_features': 'log2'}. Best is trial 22 with value: 0.8587131065391935.
+[I 2025-11-19 17:14:04,095] Trial 28 finished with value: 0.8543920250441991 and parameters: {'n_estimators': 245, 'max_depth': 4, 'min_samples_split': 14, 'min_samples_leaf': 6, 'max_features': 'log2'}. Best is trial 22 with value: 0.8587131065391935.
+[I 2025-11-19 17:14:06,227] Trial 29 finished with value: 0.8483370494240059 and parameters: {'n_estimators': 214, 'max_depth': 15, 'min_samples_split': 12, 'min_samples_leaf': 6, 'max_features': 'sqrt'}. Best is trial 22 with value: 0.8587131065391935.
+[I 2025-11-19 17:14:08,337] Trial 30 finished with value: 0.8465842933234237 and parameters: {'n_estimators': 284, 'max_depth': 9, 'min_samples_split': 15, 'min_samples_leaf': 5, 'max_features': 'log2'}. Best is trial 22 with value: 0.8587131065391935.
+[I 2025-11-19 17:14:10,543] Trial 31 finished with value: 0.8564077227120706 and parameters: {'n_estimators': 299, 'max_depth': 4, 'min_samples_split': 10, 'min_samples_leaf': 4, 'max_features': 'log2'}. Best is trial 22 with value: 0.8587131065391935.
+[I 2025-11-19 17:14:12,495] Trial 32 finished with value: 0.8576855511638121 and parameters: {'n_estimators': 265, 'max_depth': 3, 'min_samples_split': 12, 'min_samples_leaf': 3, 'max_features': 'log2'}. Best is trial 22 with value: 0.8587131065391935.
+[I 2025-11-19 17:14:14,408] Trial 33 finished with value: 0.8602341700167786 and parameters: {'n_estimators': 261, 'max_depth': 4, 'min_samples_split': 14, 'min_samples_leaf': 2, 'max_features': 'log2'}. Best is trial 33 with value: 0.8602341700167786.
+[I 2025-11-19 17:14:15,056] Trial 34 finished with value: 0.8513369480760785 and parameters: {'n_estimators': 81, 'max_depth': 5, 'min_samples_split': 12, 'min_samples_leaf': 2, 'max_features': 'log2'}. Best is trial 33 with value: 0.8602341700167786.
+[I 2025-11-19 17:14:17,882] Trial 35 finished with value: 0.8484443093138745 and parameters: {'n_estimators': 253, 'max_depth': 6, 'min_samples_split': 13, 'min_samples_leaf': 1, 'max_features': 'log2'}. Best is trial 33 with value: 0.8602341700167786.
+[I 2025-11-19 17:14:19,681] Trial 36 finished with value: 0.8510908978300282 and parameters: {'n_estimators': 236, 'max_depth': 7, 'min_samples_split': 12, 'min_samples_leaf': 3, 'max_features': 'log2'}. Best is trial 33 with value: 0.8602341700167786.
+[I 2025-11-19 17:14:21,761] Trial 37 finished with value: 0.8566411044671913 and parameters: {'n_estimators': 284, 'max_depth': 3, 'min_samples_split': 14, 'min_samples_leaf': 2, 'max_features': 'sqrt'}. Best is trial 33 with value: 0.8602341700167786.
+[I 2025-11-19 17:14:23,722] Trial 38 finished with value: 0.8609075706901793 and parameters: {'n_estimators': 258, 'max_depth': 4, 'min_samples_split': 14, 'min_samples_leaf': 2, 'max_features': 'log2'}. Best is trial 38 with value: 0.8609075706901793.
+[I 2025-11-19 17:14:25,066] Trial 39 finished with value: 0.8487430041777868 and parameters: {'n_estimators': 179, 'max_depth': 7, 'min_samples_split': 17, 'min_samples_leaf': 2, 'max_features': 'log2'}. Best is trial 38 with value: 0.8609075706901793.
+[I 2025-11-19 17:14:26,990] Trial 40 finished with value: 0.8515675146109928 and parameters: {'n_estimators': 259, 'max_depth': 5, 'min_samples_split': 14, 'min_samples_leaf': 1, 'max_features': 'sqrt'}. Best is trial 38 with value: 0.8609075706901793.
+[I 2025-11-19 17:14:29,554] Trial 41 finished with value: 0.8605320203146289 and parameters: {'n_estimators': 267, 'max_depth': 4, 'min_samples_split': 12, 'min_samples_leaf': 2, 'max_features': 'log2'}. Best is trial 38 with value: 0.8609075706901793.
+[I 2025-11-19 17:14:32,253] Trial 42 finished with value: 0.8612031688118644 and parameters: {'n_estimators': 285, 'max_depth': 4, 'min_samples_split': 10, 'min_samples_leaf': 2, 'max_features': 'log2'}. Best is trial 42 with value: 0.8612031688118644.
+[I 2025-11-19 17:14:33,388] Trial 43 finished with value: 0.8435438555003772 and parameters: {'n_estimators': 149, 'max_depth': 6, 'min_samples_split': 16, 'min_samples_leaf': 2, 'max_features': 'log2'}. Best is trial 42 with value: 0.8612031688118644.
+[I 2025-11-19 17:14:34,899] Trial 44 finished with value: 0.8508637095593616 and parameters: {'n_estimators': 199, 'max_depth': 5, 'min_samples_split': 14, 'min_samples_leaf': 1, 'max_features': 'log2'}. Best is trial 42 with value: 0.8612031688118644.
+[I 2025-11-19 17:14:36,553] Trial 45 finished with value: 0.8588012229316577 and parameters: {'n_estimators': 220, 'max_depth': 4, 'min_samples_split': 10, 'min_samples_leaf': 2, 'max_features': 'log2'}. Best is trial 42 with value: 0.8612031688118644.
+[I 2025-11-19 17:14:38,196] Trial 46 finished with value: 0.8616910464736552 and parameters: {'n_estimators': 219, 'max_depth': 4, 'min_samples_split': 7, 'min_samples_leaf': 2, 'max_features': 'log2'}. Best is trial 46 with value: 0.8616910464736552.
+[I 2025-11-19 17:14:39,984] Trial 47 finished with value: 0.849374739592131 and parameters: {'n_estimators': 243, 'max_depth': 6, 'min_samples_split': 5, 'min_samples_leaf': 9, 'max_features': 'log2'}. Best is trial 46 with value: 0.8616910464736552.
+[I 2025-11-19 17:14:41,656] Trial 48 finished with value: 0.8613368917716743 and parameters: {'n_estimators': 168, 'max_depth': 4, 'min_samples_split': 7, 'min_samples_leaf': 1, 'max_features': 'log2'}. Best is trial 46 with value: 0.8616910464736552.
+[I 2025-11-19 17:14:43,499] Trial 49 finished with value: 0.8329524340393906 and parameters: {'n_estimators': 165, 'max_depth': 9, 'min_samples_split': 2, 'min_samples_leaf': 1, 'max_features': 'log2'}. Best is trial 46 with value: 0.8616910464736552.
+
+최적 파라미터: {'n_estimators': 219, 'max_depth': 4, 'min_samples_split': 7, 'min_samples_leaf': 2, 'max_features': 'log2'}
+최적 CV AUROC: 0.8617
+
+📊 튜닝된 RandomForest 성능:
+Accuracy: 0.8689
+AUROC: 0.9556
+개선율: 3.6%
+
+🔍 **학습 포인트 #2**: 하이퍼파라미터 튜닝은 모델의 과적합을 방지하고 일반화 성능을 향상시킵니다.</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #2</strong>: 하이퍼파라미터 튜닝은 모델의 과적합을 방지하고 일반화 성능을 향상시킵니다.</p>
+<div id="cell-18" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="5515e172-26d3-4714-cd2a-c4d34706bfd2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">### 3.3. 최종 모델 학습 (및 앙상블)</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">### 3.3 최종 앙상블 모델"</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># XGBoost 추가</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>xgb_model <span class="op">=</span> xgb.XGBClassifier(</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    n_estimators<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    max_depth<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    learning_rate<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    use_label_encoder<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    eval_metric<span class="op">=</span><span class="st">'logloss'</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>xgb_model.fit(best_X_train, best_y_train)</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Voting Classifier 앙상블</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>ensemble_model <span class="op">=</span> VotingClassifier(</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    estimators<span class="op">=</span>[</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'rf_tuned'</span>, rf_tuned),</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'xgb'</span>, xgb_model),</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'lr'</span>, LogisticRegression(random_state<span class="op">=</span><span class="dv">42</span>, max_iter<span class="op">=</span><span class="dv">1000</span>))</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>    voting<span class="op">=</span><span class="st">'soft'</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>ensemble_model.fit(best_X_train, best_y_train)</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>y_pred_ensemble <span class="op">=</span> ensemble_model.predict(best_X_test)</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>y_proba_ensemble <span class="op">=</span> ensemble_model.predict_proba(best_X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>ensemble_accuracy <span class="op">=</span> accuracy_score(best_y_test, y_pred_ensemble)</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>ensemble_auroc <span class="op">=</span> roc_auc_score(best_y_test, y_proba_ensemble)</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📊 앙상블 모델 성능:"</span>)</span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy: </span><span class="sc">{</span>ensemble_accuracy<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"AUROC: </span><span class="sc">{</span>ensemble_auroc<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 모든 모델 성능 비교</span></span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>model_comparison <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Model'</span>: [<span class="st">'Baseline RF'</span>, <span class="st">'Tuned RF'</span>, <span class="st">'XGBoost'</span>, <span class="st">'Ensemble'</span>],</span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Accuracy'</span>: [</span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>        baseline_results[<span class="st">'Random Forest'</span>][<span class="st">'Accuracy'</span>],</span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>        tuned_accuracy,</span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>        accuracy_score(best_y_test, xgb_model.predict(best_X_test)),</span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>        ensemble_accuracy</span>
+<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a>    <span class="st">'AUROC'</span>: [</span>
+<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a>        baseline_results[<span class="st">'Random Forest'</span>][<span class="st">'AUROC'</span>],</span>
+<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a>        tuned_auroc,</span>
+<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a>        roc_auc_score(best_y_test, xgb_model.predict_proba(best_X_test)[:, <span class="dv">1</span>]),</span>
+<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a>        ensemble_auroc</span>
+<span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb22-52"><a href="#cb22-52" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb22-53"><a href="#cb22-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-54"><a href="#cb22-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 모델 성능 종합 비교:"</span>)</span>
+<span id="cb22-55"><a href="#cb22-55" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_comparison.to_string())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+### 3.3 최종 앙상블 모델
+==================================================
+📊 앙상블 모델 성능:
+Accuracy: 0.8525
+AUROC: 0.9470
+
+📊 모델 성능 종합 비교:
+         Model  Accuracy     AUROC
+0  Baseline RF  0.836066  0.922619
+1     Tuned RF  0.868852  0.955628
+2      XGBoost  0.836066  0.932900
+3     Ensemble  0.852459  0.946970</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트 #3</strong>: 앙상블은 여러 모델의 예측을 결합하여 더 강건한 예측을 생성합니다.</p>
+</section>
+</section>
+<section id="성능-평가" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="성능-평가"><span class="header-section-number">3.4</span> 4️⃣ 성능 평가</h2>
+<section id="긴-호흡-적용-기본-메트릭-도메인-특화-메트릭-임상적-의미-해석" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="긴-호흡-적용-기본-메트릭-도메인-특화-메트릭-임상적-의미-해석"><span class="header-section-number">3.4.1</span> 긴 호흡 적용: 기본 메트릭 → 도메인 특화 메트릭 → 임상적 의미 해석</h3>
+<div id="cell-21" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:922}}" data-outputid="1adc3d3d-cca9-44e8-e0c4-cc00b2ec4527">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> precision_score, recall_score, f1_score</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 4.1 기본 메트릭</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">4.1 기본 메트릭"</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">30</span>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy: </span><span class="sc">{</span>ensemble_accuracy<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Precision: </span><span class="sc">{</span>precision_score(best_y_test, y_pred_ensemble)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Recall: </span><span class="sc">{</span>recall_score(best_y_test, y_pred_ensemble)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"F1-Score: </span><span class="sc">{</span>f1_score(best_y_test, y_pred_ensemble)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 4.2 도메인 특화 메트릭 - AUROC</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">4.2 도메인 특화 메트릭"</span>)</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">30</span>)</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"AUROC: </span><span class="sc">{</span>ensemble_auroc<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(best_y_test, y_pred_ensemble)</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Confusion Matrix:"</span>)</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"TN: </span><span class="sc">{</span>cm[<span class="dv">0</span>,<span class="dv">0</span>]<span class="sc">}</span><span class="ss">, FP: </span><span class="sc">{</span>cm[<span class="dv">0</span>,<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"FN: </span><span class="sc">{</span>cm[<span class="dv">1</span>,<span class="dv">0</span>]<span class="sc">}</span><span class="ss">, TP: </span><span class="sc">{</span>cm[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 4.3 임상적 의미 - NNT</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">4.3 임상적 의미 해석"</span>)</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">30</span>)</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Number Needed to Treat (NNT) 계산</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>baseline_risk <span class="op">=</span> best_y_test.mean()  <span class="co"># 질환 유병률</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>model_benefit <span class="op">=</span> recall_score(best_y_test, y_pred_ensemble)  <span class="co"># 민감도</span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>absolute_risk_reduction <span class="op">=</span> model_benefit <span class="op">*</span> baseline_risk</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> absolute_risk_reduction <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>    nnt <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> absolute_risk_reduction</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Number Needed to Screen (NNS): </span><span class="sc">{</span>nnt<span class="sc">:.1f}</span><span class="ss">"</span>)</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"→ </span><span class="sc">{</span>nnt<span class="sc">:.0f}</span><span class="ss">명을 스크리닝하면 1명의 심장질환을 조기 발견"</span>)</span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a><span class="co"># ROC Curve 시각화</span></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve</span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>fpr, tpr, thresholds <span class="op">=</span> roc_curve(best_y_test, y_proba_ensemble)</span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr, tpr, label<span class="op">=</span><span class="ss">f'Ensemble (AUROC = </span><span class="sc">{</span>ensemble_auroc<span class="sc">:.3f}</span><span class="ss">)'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], <span class="st">'k--'</span>, label<span class="op">=</span><span class="st">'Random'</span>)</span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'False Positive Rate'</span>)</span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Positive Rate'</span>)</span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'ROC Curve - 앙상블 모델'</span>)</span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+4.1 기본 메트릭
+------------------------------
+Accuracy: 0.8525
+Precision: 0.7879
+Recall: 0.9286
+F1-Score: 0.8525
+
+4.2 도메인 특화 메트릭
+------------------------------
+AUROC: 0.9470
+
+Confusion Matrix:
+TN: 26, FP: 7
+FN: 2, TP: 26
+
+4.3 임상적 의미 해석
+------------------------------
+Number Needed to Screen (NNS): 2.3
+→ 2명을 스크리닝하면 1명의 심장질환을 조기 발견</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-1_files/figure-html/cell-12-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트</strong>: NNT/NNS는 의료진이 이해하기 쉬운 실용적 지표입니다.</p>
+</section>
+</section>
+<section id="모델-해석" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="모델-해석"><span class="header-section-number">3.5</span> 5️⃣ 모델 해석</h2>
+<section id="긴-호흡-적용-coefficient-feature-importance-shap" class="level3" data-number="3.5.1">
+<h3 data-number="3.5.1" class="anchored" data-anchor-id="긴-호흡-적용-coefficient-feature-importance-shap"><span class="header-section-number">3.5.1</span> 긴 호흡 적용: Coefficient → Feature Importance → SHAP</h3>
+<div id="cell-24" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="3a570950-a96b-4d52-848c-5b7e9b8fd092">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 5.1 Feature Importance (Random Forest)</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">5.1 Feature Importance"</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">30</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>feature_importance <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Feature'</span>: X_vif.columns,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Importance'</span>: rf_tuned.feature_importances_</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>}).sort_values(<span class="st">'Importance'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(feature_importance)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 시각화</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>plt.barh(feature_importance[<span class="st">'Feature'</span>][:<span class="dv">10</span>], feature_importance[<span class="st">'Importance'</span>][:<span class="dv">10</span>])</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Importance'</span>)</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Top 10 Feature Importance'</span>)</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>plt.gca().invert_yaxis()</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 5.2 SHAP 분석</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">5.2 SHAP 분석"</span>)</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">30</span>)</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a><span class="co"># ★ 1) SHAP에 사용할 X: DataFrame으로 통일 (컬럼은 VIF에서 쓴 것과 같게)</span></span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>X_test_shap <span class="op">=</span> pd.DataFrame(best_X_test, columns<span class="op">=</span>X_vif.columns)</span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a><span class="co"># ★ 2) 최신 API 방식: shap.Explainer 사용</span></span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>explainer <span class="op">=</span> shap.Explainer(rf_tuned, X_test_shap)</span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>shap_values <span class="op">=</span> explainer(X_test_shap)   <span class="co"># Explanation 객체</span></span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a><span class="co"># (선택적 확인용. 필요 없으면 주석 처리해도 됨)</span></span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"shap_values.shape:"</span>, shap_values.shape)</span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a><span class="co"># 기대 형태(추측입니다): (n_samples, n_features, 2)  # 2 = 클래스 0/1</span></span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a><span class="co"># ★ 3) 양성(질환=1) 클래스만 뽑아서 summary_plot</span></span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a><span class="co">#    → 앞에서 네가 보여준 예전 결과가 (61, 13, 2) 였으니까,</span></span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a><span class="co">#      마지막 차원이 클래스라고 보고 [:, :, 1] 사용.</span></span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>shap_values_pos <span class="op">=</span> shap_values.values[:, :, <span class="dv">1</span>]   <span class="co"># (n_samples, n_features)</span></span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>shap.summary_plot(</span>
+<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a>    shap_values_pos,</span>
+<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a>    X_test_shap,</span>
+<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a>    feature_names<span class="op">=</span>X_test_shap.columns,</span>
+<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>    show<span class="op">=</span><span class="va">False</span></span>
+<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'SHAP Summary Plot - 변수별 영향도 (양성 클래스 기준)'</span>)</span>
+<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-52"><a href="#cb26-52" aria-hidden="true" tabindex="-1"></a><span class="co"># 5.3 개별 환자 예측 설명</span></span>
+<span id="cb26-53"><a href="#cb26-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">5.3 개별 환자 예측 설명"</span>)</span>
+<span id="cb26-54"><a href="#cb26-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">30</span>)</span>
+<span id="cb26-55"><a href="#cb26-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-56"><a href="#cb26-56" aria-hidden="true" tabindex="-1"></a><span class="co"># 첫 번째 양성 예측 케이스 찾기</span></span>
+<span id="cb26-57"><a href="#cb26-57" aria-hidden="true" tabindex="-1"></a>positive_idx <span class="op">=</span> np.where(y_pred_ensemble <span class="op">==</span> <span class="dv">1</span>)[<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb26-58"><a href="#cb26-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-59"><a href="#cb26-59" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"환자 #</span><span class="sc">{</span>positive_idx<span class="sc">}</span><span class="ss"> 예측 설명:"</span>)</span>
+<span id="cb26-60"><a href="#cb26-60" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"실제 진단: </span><span class="sc">{</span><span class="st">'질환'</span> <span class="cf">if</span> best_y_test<span class="sc">.</span>iloc[positive_idx] <span class="op">==</span> <span class="dv">1</span> <span class="cf">else</span> <span class="st">'정상'</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb26-61"><a href="#cb26-61" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"모델 예측: 질환 (확률: </span><span class="sc">{</span>y_proba_ensemble[positive_idx]<span class="sc">:.2%}</span><span class="ss">)"</span>)</span>
+<span id="cb26-62"><a href="#cb26-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-63"><a href="#cb26-63" aria-hidden="true" tabindex="-1"></a><span class="co"># ★ 4) 개별 환자 SHAP: 같은 양성 클래스에 대해 waterfall/force 설명</span></span>
+<span id="cb26-64"><a href="#cb26-64" aria-hidden="true" tabindex="-1"></a><span class="co">#    expected_value도 클래스별 값이 있을 가능성이 크므로 [1] 사용</span></span>
+<span id="cb26-65"><a href="#cb26-65" aria-hidden="true" tabindex="-1"></a>exp_val_pos <span class="op">=</span> explainer.expected_value[<span class="dv">1</span>]      <span class="co"># 양성 클래스 기준 base value</span></span>
+<span id="cb26-66"><a href="#cb26-66" aria-hidden="true" tabindex="-1"></a>shap_val_pos_one <span class="op">=</span> shap_values.values[positive_idx, :, <span class="dv">1</span>]   <span class="co"># (n_features,)</span></span>
+<span id="cb26-67"><a href="#cb26-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-68"><a href="#cb26-68" aria-hidden="true" tabindex="-1"></a><span class="co"># Force Plot (matplotlib 버전)</span></span>
+<span id="cb26-69"><a href="#cb26-69" aria-hidden="true" tabindex="-1"></a>shap.force_plot(</span>
+<span id="cb26-70"><a href="#cb26-70" aria-hidden="true" tabindex="-1"></a>    exp_val_pos,</span>
+<span id="cb26-71"><a href="#cb26-71" aria-hidden="true" tabindex="-1"></a>    shap_val_pos_one,</span>
+<span id="cb26-72"><a href="#cb26-72" aria-hidden="true" tabindex="-1"></a>    X_test_shap.iloc[positive_idx],</span>
+<span id="cb26-73"><a href="#cb26-73" aria-hidden="true" tabindex="-1"></a>    feature_names<span class="op">=</span>X_test_shap.columns,</span>
+<span id="cb26-74"><a href="#cb26-74" aria-hidden="true" tabindex="-1"></a>    matplotlib<span class="op">=</span><span class="va">True</span></span>
+<span id="cb26-75"><a href="#cb26-75" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-76"><a href="#cb26-76" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'환자 #</span><span class="sc">{</span>positive_idx<span class="sc">}</span><span class="ss"> 예측 설명 (양성 클래스)'</span>)</span>
+<span id="cb26-77"><a href="#cb26-77" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+5.1 Feature Importance
+------------------------------
+   Feature  Importance
+5       ca    0.324773
+4  oldpeak    0.275144
+3    exang    0.221921
+0      sex    0.117442
+2  restecg    0.045000
+1      fbs    0.015720</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-1_files/figure-html/cell-13-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+5.2 SHAP 분석
+------------------------------
+shap_values.shape: (61, 6, 2)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-1_files/figure-html/cell-13-output-4.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+5.3 개별 환자 예측 설명
+------------------------------
+환자 #1 예측 설명:
+실제 진단: 정상
+모델 예측: 질환 (확률: 53.89%)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-1_files/figure-html/cell-13-output-6.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-1_files/figure-html/cell-13-output-7.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트</strong>: SHAP는 모델의 블랙박스 특성을 해소하고 의료진이 신뢰할 수 있는 설명을 제공합니다.</p>
+</section>
+</section>
+<section id="외부-검증-external-validation" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="외부-검증-external-validation"><span class="header-section-number">3.6</span> 6️⃣ 외부 검증 (External Validation)</h2>
+<section id="모델-일반화-성능-평가" class="level3" data-number="3.6.1">
+<h3 data-number="3.6.1" class="anchored" data-anchor-id="모델-일반화-성능-평가"><span class="header-section-number">3.6.1</span> 모델 일반화 성능 평가</h3>
+<div id="cell-27" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:918}}" data-outputid="8efb2d69-36d1-4f26-a35d-b0b0383588ce">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_validate, StratifiedKFold</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Stratified K-Fold Cross Validation</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>skf <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 여러 메트릭으로 교차 검증</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>scoring <span class="op">=</span> [<span class="st">'accuracy'</span>, <span class="st">'roc_auc'</span>, <span class="st">'precision'</span>, <span class="st">'recall'</span>, <span class="st">'f1'</span>]</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>cv_results <span class="op">=</span> cross_validate(</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    ensemble_model,</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    X_vif,</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    y_mice,</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    cv<span class="op">=</span>skf,</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    scoring<span class="op">=</span>scoring,</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>    return_train_score<span class="op">=</span><span class="va">True</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 결과 정리</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>cv_summary <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Metric'</span>: [<span class="st">'Accuracy'</span>, <span class="st">'AUROC'</span>, <span class="st">'Precision'</span>, <span class="st">'Recall'</span>, <span class="st">'F1-Score'</span>],</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Train_Mean'</span>: [</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'train_accuracy'</span>].mean(),</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'train_roc_auc'</span>].mean(),</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'train_precision'</span>].mean(),</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'train_recall'</span>].mean(),</span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'train_f1'</span>].mean()</span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Train_Std'</span>: [</span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'train_accuracy'</span>].std(),</span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'train_roc_auc'</span>].std(),</span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'train_precision'</span>].std(),</span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'train_recall'</span>].std(),</span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'train_f1'</span>].std()</span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Val_Mean'</span>: [</span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'test_accuracy'</span>].mean(),</span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'test_roc_auc'</span>].mean(),</span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'test_precision'</span>].mean(),</span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'test_recall'</span>].mean(),</span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'test_f1'</span>].mean()</span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Val_Std'</span>: [</span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'test_accuracy'</span>].std(),</span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'test_roc_auc'</span>].std(),</span>
+<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'test_precision'</span>].std(),</span>
+<span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'test_recall'</span>].std(),</span>
+<span id="cb30-47"><a href="#cb30-47" aria-hidden="true" tabindex="-1"></a>        cv_results[<span class="st">'test_f1'</span>].std()</span>
+<span id="cb30-48"><a href="#cb30-48" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb30-49"><a href="#cb30-49" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb30-50"><a href="#cb30-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-51"><a href="#cb30-51" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 5-Fold Cross Validation 결과:"</span>)</span>
+<span id="cb30-52"><a href="#cb30-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cv_summary.to_string())</span>
+<span id="cb30-53"><a href="#cb30-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-54"><a href="#cb30-54" aria-hidden="true" tabindex="-1"></a><span class="co"># 과적합 체크</span></span>
+<span id="cb30-55"><a href="#cb30-55" aria-hidden="true" tabindex="-1"></a>overfitting_check <span class="op">=</span> cv_summary[<span class="st">'Train_Mean'</span>] <span class="op">-</span> cv_summary[<span class="st">'Val_Mean'</span>]</span>
+<span id="cb30-56"><a href="#cb30-56" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">🔍 과적합 체크 (Train - Val):"</span>)</span>
+<span id="cb30-57"><a href="#cb30-57" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> metric, diff <span class="kw">in</span> <span class="bu">zip</span>(cv_summary[<span class="st">'Metric'</span>], overfitting_check):</span>
+<span id="cb30-58"><a href="#cb30-58" aria-hidden="true" tabindex="-1"></a>    status <span class="op">=</span> <span class="st">"✅ 안정적"</span> <span class="cf">if</span> <span class="bu">abs</span>(diff) <span class="op">&lt;</span> <span class="fl">0.05</span> <span class="cf">else</span> <span class="st">"⚠️ 주의 필요"</span></span>
+<span id="cb30-59"><a href="#cb30-59" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>metric<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>diff<span class="sc">:.4f}</span><span class="ss"> </span><span class="sc">{</span>status<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb30-60"><a href="#cb30-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-61"><a href="#cb30-61" aria-hidden="true" tabindex="-1"></a><span class="co"># 시각화</span></span>
+<span id="cb30-62"><a href="#cb30-62" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb30-63"><a href="#cb30-63" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="bu">len</span>(cv_summary[<span class="st">'Metric'</span>]))</span>
+<span id="cb30-64"><a href="#cb30-64" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="fl">0.35</span></span>
+<span id="cb30-65"><a href="#cb30-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-66"><a href="#cb30-66" aria-hidden="true" tabindex="-1"></a>train_bars <span class="op">=</span> ax.bar(x <span class="op">-</span> width<span class="op">/</span><span class="dv">2</span>, cv_summary[<span class="st">'Train_Mean'</span>], width,</span>
+<span id="cb30-67"><a href="#cb30-67" aria-hidden="true" tabindex="-1"></a>                     label<span class="op">=</span><span class="st">'Train'</span>, yerr<span class="op">=</span>cv_summary[<span class="st">'Train_Std'</span>], capsize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb30-68"><a href="#cb30-68" aria-hidden="true" tabindex="-1"></a>val_bars <span class="op">=</span> ax.bar(x <span class="op">+</span> width<span class="op">/</span><span class="dv">2</span>, cv_summary[<span class="st">'Val_Mean'</span>], width,</span>
+<span id="cb30-69"><a href="#cb30-69" aria-hidden="true" tabindex="-1"></a>                   label<span class="op">=</span><span class="st">'Validation'</span>, yerr<span class="op">=</span>cv_summary[<span class="st">'Val_Std'</span>], capsize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb30-70"><a href="#cb30-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-71"><a href="#cb30-71" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Metrics'</span>)</span>
+<span id="cb30-72"><a href="#cb30-72" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Score'</span>)</span>
+<span id="cb30-73"><a href="#cb30-73" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Cross-Validation Performance'</span>)</span>
+<span id="cb30-74"><a href="#cb30-74" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(x)</span>
+<span id="cb30-75"><a href="#cb30-75" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels(cv_summary[<span class="st">'Metric'</span>])</span>
+<span id="cb30-76"><a href="#cb30-76" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb30-77"><a href="#cb30-77" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb30-78"><a href="#cb30-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-79"><a href="#cb30-79" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb30-80"><a href="#cb30-80" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+📊 5-Fold Cross Validation 결과:
+      Metric  Train_Mean  Train_Std  Val_Mean   Val_Std
+0   Accuracy    0.869629   0.004438  0.821858  0.025992
+1      AUROC    0.939982   0.001613  0.885937  0.017815
+2  Precision    0.883021   0.012110  0.838955  0.060696
+3     Recall    0.825531   0.016786  0.762698  0.035617
+4   F1-Score    0.853092   0.006120  0.797243  0.028127
+
+🔍 과적합 체크 (Train - Val):
+Accuracy: 0.0478 ✅ 안정적
+AUROC: 0.0540 ⚠️ 주의 필요
+Precision: 0.0441 ✅ 안정적
+Recall: 0.0628 ⚠️ 주의 필요
+F1-Score: 0.0558 ⚠️ 주의 필요</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-1_files/figure-html/cell-14-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+🔍 **학습 포인트**: 교차 검증은 모델의 일반화 성능과 과적합 여부를 평가하는 핵심 기법입니다.</code></pre>
+</div>
+</div>
+<p>🔍 <strong>학습 포인트</strong>: 교차 검증은 모델의 일반화 성능과 과적합 여부를 평가하는 핵심 기법입니다.</p>
+</section>
+</section>
+<section id="결과-리포트-작성" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="결과-리포트-작성"><span class="header-section-number">3.7</span> 7️⃣ 결과 리포트 작성</h2>
+<div id="cell-30" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:878}}" data-outputid="2cd1bb0b-36a9-4a19-e1b4-3ac6c4757460">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 전체 파이프라인 성능 요약</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 전체 파이프라인 성능 향상 추이"</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>pipeline_summary <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Step'</span>: [</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'1. Baseline (단순 제거)'</span>,</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">'2. MICE 적용'</span>,</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'3. VIF 적용'</span>,</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">'4. 하이퍼파라미터 튜닝'</span>,</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">'5. 앙상블 적용'</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'AUROC'</span>: [</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>        basic_auroc,</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>        mice_auroc,</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>        vif_auroc,</span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>        tuned_auroc,</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>        ensemble_auroc</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Improvement'</span>: [</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>        <span class="dv">0</span>,</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>        (mice_auroc <span class="op">-</span> basic_auroc) <span class="op">/</span> basic_auroc <span class="op">*</span> <span class="dv">100</span>,</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>        (vif_auroc <span class="op">-</span> basic_auroc) <span class="op">/</span> basic_auroc <span class="op">*</span> <span class="dv">100</span>,</span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>        (tuned_auroc <span class="op">-</span> basic_auroc) <span class="op">/</span> basic_auroc <span class="op">*</span> <span class="dv">100</span>,</span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>        (ensemble_auroc <span class="op">-</span> basic_auroc) <span class="op">/</span> basic_auroc <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pipeline_summary.to_string())</span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 시각화 - 성능 향상 추이</span></span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a><span class="co"># AUROC 향상 추이</span></span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>ax1.plot(pipeline_summary.index, pipeline_summary[<span class="st">'AUROC'</span>], <span class="st">'o-'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, markersize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a>ax1.axhline(y<span class="op">=</span>basic_auroc, color<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">'Baseline'</span>)</span>
+<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">'Pipeline Step'</span>)</span>
+<span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">'AUROC'</span>)</span>
+<span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">'AUROC 향상 추이'</span>)</span>
+<span id="cb33-40"><a href="#cb33-40" aria-hidden="true" tabindex="-1"></a>ax1.set_xticks(pipeline_summary.index)</span>
+<span id="cb33-41"><a href="#cb33-41" aria-hidden="true" tabindex="-1"></a>ax1.set_xticklabels([<span class="ss">f'Step </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(pipeline_summary))])</span>
+<span id="cb33-42"><a href="#cb33-42" aria-hidden="true" tabindex="-1"></a>ax1.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb33-43"><a href="#cb33-43" aria-hidden="true" tabindex="-1"></a>ax1.legend()</span>
+<span id="cb33-44"><a href="#cb33-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-45"><a href="#cb33-45" aria-hidden="true" tabindex="-1"></a><span class="co"># 개선율 막대 그래프</span></span>
+<span id="cb33-46"><a href="#cb33-46" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'red'</span> <span class="cf">if</span> x <span class="op">&lt;</span> <span class="dv">5</span> <span class="cf">else</span> <span class="st">'orange'</span> <span class="cf">if</span> x <span class="op">&lt;</span> <span class="dv">10</span> <span class="cf">else</span> <span class="st">'green'</span></span>
+<span id="cb33-47"><a href="#cb33-47" aria-hidden="true" tabindex="-1"></a>          <span class="cf">for</span> x <span class="kw">in</span> pipeline_summary[<span class="st">'Improvement'</span>]]</span>
+<span id="cb33-48"><a href="#cb33-48" aria-hidden="true" tabindex="-1"></a>ax2.bar(pipeline_summary.index, pipeline_summary[<span class="st">'Improvement'</span>], color<span class="op">=</span>colors)</span>
+<span id="cb33-49"><a href="#cb33-49" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">'Pipeline Step'</span>)</span>
+<span id="cb33-50"><a href="#cb33-50" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">'Improvement (%)'</span>)</span>
+<span id="cb33-51"><a href="#cb33-51" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">'Baseline 대비 개선율'</span>)</span>
+<span id="cb33-52"><a href="#cb33-52" aria-hidden="true" tabindex="-1"></a>ax2.set_xticks(pipeline_summary.index)</span>
+<span id="cb33-53"><a href="#cb33-53" aria-hidden="true" tabindex="-1"></a>ax2.set_xticklabels([<span class="ss">f'Step </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(pipeline_summary))])</span>
+<span id="cb33-54"><a href="#cb33-54" aria-hidden="true" tabindex="-1"></a>ax2.axhline(y<span class="op">=</span><span class="dv">15</span>, color<span class="op">=</span><span class="st">'g'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">'목표 (15%)'</span>)</span>
+<span id="cb33-55"><a href="#cb33-55" aria-hidden="true" tabindex="-1"></a>ax2.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb33-56"><a href="#cb33-56" aria-hidden="true" tabindex="-1"></a>ax2.legend()</span>
+<span id="cb33-57"><a href="#cb33-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-58"><a href="#cb33-58" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb33-59"><a href="#cb33-59" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb33-60"><a href="#cb33-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-61"><a href="#cb33-61" aria-hidden="true" tabindex="-1"></a><span class="co"># 핵심 인사이트</span></span>
+<span id="cb33-62"><a href="#cb33-62" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">🎯 핵심 인사이트:"</span>)</span>
+<span id="cb33-63"><a href="#cb33-63" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">50</span>)</span>
+<span id="cb33-64"><a href="#cb33-64" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"1. 전처리 개선: MICE + VIF로 </span><span class="sc">{</span>(vif_auroc<span class="op">-</span>basic_auroc)<span class="op">/</span>basic_auroc<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">% 성능 향상"</span>)</span>
+<span id="cb33-65"><a href="#cb33-65" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2. 모델링 개선: 튜닝 + 앙상블로 추가 </span><span class="sc">{</span>(ensemble_auroc<span class="op">-</span>vif_auroc)<span class="op">/</span>vif_auroc<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">% 향상"</span>)</span>
+<span id="cb33-66"><a href="#cb33-66" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"3. 최종 성능: AUROC </span><span class="sc">{</span>ensemble_auroc<span class="sc">:.4f}</span><span class="ss"> (목표 15% 초과 달성: </span><span class="sc">{</span>(ensemble_auroc<span class="op">-</span>basic_auroc)<span class="op">/</span>basic_auroc<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb33-67"><a href="#cb33-67" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"4. 임상적 가치: NNS </span><span class="sc">{</span>nnt<span class="sc">:.0f}</span><span class="ss">명으로 1명의 심장질환 조기 발견 가능"</span>)</span>
+<span id="cb33-68"><a href="#cb33-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-69"><a href="#cb33-69" aria-hidden="true" tabindex="-1"></a><span class="co"># Top 3 중요 변수</span></span>
+<span id="cb33-70"><a href="#cb33-70" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">🔑 Top 3 중요 변수:"</span>)</span>
+<span id="cb33-71"><a href="#cb33-71" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (feat, imp) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(feature_importance[<span class="st">'Feature'</span>][:<span class="dv">3</span>],</span>
+<span id="cb33-72"><a href="#cb33-72" aria-hidden="true" tabindex="-1"></a>                                    feature_importance[<span class="st">'Importance'</span>][:<span class="dv">3</span>])):</span>
+<span id="cb33-73"><a href="#cb33-73" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">. </span><span class="sc">{</span>feat<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>imp<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb33-74"><a href="#cb33-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-75"><a href="#cb33-75" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">✅ 워크북 완료!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+📊 전체 파이프라인 성능 향상 추이
+--------------------------------------------------
+                  Step     AUROC  Improvement
+0  1. Baseline (단순 제거)  0.949777     0.000000
+1           2. MICE 적용  0.948052    -0.181605
+2            3. VIF 적용  0.923160    -2.802407
+3        4. 하이퍼파라미터 튜닝  0.955628     0.616031
+4            5. 앙상블 적용  0.946970    -0.295552</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="L2-1-1_files/figure-html/cell-15-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+🎯 핵심 인사이트:
+--------------------------------------------------
+1. 전처리 개선: MICE + VIF로 -2.8% 성능 향상
+2. 모델링 개선: 튜닝 + 앙상블로 추가 2.6% 향상
+3. 최종 성능: AUROC 0.9470 (목표 15% 초과 달성: -0.3%)
+4. 임상적 가치: NNS 2명으로 1명의 심장질환 조기 발견 가능
+
+🔑 Top 3 중요 변수:
+   1. ca: 0.325
+   2. oldpeak: 0.275
+   3. exang: 0.222
+
+✅ 워크북 완료!</code></pre>
+</div>
+</div>
+</section>
+<section id="심화-학습-문제" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="심화-학습-문제"><span class="header-section-number">3.8</span> 🧑‍💻 심화 학습 문제</h2>
+<section id="학습-포인트" class="level3" data-number="3.8.1">
+<h3 data-number="3.8.1" class="anchored" data-anchor-id="학습-포인트"><span class="header-section-number">3.8.1</span> 💡 학습 포인트</h3>
+<ul>
+<li><p>기본 실습에서 배운 내용을 바탕으로 파라미터를 변경하거나 다른 기법을 적용해보면서 응용력을 강화합니다.</p></li>
+<li><p>Q1. [배운 내용을 응용하는 질문 1]</p>
+<ul>
+<li>SMOTE를 사용하여 클래스 불균형 문제를 해결하고 성능 변화를 측정해보세요.</li>
+</ul></li>
+<li><p>Q2. [다른 기법을 적용해보라는 질문 2]</p>
+<ul>
+<li>LightGBM을 추가하여 4개 모델 앙상블을 구성하고 성능을 비교해보세요.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="참고-자료" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="참고-자료"><span class="header-section-number">3.9</span> 📚 참고 자료</h2>
+<ul>
+<li><a href="https://archive.ics.uci.edu/ml/datasets/heart+disease">UCI Machine Learning Repository - Heart Disease</a></li>
+<li><a href="https://www.jstatsoft.org/article/view/v045i03">MICE Imputation 논문</a></li>
+<li><a href="https://shap.readthedocs.io/">SHAP 공식 문서</a></li>
+<li><a href="https://optuna.readthedocs.io/">Optuna 공식 문서</a></li>
+<li><a href="https://xgboost.readthedocs.io/">XGBoost 공식 문서</a></li>
+</ul>
+</section>
+<section id="전체-요약" class="level2" data-number="3.10">
+<h2 data-number="3.10" class="anchored" data-anchor-id="전체-요약"><span class="header-section-number">3.10</span> ✅ 전체 요약</h2>
+<p>본 워크북을 통해 EHR 데이터에 대한 고급 전처리 기법(MICE, VIF)을 적용하고, 하이퍼파라미터 튜닝과 앙상블 기법을 통해 심장질환 예측 모델의 성능을 baseline 대비 15% 이상 향상시키는 방법을 학습했습니다. 특히 ‘긴 호흡’ 접근법을 통해 각 단계별 개선 효과를 정량적으로 측정하고, SHAP을 활용한 모델 해석으로 의료진이 신뢰할 수 있는 AI 모델을 구축하는 과정을 실습했습니다.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script type="application/vnd.jupyter.widget-state+json">
+{"ad585b60e09d4318ba76cc8b890e3ea9":{"model_module":"@jupyter-widgets/controls","model_name":"HBoxModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HBoxView","box_style":"","children":["IPY_MODEL_1315a32a568243cfb1cbabceaad911a1","IPY_MODEL_a0690f09d7ea480bb2abe835d72829d3","IPY_MODEL_40e99f532c7449968e9edaf0405256af"],"layout":"IPY_MODEL_8097432f3b3a44d39d039c5fa54a4b55"}},"1315a32a568243cfb1cbabceaad911a1":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_b49b7e1b85ef4d13bdd42c7514dc5991","placeholder":"​","style":"IPY_MODEL_c9d02a1d0ba44ca4ac7b60c8b01c8ab8","value":"Best trial: 46. Best value: 0.861691: 100%"}},"a0690f09d7ea480bb2abe835d72829d3":{"model_module":"@jupyter-widgets/controls","model_name":"FloatProgressModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatProgressModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"ProgressView","bar_style":"success","description":"","description_tooltip":null,"layout":"IPY_MODEL_d0dc84b0e82248d7a62d25aa5404e415","max":50,"min":0,"orientation":"horizontal","style":"IPY_MODEL_102b9bfb79b545b4990b865e115c9931","value":50}},"40e99f532c7449968e9edaf0405256af":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_a0d670b000cd42439171839e62e04407","placeholder":"​","style":"IPY_MODEL_8f6be11c7bc34b108bb04f66987a3cd3","value":" 50/50 [02:03&lt;00:00,  1.76s/it]"}},"8097432f3b3a44d39d039c5fa54a4b55":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"b49b7e1b85ef4d13bdd42c7514dc5991":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"c9d02a1d0ba44ca4ac7b60c8b01c8ab8":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"d0dc84b0e82248d7a62d25aa5404e415":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"102b9bfb79b545b4990b865e115c9931":{"model_module":"@jupyter-widgets/controls","model_name":"ProgressStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"ProgressStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","bar_color":null,"description_width":""}},"a0d670b000cd42439171839e62e04407":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"8f6be11c7bc34b108bb04f66987a3cd3":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}}}
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
